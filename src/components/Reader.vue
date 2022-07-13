@@ -1,8 +1,8 @@
 <template>
-  <!-- <div id="magazine" class="body animate__animated animate__zoomInRight hidden-sm-and-down">
+  <!-- <div id="magazine" class="body animate__animated animate__zoomInRight hidden-sm-and-down"> 
     <div v-for="(item, index) in allPages" :key="`page_${index}`">
 
-      <div class="">
+      <div class="shadow">
         <div :class="`text${item.page}`">
           <footer v-if="item.page - 1 !== 0 || item.page - 1 !== allPages.length - 1" class="current-page">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
@@ -20,26 +20,27 @@
   </div> -->
 
 
-<div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down">
-      <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div :class="`text${item.page}`">
-          <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page">
-            <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-              {{ item.page - 1 }}
-            </div>
-            <div v-else class="odd-number oddshadow ">{{ item.page - 1 }}
-            </div>
-          </footer>
-          
-          <div class="evenshadow"></div>
-          <div class="oddshadow"></div>
-        </div>
+  <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down ">
+    <div  v-for="(item, index) in allPages" :key="`test_${index}`" class="flexrow ">
 
+      <div  :class="`text${item.page}`">
+        <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
+          <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
+            {{ item.page - 1 }}
+          </div>
+          <div v-else class="odd-number">{{ item.page - 1 }}
+          </div>
+        </footer>
+        <div class="evenshadow"></div>
+        <div class="oddshadow"></div>
       </div>
-            <div  class="thickness"
-            style="width: 12px; right: -3px;"></div>
-          <div  class="thickness_left" style="width: 12px; left: -2px;"></div>
+
+      <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" id="thickness" style="width: 12px; right: -3px;"></div> -->
+      <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" id="thickness_left" style="width: 12px; left: -2px;"></div> -->
+      <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div>
+      <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div>
     </div>
+  </div>
 
 
   <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
@@ -93,7 +94,7 @@ export default {
     this.$nextTick(() => {
       $("#magazine").turn({
         display: "double",
-        elevation: 50,
+        elevation: 0,
         // 动画持续时间
         duration: 1000,
         gradients: true,
@@ -177,11 +178,17 @@ body {
 }
 
 #magazine {
-  /* width: 1152px; */
-  width: 1352px;
+  width: 1152px;
+  /* width: 1352px; */
   height: 752px;
-  left: 500px;
-  top: 120px;
+  left: 400px;
+  top: 100px;
+}
+
+.flexrow{
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
 }
 
 .even-numbers {
@@ -219,20 +226,20 @@ body {
 
 
 
-#magazine.shadow {
+/* #magazine.shadow {
   -webkit-box-shadow: 0 4px 10px #666;
   -moz-box-shadow: 0 4px 10px #666;
   -ms-box-shadow: 0 4px 10px #666;
   -o-box-shadow: 0 4px 10px #666;
   box-shadow: 0 4px 10px #666;
-}
+} */
 
-#magazine .turn-page {
+/* #magazine .turn-page {
   background-color: #ccc;
   background-size: 100% 100%;
-}
+} */
 
-.bookmark {
+/* .bookmark {
   margin-left: 633px;
   font-size: 20px;
   writing-mode: tb-rl;
@@ -241,21 +248,21 @@ body {
   justify-content: center;
   text-align: center;
   padding-top: 47px;
-}
+} */
 
-.item:nth-child(2n) {
+/* .item:nth-child(2n) {
   background: #ccc;
   width: 45px;
   height: 150px;
-}
+} */
 
-.item {
+/* .item {
   width: 45px;
   height: 160px;
   background: red;
-}
+} */
 
-.item:nth-child(1) {
+/* .item:nth-child(1) {
   z-index: 4;
   text-shadow: 6px 6px 6px #999;
 }
@@ -273,7 +280,7 @@ body {
 .item:nth-child(4) {
   z-index: 1;
   text-shadow: 6px 6px 6px #333;
-}
+} */
 
 .shadow {
   transition: box-shadow .5s, -webkit-box-shadow .5s;
@@ -321,6 +328,7 @@ body {
   /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
   height: 100%;
+
   position: absolute;
   background-size: 100% 100%;
   z-index: 50;
