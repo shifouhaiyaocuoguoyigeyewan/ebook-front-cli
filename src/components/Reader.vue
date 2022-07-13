@@ -20,31 +20,31 @@
   </div> -->
 
 
-  <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down ">
-    <div  v-for="(item, index) in allPages" :key="`test_${index}`" class="flexrow ">
+    <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down">
+      <div v-for="(item, index) in allPages" :key="`test_${index}`" class="flexrow ">
 
-      <div  :class="`text${item.page}`">
-        <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
-          <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-            {{ item.page - 1 }}
-          </div>
-          <div v-else class="odd-number">{{ item.page - 1 }}
-          </div>
-        </footer>
-        <div class="evenshadow"></div>
-        <div class="oddshadow"></div>
+        <div :class="`text${item.page}`">
+          <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
+            <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
+              {{ item.page - 1 }}
+            </div>
+            <div v-else class="odd-number">{{ item.page - 1 }}
+            </div>
+          </footer>
+          <div class="evenshadow"></div>
+          <div class="oddshadow"></div>
+        </div>
+
+        <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" id="thickness" style="width: 12px; right: -3px;"></div> -->
+        <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" id="thickness_left" style="width: 12px; left: -2px;"></div> -->
+        <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div> -->
+        <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div> -->
       </div>
-
-      <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" id="thickness" style="width: 12px; right: -3px;"></div> -->
-      <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" id="thickness_left" style="width: 12px; left: -2px;"></div> -->
-      <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div>
-      <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div>
     </div>
-  </div>
 
 
   <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
-    <div style="color:aliceblue">移动端</div>
+    <div style="color:aliceblue">sm移动端</div>
   </div>
 
 </template>
@@ -185,7 +185,7 @@ body {
   top: 100px;
 }
 
-.flexrow{
+.flexrow {
   display: flex;
   flex-direction: row;
   overflow: hidden;
