@@ -1,28 +1,35 @@
 <template>
-  <!-- <div id="magazine" class="body animate__animated animate__zoomInRight hidden-sm-and-down"> 
-    <div v-for="(item, index) in allPages" :key="`page_${index}`">
 
-      <div class="shadow">
-        <div :class="`text${item.page}`">
-          <footer v-if="item.page - 1 !== 0 || item.page - 1 !== allPages.length - 1" class="current-page">
-            <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-              {{ item.page - 1 }}
-            </div>
-            <div v-else class="odd-number oddshadow ">{{ item.page - 1 }}
-            </div>
-          </footer>
-        </div>
-      </div>
-      <div v-if="item.page - 1 == 0 || item.page - 1 == allPages.length - 1" class="thickness"
-        style="width: 12px; right: -3px;"></div>
-      <div v-if="(item.page - 1) % 2 !== 0" class="thickness_left" style="width: 12px; left: -3px;"></div>
-    </div>
-  </div> -->
+  <!-- <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down"> -->
+  <!-- <div v-for="(item, index) in allPages" :key="`test_${index}`" class="flexrow "> -->
+  <!-- <div :class="`text${item.page}`"> -->
+  <!-- <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page "> -->
+  <!-- <div v-if="(item.page - 1) % 2 == 0" class="even-numbers "> -->
+  <!-- {{ item.page - 1 }} -->
+  <!-- </div> -->
+  <!-- <div v-else class="odd-number">{{ item.page - 1 }} -->
+  <!-- </div> -->
+  <!-- </footer> -->
+  <!-- <div class="evenshadow"></div> -->
+  <!-- <div class="oddshadow"></div> -->
+  <!-- </div> -->
+  <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div> -->
+  <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div> -->
+  <!-- </div> -->
+  <!-- </div> -->
 
 
-    <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down">
-      <div v-for="(item, index) in allPages" :key="`test_${index}`" class="flexrow ">
+  <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
+    <div style="color:aliceblue">sm移动端</div>
+  </div>
 
+  <!-- 放大缩小按钮 -->
+  <div class="zoom-icon zoom-icon-in"></div>
+  <!-- 阅读器整个视图 -->
+  <div class="flipbook-viewport animate__animated animate__zoomInRight hidden-sm-and-down">
+    <!-- 阅读器的页面渲染 -->
+    <div id="magazine">
+      <div v-for="(item, index) in allPages" :key="`test_${index}`">
         <div :class="`text${item.page}`">
           <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
@@ -34,17 +41,16 @@
           <div class="evenshadow"></div>
           <div class="oddshadow"></div>
         </div>
-
-        <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" id="thickness" style="width: 12px; right: -3px;"></div> -->
-        <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" id="thickness_left" style="width: 12px; left: -2px;"></div> -->
-        <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div> -->
-        <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div> -->
       </div>
     </div>
+    <!-- v-if="item.page == 1 || item.page % 2 != 0"  style="width: 12px; right: 570px;" -->
+    <!-- 左边页面突起效果视图 -->
+    <div class="thickness"></div> 
+    <!-- 右边页面效果视图 -->
+    <!-- v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" style="width: 12px; left: -2px;" -->
+    <div class="thickness_left"></div>
 
-
-  <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
-    <div style="color:aliceblue">sm移动端</div>
+    <!-- <div style="margin: 20px;z-index: 50;color: aliceblue;">测试</div> -->
   </div>
 
 </template>
@@ -89,30 +95,46 @@ export default {
   },
   mounted() {
     let self = this;
+    // 设置阅读器位置
     $("#magazine").turn("center");
+    // 设置开始页数
     $("#magazine").turn("page");
+    // 设置居中
+    // $("#magazine").turn({
+    //   autoCenter: true
+    // });
+    // 点击下一页函数
     this.$nextTick(() => {
       $("#magazine").turn({
+        // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
         display: "double",
+        // 设置过度期间页面的高程
         elevation: 0,
         // 动画持续时间
         duration: 1000,
+        // 在过渡期间显示渐变和阴影。
         gradients: true,
+        // 设置居中
         autoCenter: true,
+        // 加速
         acceleration: true,
+        // 设置’初始化’页面数量
         page: self.page,
+        // 页面宽度
         width: 1152,
+        // 何时事件
         when: {
-          turned: function () {
-            //当前页
-            console.log("Current view: ", $(this).turn("view"));
-            //总页数
-            console.log(
-              "#magazine has " + $("#magazine").turn("pages") + " pages"
-            );
-            // $("#magazine").turn("hasPage", 10);
-            // $("#magazine").turn("pages", 5);
-          }
+          
+          // turned: function () {
+          //   //当前页
+          //   console.log("Current view: ", $(this).turn("view"));
+          //   //总页数
+          //   console.log(
+          //     "#magazine has " + $("#magazine").turn("pages") + " pages"
+          //   );
+          //   // $("#magazine").turn("hasPage", 10);
+          //   // $("#magazine").turn("pages", 5);
+          // }
         }
       });
     });
@@ -125,11 +147,94 @@ export default {
 body {
   background: white;
   z-index: 50;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
+
+.flipbook-viewport {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flipbook-viewport .container {
+  position: absolute;
+  min-height: auto;
+  min-width: auto;
+  box-sizing: border-box !important;
+  /* top:50%;
+	left:50%;
+	margin:auto; */
+  /* margin-top: 200px;
+	margin-left: 500px; */
+}
+
+.flipbook-viewport .flipbook {
+  width: 922px;
+  height: 600px;
+  /* left:-461px;
+	top:-300px; */
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+  transform: translate3d(0, 0, 0) !important;
+  box-sizing: border-box !important;
+  min-height: auto !important;
+  border: 1px solid transparent !important;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.flipbook-viewport .page {
+  width: 461px;
+  height: 600px;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.flipbook .page {
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* .flipbook-viewport .page img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0;
+} */
+
+/* .flipbook-viewport .shadow {
+  -webkit-transition: -webkit-box-shadow 0.5s;
+  -moz-transition: -moz-box-shadow 0.5s;
+  -o-transition: -webkit-box-shadow 0.5s;
+  -ms-transition: -ms-box-shadow 0.5s;
+
+  -webkit-box-shadow: 0 0 20px #ccc;
+  -moz-box-shadow: 0 0 20px #ccc;
+  -o-box-shadow: 0 0 20px #ccc;
+  -ms-box-shadow: 0 0 20px #ccc;
+  box-shadow: 0 0 20px #ccc;
+} */
+
 
 .text1 {
   background: url("@/assets/images/2.jpg") no-repeat;
   background-size: 100% 100%;
+  display: flex;
   width: 100%;
   height: 752px;
 }
@@ -181,14 +286,15 @@ body {
   width: 1152px;
   /* width: 1352px; */
   height: 752px;
-  left: 400px;
-  top: 100px;
+  margin: 500px;
 }
 
 .flexrow {
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .even-numbers {
@@ -327,7 +433,7 @@ body {
   -webkit-mask-box-image-source: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNy4zMjgiIGhlaWdodD0iMzE3LjQ2bW0iIHZpZXdCb3g9IjAgMCAzNS4zMSAxMTM0LjkyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBiYXNlUHJvZmlsZT0iZnVsbCIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iI2ZjZmNmYyIgZD0iTTAgMGwzNS4zMSA2LjgxVjExMjguM0wwIDExMzQuOTJ6Ii8+PC9zdmc+);
   /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
-  height: 100%;
+  height: 752px;
 
   position: absolute;
   background-size: 100% 100%;
