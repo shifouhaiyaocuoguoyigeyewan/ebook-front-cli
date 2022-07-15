@@ -24,15 +24,6 @@ export default {
   min-height: 100vh;
 }
 
-el-col {
-  border-radius: 4px;
-}
-
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-
 .reader {
   min-height: 100vh;
 }

@@ -1,22 +1,22 @@
 <template>
 
-  <!-- <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down"> -->
-  <!-- <div v-for="(item, index) in allPages" :key="`test_${index}`" class="flexrow "> -->
-  <!-- <div :class="`text${item.page}`"> -->
-  <!-- <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page "> -->
-  <!-- <div v-if="(item.page - 1) % 2 == 0" class="even-numbers "> -->
-  <!-- {{ item.page - 1 }} -->
-  <!-- </div> -->
-  <!-- <div v-else class="odd-number">{{ item.page - 1 }} -->
-  <!-- </div> -->
-  <!-- </footer> -->
-  <!-- <div class="evenshadow"></div> -->
-  <!-- <div class="oddshadow"></div> -->
-  <!-- </div> -->
-  <!-- <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div> -->
-  <!-- <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div> -->
-  <!-- </div> -->
-  <!-- </div> -->
+  <!-- <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down" style="z-index: 1;">
+  <div v-for="(item, index) in allPages" :key="`test_${index}`">
+  <div :class="`text${item.page}`">
+  <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
+  <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
+  {{ item.page - 1 }}
+  </div>
+  <div v-else class="odd-number">{{ item.page - 1 }}
+  </div>
+  </footer>
+  <div class="evenshadow"></div>
+  <div class="oddshadow"></div>
+  </div>
+  <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div>
+  <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div>
+  </div>
+  </div> -->
 
 
   <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
@@ -44,9 +44,9 @@
       </div>
     </div>
     <!-- v-if="item.page == 1 || item.page % 2 != 0"  style="width: 12px; right: 570px;" -->
-    <!-- 左边页面突起效果视图 -->
+    <!-- 右边页面突起效果视图 -->
     <div class="thickness"></div> 
-    <!-- 右边页面效果视图 -->
+    <!-- 左边页面效果视图 -->
     <!-- v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" style="width: 12px; left: -2px;" -->
     <div class="thickness_left"></div>
 
@@ -60,7 +60,7 @@ import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
 
 export default {
-  name: "FenMian2",
+  name: "Pages",
   data() {
     return {
       value: "",
@@ -99,10 +99,36 @@ export default {
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
-    // 设置居中
-    // $("#magazine").turn({
-    //   autoCenter: true
+
+    // 设置第一页书本厚度
+    // $("#magazine").bind("first", function(event){
+    //   console.log("what is event?",event);
+    //   $(".thickness").css({
+    //     "width":"12px" ,
+    //     "right":"516px",
+    //     "z-index":"60"});
     // });
+
+    //jquery初始化函数，相当于js的onload函数
+    $(function(){
+      console.log("jq执行函数");
+      $(".thickness").css({
+        "width":"12px" ,
+        "right":"516px",
+        "z-index":"60"});
+    });
+
+    $("#magazine").bind("start",function(event,pageobject,corner){
+    console.log("what is event?",pageobject);
+    if(pageobject.page == "1"){
+      console.log("true")
+      $(".thickness").css({
+        "width":"12px" ,
+        "right":"516px",
+        "z-index":"60"});
+    }
+    })
+
     // 点击下一页函数
     this.$nextTick(() => {
       $("#magazine").turn({
@@ -124,7 +150,6 @@ export default {
         width: 1152,
         // 何时事件
         when: {
-          
           // turned: function () {
           //   //当前页
           //   console.log("Current view: ", $(this).turn("view"));
@@ -135,6 +160,11 @@ export default {
           //   // $("#magazine").turn("hasPage", 10);
           //   // $("#magazine").turn("pages", 5);
           // }
+
+          turned: function (){
+            // $(".thickness").css({width:12 ,right:528});
+
+          }
         }
       });
     });
@@ -156,7 +186,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
-  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -234,7 +263,6 @@ body {
 .text1 {
   background: url("@/assets/images/2.jpg") no-repeat;
   background-size: 100% 100%;
-  display: flex;
   width: 100%;
   height: 752px;
 }
@@ -284,9 +312,10 @@ body {
 
 #magazine {
   width: 1152px;
-  /* width: 1352px; */
   height: 752px;
-  margin: 500px;
+  /* margin: 500px; */
+  /* left: 500px; */
+  /* top: 120px; */
 }
 
 .flexrow {
@@ -435,7 +464,7 @@ body {
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
   height: 752px;
 
-  position: absolute;
+  /* position: absolute; */
   background-size: 100% 100%;
   z-index: 50;
   /* -webkit-transition: width 500ms, right 500ms; */
