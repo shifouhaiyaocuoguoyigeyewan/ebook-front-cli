@@ -38,6 +38,7 @@
             <div v-else class="odd-number">{{ item.page - 1 }}
             </div>
           </footer>
+          <div class="pageFirstShadow"></div>
           <div class="evenshadow"></div>
           <div class="oddshadow"></div>
         </div>
@@ -45,7 +46,8 @@
     </div>
     <!-- v-if="item.page == 1 || item.page % 2 != 0"  style="width: 12px; right: 570px;" -->
     <!-- 右边页面突起效果视图 -->
-    <div class="thickness"></div> 
+    <div class="thickness"></div>
+
     <!-- 左边页面效果视图 -->
     <!-- v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" style="width: 12px; left: -2px;" -->
     <div class="thickness_left"></div>
@@ -95,42 +97,61 @@ export default {
   },
   mounted() {
     let self = this;
+
+    //jquery初始化函数，相当于js的onload函数
+    $(function () {
+      console.log("jq的ready执行函数");
+      $(".thickness").css({
+        "width": "12px",
+        "right": "516px",
+        "z-index": "60"
+      });
+    });
+
+     $("#magazine").bind("turning", function (event, page, view) {
+        console.log("turned", page);
+        console.log(self.allPages.length);
+        //page等于最后一页时，厚度效果消失
+        if (page == self.allPages.length) {
+          $(".thickness").css("visibility", "hidden");
+        } else{
+          $(".thickness").css("visibility", "visible");
+        }
+      });
+
     // 设置阅读器位置
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
 
-    // 设置第一页书本厚度
-    // $("#magazine").bind("first", function(event){
-    //   console.log("what is event?",event);
+
+    // $("#magazine").bind("start",function(event,pageobject,corner){
+    // console.log("what is event?",pageobject);
+    // if(pageobject.page == "1"){
+    //   console.log("true")
     //   $(".thickness").css({
     //     "width":"12px" ,
     //     "right":"516px",
     //     "z-index":"60"});
-    // });
+    // }
+    // })
 
-    //jquery初始化函数，相当于js的onload函数
-    $(function(){
-      console.log("jq执行函数");
-      $(".thickness").css({
-        "width":"12px" ,
-        "right":"516px",
-        "z-index":"60"});
-    });
-
-    $("#magazine").bind("start",function(event,pageobject,corner){
-    console.log("what is event?",pageobject);
-    if(pageobject.page == "1"){
-      console.log("true")
-      $(".thickness").css({
-        "width":"12px" ,
-        "right":"516px",
-        "z-index":"60"});
-    }
-    })
 
     // 点击下一页函数
     this.$nextTick(() => {
+
+      //最后一页厚度效果消失
+      // $("#magazine").bind("last", function (event) {
+      //   console.log("You are at the end of the flipbook");
+      //  $(".thickness").css("visibility", "hidden");
+      // })
+
+      //不是最后一页厚度效果出现
+      //  $("#magazine").bind("first", function (event) {
+      //   console.log("first page");
+      //  $(".thickness").css("visibility","visible");
+      // })
+
       $("#magazine").turn({
         // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
         display: "double",
@@ -148,6 +169,7 @@ export default {
         page: self.page,
         // 页面宽度
         width: 1152,
+         height: 852,
         // 何时事件
         when: {
           // turned: function () {
@@ -160,11 +182,6 @@ export default {
           //   // $("#magazine").turn("hasPage", 10);
           //   // $("#magazine").turn("pages", 5);
           // }
-
-          turned: function (){
-            // $(".thickness").css({width:12 ,right:528});
-
-          }
         }
       });
     });
@@ -261,42 +278,42 @@ body {
 
 
 .text1 {
-  background: url("@/assets/images/2.jpg") no-repeat;
+  background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
   height: 752px;
 }
 
 .text2 {
-  background: url("@/assets/images/3.jpg") no-repeat;
+  background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
   height: 752px;
 }
 
 .text3 {
-  background: url("@/assets/images/2.jpg") no-repeat;
+  background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
   height: 752px;
 }
 
 .text4 {
-  background: url("@/assets/images/3.jpg") no-repeat;
+  background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
   height: 752px;
 }
 
 .text5 {
-  background: url("@/assets/images/2.jpg") no-repeat;
+  background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
   height: 752px;
 }
 
 .text6 {
-  background: url("@/assets/images/3.jpg") no-repeat;
+  background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
   height: 752px;
@@ -462,7 +479,7 @@ body {
   -webkit-mask-box-image-source: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNy4zMjgiIGhlaWdodD0iMzE3LjQ2bW0iIHZpZXdCb3g9IjAgMCAzNS4zMSAxMTM0LjkyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBiYXNlUHJvZmlsZT0iZnVsbCIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iI2ZjZmNmYyIgZD0iTTAgMGwzNS4zMSA2LjgxVjExMjguM0wwIDExMzQuOTJ6Ii8+PC9zdmc+);
   /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
-  height: 752px;
+  height: 852px;
 
   /* position: absolute; */
   background-size: 100% 100%;
@@ -476,7 +493,7 @@ body {
   -webkit-mask-box-image-source: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNy4zMjgiIGhlaWdodD0iMzE3LjQ2bW0iIHZpZXdCb3g9IjAgMCAzOS44MiAxMjgwLjA3IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBiYXNlUHJvZmlsZT0iZnVsbCIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iI2ZjZmNmYyIgZD0iTTM5LjgyIDBMMCA3LjY4djEyNjQuOTNsMzkuODIgNy40NnoiLz48L3N2Zz4=);
   background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px);
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
-  height: 100%;
+  height: 852px;
   position: absolute;
   background-size: 100% 100%;
   z-index: 50;

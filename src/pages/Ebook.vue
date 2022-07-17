@@ -1,22 +1,24 @@
 <template>
   <div class="background">
-    <Reader class="reader"></Reader>
+    <Reader></Reader>
     
   </div>
 </template>
 
 <script>
 import Reader from "../components/Reader.vue";
+import Flipbook from "../components/Flipbook.vue";
 import 'element-plus/theme-chalk/display.css';
 export default {
   name: 'Ebook',
   components: {
-    Reader
+    Reader,
+    Flipbook
   }
 }
 </script>
 
-<style scoped>
+<style >
 .background {
   background: url("../assets/images/background.jpg") no-repeat;
   background-size: cover;
