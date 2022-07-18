@@ -38,17 +38,19 @@
             <div v-else class="odd-number">{{ item.page - 1 }}
             </div>
           </footer>
-          <div class="pageFirstShadow"></div>
-          <div class="evenshadow"></div>
-          <div class="oddshadow"></div>
+          <div v-if="item.page == 1" class="firstShadow">
+            <div class="pageFirstShadow"></div>
+          </div>
+          <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
+          <div v-if="item.page % 2 != 0 && item.page != 1 " class="oddshadow"></div>
         </div>
       </div>
     </div>
     <!-- v-if="item.page == 1 || item.page % 2 != 0"  style="width: 12px; right: 570px;" -->
-    <!-- 右边页面突起效果视图 -->
+    <!-- 右边页面厚度效果视图 -->
     <div class="thickness"></div>
 
-    <!-- 左边页面效果视图 -->
+    <!-- 左边页面厚度效果视图 -->
     <!-- v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" style="width: 12px; left: -2px;" -->
     <div class="thickness_left"></div>
 
@@ -95,49 +97,55 @@ export default {
       ]
     };
   },
+  watch: {
+    // page(newPage,oldPage){
+    //   this.page = newPage;
+    //   console.log("page",this.page);
+    // }
+  },
   mounted() {
     let self = this;
 
     //jquery初始化函数，相当于js的onload函数
     $(function () {
-      console.log("jq的ready执行函数");
-      $(".thickness").css({
-        "width": "12px",
-        "right": "516px",
-        "z-index": "60"
-      });
+       $(".thickness").css("width",self.allPages.length  + "px" );
+      //禁止鼠标滚轴+ctrl
+      document.addEventListener('keydown', function (event) {
+        if ((event.ctrlKey === true || event.metaKey === true)
+          && (event.which === 61 || event.which === 107
+            || event.which === 173 || event.which === 109
+            || event.which === 187 || event.which === 189)) {
+          event.preventDefault();
+        }
+      }, false);
+      // Chrome IE 360
+      window.addEventListener('mousewheel', function (event) {
+        if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+        }
+      }, { passive: false });
+
+      //firefox
+      window.addEventListener('DOMMouseScroll', function (event) {
+        if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+        }
+      }, { passive: false });
     });
 
-     $("#magazine").bind("turning", function (event, page, view) {
-        console.log("turned", page);
-        console.log(self.allPages.length);
-        //page等于最后一页时，厚度效果消失
-        if (page == self.allPages.length) {
-          $(".thickness").css("visibility", "hidden");
-        } else{
-          $(".thickness").css("visibility", "visible");
-        }
-      });
+    // $("#magazine").bind("turning", function (event, page, view) {
+    //   console.log("page", page);
+    //   $("#thickness").css({
+    //     "width": "${page}"
+    //   })
+    // });
 
     // 设置阅读器位置
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
 
-
-    // $("#magazine").bind("start",function(event,pageobject,corner){
-    // console.log("what is event?",pageobject);
-    // if(pageobject.page == "1"){
-    //   console.log("true")
-    //   $(".thickness").css({
-    //     "width":"12px" ,
-    //     "right":"516px",
-    //     "z-index":"60"});
-    // }
-    // })
-
-
-    // 点击下一页函数
+    // vue开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新
     this.$nextTick(() => {
 
       //最后一页厚度效果消失
@@ -149,8 +157,22 @@ export default {
       //不是最后一页厚度效果出现
       //  $("#magazine").bind("first", function (event) {
       //   console.log("first page");
-      //  $(".thickness").css("visibility","visible");
+      //  $(".thickness").css({
+      //   "width":"12px" ,
+      //   "right":"516px",
+      //   "z-index":"60"
+      //  });
       // })
+
+      $("#magazine").bind("start",function(event,pages,corner){
+      console.log("pages",pages.page)
+      console.log("pages",pages.page)
+      if(pages.page == self.allPages.length){
+        $(".thickness").css("visibility", "hidden" );
+      }else{
+        $(".thickness").css("width",(self.allPages.length - pages.page-1) + "px" );
+      }
+    })
 
       $("#magazine").turn({
         // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
@@ -158,7 +180,7 @@ export default {
         // 设置过度期间页面的高程
         elevation: 0,
         // 动画持续时间
-        duration: 1000,
+        duration: 200,
         // 在过渡期间显示渐变和阴影。
         gradients: true,
         // 设置居中
@@ -168,8 +190,8 @@ export default {
         // 设置’初始化’页面数量
         page: self.page,
         // 页面宽度
-        width: 1152,
-         height: 852,
+        width: 1252,
+        height: 952,
         // 何时事件
         when: {
           // turned: function () {
@@ -207,116 +229,46 @@ body {
   justify-content: center;
 }
 
-.flipbook-viewport .container {
-  position: absolute;
-  min-height: auto;
-  min-width: auto;
-  box-sizing: border-box !important;
-  /* top:50%;
-	left:50%;
-	margin:auto; */
-  /* margin-top: 200px;
-	margin-left: 500px; */
-}
-
-.flipbook-viewport .flipbook {
-  width: 922px;
-  height: 600px;
-  /* left:-461px;
-	top:-300px; */
-  -webkit-backface-visibility: hidden !important;
-  backface-visibility: hidden !important;
-  transform: translate3d(0, 0, 0) !important;
-  box-sizing: border-box !important;
-  min-height: auto !important;
-  border: 1px solid transparent !important;
-  box-sizing: border-box;
-}
-
-.page-wrapper {
-  transform: translate3d(0, 0, 0) !important;
-}
-
-.flipbook-viewport .page {
-  width: 461px;
-  height: 600px;
-  background-color: white;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
-.flipbook .page {
-  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  -ms-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  -o-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-
-/* .flipbook-viewport .page img {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin: 0;
-} */
-
-/* .flipbook-viewport .shadow {
-  -webkit-transition: -webkit-box-shadow 0.5s;
-  -moz-transition: -moz-box-shadow 0.5s;
-  -o-transition: -webkit-box-shadow 0.5s;
-  -ms-transition: -ms-box-shadow 0.5s;
-
-  -webkit-box-shadow: 0 0 20px #ccc;
-  -moz-box-shadow: 0 0 20px #ccc;
-  -o-box-shadow: 0 0 20px #ccc;
-  -ms-box-shadow: 0 0 20px #ccc;
-  box-shadow: 0 0 20px #ccc;
-} */
-
-
 .text1 {
   background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 752px;
+  height: 952px;
 }
 
 .text2 {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 752px;
+  height: 952px;
 }
 
 .text3 {
   background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 752px;
+  height: 952px;
 }
 
 .text4 {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 752px;
+  height: 952px;
 }
 
 .text5 {
   background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 752px;
+  height: 952px;
 }
 
 .text6 {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 752px;
+  height: 952px;
 }
 
 .current-page {
@@ -378,43 +330,32 @@ body {
 
 
 
-/* #magazine.shadow {
+#magazine.shadow {
   -webkit-box-shadow: 0 4px 10px #666;
   -moz-box-shadow: 0 4px 10px #666;
   -ms-box-shadow: 0 4px 10px #666;
   -o-box-shadow: 0 4px 10px #666;
   box-shadow: 0 4px 10px #666;
-} */
+}
 
-/* #magazine .turn-page {
+#magazine .turn-page {
   background-color: #ccc;
   background-size: 100% 100%;
-} */
+}
 
-/* .bookmark {
-  margin-left: 633px;
-  font-size: 20px;
-  writing-mode: tb-rl;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-top: 47px;
-} */
-
-/* .item:nth-child(2n) {
+.item:nth-child(2n) {
   background: #ccc;
   width: 45px;
   height: 150px;
-} */
+}
 
-/* .item {
+.item {
   width: 45px;
   height: 160px;
   background: red;
-} */
+}
 
-/* .item:nth-child(1) {
+.item:nth-child(1) {
   z-index: 4;
   text-shadow: 6px 6px 6px #999;
 }
@@ -432,7 +373,7 @@ body {
 .item:nth-child(4) {
   z-index: 1;
   text-shadow: 6px 6px 6px #333;
-} */
+}
 
 .shadow {
   transition: box-shadow .5s, -webkit-box-shadow .5s;
@@ -444,6 +385,22 @@ body {
   z-index: 2;
   width: 1015px;
   height: auto;
+}
+
+.firstShadow{
+    left: 0;
+    top: 0;
+    width: 2%;
+    height: 100%;
+    background-image: -webkit-gradient(linear,left top,right top,from(rgba(20,20,20,0.5)),to(rgba(240,240,200,0)));
+}
+
+.pageFirstShadow{
+  background: url("@/assets/images/zsj_dsd.png") no-repeat left;
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+    left: -1px;
 }
 
 .evenshadow {
@@ -477,28 +434,25 @@ body {
 
 .thickness {
   -webkit-mask-box-image-source: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNy4zMjgiIGhlaWdodD0iMzE3LjQ2bW0iIHZpZXdCb3g9IjAgMCAzNS4zMSAxMTM0LjkyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBiYXNlUHJvZmlsZT0iZnVsbCIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iI2ZjZmNmYyIgZD0iTTAgMGwzNS4zMSA2LjgxVjExMjguM0wwIDExMzQuOTJ6Ii8+PC9zdmc+);
-  /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
-  height: 852px;
-
-  /* position: absolute; */
   background-size: 100% 100%;
+  transition: width 500ms, right 500ms;
+  height: 952px;
+  right : 516px;
   z-index: 50;
   /* -webkit-transition: width 500ms, right 500ms; */
   /* -o-transition: width 500ms, right 500ms; */
-  transition: width 500ms, right 500ms;
+  /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 }
 
 .thickness_left {
   -webkit-mask-box-image-source: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNy4zMjgiIGhlaWdodD0iMzE3LjQ2bW0iIHZpZXdCb3g9IjAgMCAzOS44MiAxMjgwLjA3IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBiYXNlUHJvZmlsZT0iZnVsbCIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iI2ZjZmNmYyIgZD0iTTM5LjgyIDBMMCA3LjY4djEyNjQuOTNsMzkuODIgNy40NnoiLz48L3N2Zz4=);
-  background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px);
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
-  height: 852px;
-  position: absolute;
   background-size: 100% 100%;
   z-index: 50;
-  -webkit-transition: width 500ms, left 500ms;
-  -o-transition: width 500ms, left 500ms;
   transition: width 500ms, left 500ms;
+  /* -webkit-transition: width 500ms, left 500ms; */
+  /* -o-transition: width 500ms, left 500ms; */
+  /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 }
 </style>
