@@ -11,7 +11,7 @@
     <!-- 阅读器的页面渲染 -->
     <div id="magazine">
       <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div id="text" :class="`text${item.page}`">
+        <div id="text" :class="`text${item.page}`" style="width: 100%;height:952px">
           <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
               {{ item.page - 1 }}
@@ -120,7 +120,7 @@ export default {
     $("#magazine").click(function (e) {
       console.log("缩小书籍");
       e.preventDefault();
-      $("#magazine").turn("zoom",1.5);
+      // $("#magazine").turn("zoom",1.5);
     });
 
     // when: {
@@ -204,43 +204,39 @@ body {
 .text1 {
   background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
-  width: 100%;
-  height: 952px;
+
+
 }
 
 .text2 {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
-  width: 100%;
-  height: 952px;
+
+
 }
 
 .text3 {
   background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
-  width: 100%;
-  height: 952px;
+
 }
 
 .text4 {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
-  width: 100%;
-  height: 952px;
+
 }
 
 .text5 {
   background: url("@/assets/images/f1.png") no-repeat;
   background-size: 100% 100%;
-  width: 100%;
-  height: 952px;
+
 }
 
 .text6 {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
-  width: 100%;
-  height: 952px;
+
 }
 
 .current-page {
