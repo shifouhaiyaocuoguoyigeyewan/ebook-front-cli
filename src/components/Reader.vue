@@ -1,24 +1,5 @@
 <template>
 
-  <!-- <div id="magazine" class="animate__animated animate__zoomInRight hidden-sm-and-down" style="z-index: 1;">
-  <div v-for="(item, index) in allPages" :key="`test_${index}`">
-  <div :class="`text${item.page}`">
-  <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
-  <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-  {{ item.page - 1 }}
-  </div>
-  <div v-else class="odd-number">{{ item.page - 1 }}
-  </div>
-  </footer>
-  <div class="evenshadow"></div>
-  <div class="oddshadow"></div>
-  </div>
-  <div v-if="item.page  == 1 || item.page % 2 != 0" class="thickness" style="width: 12px; right: -2px;"></div>
-  <div v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" class="thickness_left" style="width: 12px; left: -2px;"></div>
-  </div>
-  </div> -->
-
-
   <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
     <div style="color:aliceblue">sm移动端</div>
   </div>
@@ -30,7 +11,7 @@
     <!-- 阅读器的页面渲染 -->
     <div id="magazine">
       <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div :class="`text${item.page}`">
+        <div id="text" :class="`text${item.page}`">
           <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
               {{ item.page - 1 }}
@@ -42,7 +23,7 @@
             <div class="pageFirstShadow"></div>
           </div>
           <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
-          <div v-if="item.page % 2 != 0 && item.page != 1 " class="oddshadow"></div>
+          <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
         </div>
       </div>
     </div>
@@ -98,17 +79,14 @@ export default {
     };
   },
   watch: {
-    // page(newPage,oldPage){
-    //   this.page = newPage;
-    //   console.log("page",this.page);
-    // }
+
   },
   mounted() {
     let self = this;
 
     //jquery初始化函数，相当于js的onload函数
     $(function () {
-       $(".thickness").css("width",self.allPages.length  + "px" );
+      $(".thickness").css("width", self.allPages.length + "px");
       //禁止鼠标滚轴+ctrl
       document.addEventListener('keydown', function (event) {
         if ((event.ctrlKey === true || event.metaKey === true)
@@ -133,46 +111,38 @@ export default {
       }, { passive: false });
     });
 
-    // $("#magazine").bind("turning", function (event, page, view) {
-    //   console.log("page", page);
-    //   $("#thickness").css({
-    //     "width": "${page}"
-    //   })
-    // });
-
     // 设置阅读器位置
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
 
+    // 缩小书籍
+    $("#magazine").click(function (e) {
+      console.log("缩小书籍");
+      e.preventDefault();
+      $("#magazine").turn("zoom",1.5);
+    });
+
+    // when: {
+    //       zooming: function (event, newFactor, current) {
+    //         console.log(newFactor, current);
+    //       }
+    //       $('.flipbook').bind('zooming', function (event, page, view) {
+    //         console.log('zooming');
+    //       })
+    //     }
+
     // vue开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新
     this.$nextTick(() => {
 
-      //最后一页厚度效果消失
-      // $("#magazine").bind("last", function (event) {
-      //   console.log("You are at the end of the flipbook");
-      //  $(".thickness").css("visibility", "hidden");
-      // })
-
-      //不是最后一页厚度效果出现
-      //  $("#magazine").bind("first", function (event) {
-      //   console.log("first page");
-      //  $(".thickness").css({
-      //   "width":"12px" ,
-      //   "right":"516px",
-      //   "z-index":"60"
-      //  });
-      // })
-
-      $("#magazine").bind("start",function(event,pages,corner){
-      console.log("pages",pages.page)
-      console.log("pages",pages.page)
-      if(pages.page == self.allPages.length){
-        $(".thickness").css("visibility", "hidden" );
-      }else{
-        $(".thickness").css("width",(self.allPages.length - pages.page-1) + "px" );
-      }
-    })
+      $("#magazine").bind("start", function (event, pages, corner) {
+        // console.log("pages", pages.page)
+        if (pages.page == self.allPages.length) {
+          $(".thickness").css("visibility", "hidden");
+        } else {
+          $(".thickness").css("width", (self.allPages.length - pages.page) + "px");
+        }
+      });
 
       $("#magazine").turn({
         // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
@@ -204,8 +174,10 @@ export default {
           //   // $("#magazine").turn("hasPage", 10);
           //   // $("#magazine").turn("pages", 5);
           // }
+
         }
       });
+
     });
   },
   methods: {},
@@ -254,7 +226,7 @@ body {
   background: url("@/assets/images/f2.png") no-repeat;
   background-size: 100% 100%;
   width: 100%;
-  height: 952px;
+
 }
 
 .text5 {
@@ -285,14 +257,6 @@ body {
   /* margin: 500px; */
   /* left: 500px; */
   /* top: 120px; */
-}
-
-.flexrow {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
 }
 
 .even-numbers {
@@ -329,78 +293,20 @@ body {
 }
 
 
-
-#magazine.shadow {
-  -webkit-box-shadow: 0 4px 10px #666;
-  -moz-box-shadow: 0 4px 10px #666;
-  -ms-box-shadow: 0 4px 10px #666;
-  -o-box-shadow: 0 4px 10px #666;
-  box-shadow: 0 4px 10px #666;
+.firstShadow {
+  left: 0;
+  top: 0;
+  width: 2%;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(20, 20, 20, 0.5)), to(rgba(240, 240, 200, 0)));
 }
 
-#magazine .turn-page {
-  background-color: #ccc;
-  background-size: 100% 100%;
-}
-
-.item:nth-child(2n) {
-  background: #ccc;
-  width: 45px;
-  height: 150px;
-}
-
-.item {
-  width: 45px;
-  height: 160px;
-  background: red;
-}
-
-.item:nth-child(1) {
-  z-index: 4;
-  text-shadow: 6px 6px 6px #999;
-}
-
-.item:nth-child(2) {
-  z-index: 3;
-  text-shadow: 6px 6px 6px #333;
-}
-
-.item:nth-child(3) {
-  z-index: 2;
-  text-shadow: 6px 6px 6px #333;
-}
-
-.item:nth-child(4) {
-  z-index: 1;
-  text-shadow: 6px 6px 6px #333;
-}
-
-.shadow {
-  transition: box-shadow .5s, -webkit-box-shadow .5s;
-  box-shadow: 0 0 10px rgb(0 0 0 / 20%);
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  overflow: hidden;
-  z-index: 2;
-  width: 1015px;
-  height: auto;
-}
-
-.firstShadow{
-    left: 0;
-    top: 0;
-    width: 2%;
-    height: 100%;
-    background-image: -webkit-gradient(linear,left top,right top,from(rgba(20,20,20,0.5)),to(rgba(240,240,200,0)));
-}
-
-.pageFirstShadow{
+.pageFirstShadow {
   background: url("@/assets/images/zsj_dsd.png") no-repeat left;
-    background-size: 100% 100%;
-    height: 100%;
-    width: 100%;
-    left: -1px;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+  left: -1px;
 }
 
 .evenshadow {
@@ -438,12 +344,13 @@ body {
   background-size: 100% 100%;
   transition: width 500ms, right 500ms;
   height: 952px;
-  right : 516px;
+  right: 516px;
   z-index: 50;
-  /* -webkit-transition: width 500ms, right 500ms; */
-  /* -o-transition: width 500ms, right 500ms; */
-  /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 }
+
+/* -webkit-transition: width 500ms, right 500ms; */
+/* -o-transition: width 500ms, right 500ms; */
+/* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 
 .thickness_left {
   -webkit-mask-box-image-source: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNy4zMjgiIGhlaWdodD0iMzE3LjQ2bW0iIHZpZXdCb3g9IjAgMCAzOS44MiAxMjgwLjA3IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBiYXNlUHJvZmlsZT0iZnVsbCIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iI2ZjZmNmYyIgZD0iTTM5LjgyIDBMMCA3LjY4djEyNjQuOTNsMzkuODIgNy40NnoiLz48L3N2Zz4=);
@@ -451,8 +358,9 @@ body {
   background-size: 100% 100%;
   z-index: 50;
   transition: width 500ms, left 500ms;
-  /* -webkit-transition: width 500ms, left 500ms; */
-  /* -o-transition: width 500ms, left 500ms; */
-  /* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 }
+
+/* -webkit-transition: width 500ms, left 500ms; */
+/* -o-transition: width 500ms, left 500ms; */
+/* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 </style>
