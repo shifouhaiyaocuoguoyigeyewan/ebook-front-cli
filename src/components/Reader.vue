@@ -76,10 +76,11 @@ export default {
     $(function () {
       //禁止鼠标滚轴+ctrl
       document.addEventListener('keydown', function (event) {
-        if ((event.ctrlKey === true || event.metaKey === true)
-          && (event.which === 61 || event.which === 107
-            || event.which === 173 || event.which === 109
-            || event.which === 187 || event.which === 189)) {
+        //  if ((event.ctrlKey === true || event.metaKey === true)
+        //   && (event.which === 61 || event.which === 107
+        //     || event.which === 173 || event.which === 109
+        //     || event.which === 187 || event.which === 189)) {
+        if (event.ctrlKey === true || event.metaKey === true) {
           event.preventDefault();
         }
       }, false);
