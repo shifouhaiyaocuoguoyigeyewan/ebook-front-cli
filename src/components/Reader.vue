@@ -11,7 +11,8 @@
     <!-- 阅读器的页面渲染 -->
     <div id="magazine">
       <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div id="text" :class="`text${item.page}`" style="width: 100%;height:952px">
+        <div id="text"
+          :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
           <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
               {{ item.page - 1 }}
@@ -29,13 +30,12 @@
     </div>
     <!-- v-if="item.page == 1 || item.page % 2 != 0"  style="width: 12px; right: 570px;" -->
     <!-- 右边页面厚度效果视图 -->
-    <div class="thickness"></div>
+    <div class="thickness" :style="{ width: allPages.length / 2 + 'px', height: '952px' }"></div>
 
     <!-- 左边页面厚度效果视图 -->
     <!-- v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" style="width: 12px; left: -2px;" -->
     <div class="thickness_left"></div>
 
-    <!-- <div style="margin: 20px;z-index: 50;color: aliceblue;">测试</div> -->
   </div>
 
 </template>
@@ -47,35 +47,24 @@ import 'element-plus/theme-chalk/display.css';
 export default {
   name: "Pages",
   data() {
+    let a  = require("@/assets/images/f1.png"),b=require("@/assets/images/f2.png"),
+    allPages = [];
+    for (let i = 0; i < 50; i+=2) {
+      allPages.push({
+        url: a,
+        page: i + 1
+      });
+      allPages.push({
+        url: b,
+        page: i + 2
+      });
+    }
     return {
       value: "",
       page: 1,
-      allPages: [
-        {
-          page: 1,
-          name: "aa"
-        },
-        {
-          page: 2,
-          name: "aa"
-        },
-        {
-          page: 3,
-          name: "aa"
-        },
-        {
-          page: 4,
-          name: "aa"
-        },
-        {
-          page: 5,
-          name: "aa"
-        },
-        {
-          page: 6,
-          name: "aa"
-        }
-      ]
+      //放大标志
+      isZoom: false,
+      allPages,
     };
   },
   watch: {
@@ -83,10 +72,8 @@ export default {
   },
   mounted() {
     let self = this;
-
     //jquery初始化函数，相当于js的onload函数
     $(function () {
-      $(".thickness").css("width", self.allPages.length + "px");
       //禁止鼠标滚轴+ctrl
       document.addEventListener('keydown', function (event) {
         if ((event.ctrlKey === true || event.metaKey === true)
@@ -115,34 +102,44 @@ export default {
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
-
-    // 缩小书籍
-    $("#magazine").click(function (e) {
-      console.log("缩小书籍");
+    // 双击
+    $("#magazine").dblclick(function (e) {
+      console.log("双击");
       e.preventDefault();
-      // $("#magazine").turn("zoom",1.5);
+      if (self.isZoom == false) {
+        $("#magazine").turn("zoom", 1.3);
+        var t1 = $(".thickness")[0].style.height;
+        // console.log("t1",t1);
+        // console.log("ti",parseInt(t1));
+        $(".thickness")[0].style.height = parseInt(t1) *1.3+'px';
+        // var th = $(".thickness")[0].style.height
+        // console.log("th",th);
+        self.isZoom = true;
+      } else {
+        $("#magazine").turn("zoom", 1);
+        var t2 = $(".thickness")[0].style.height;
+        $(".thickness")[0].style.height = parseInt(t2) *1/1.3+'px';
+        self.isZoom = false;
+      }
     });
-
-    // when: {
-    //       zooming: function (event, newFactor, current) {
-    //         console.log(newFactor, current);
-    //       }
-    //       $('.flipbook').bind('zooming', function (event, page, view) {
-    //         console.log('zooming');
-    //       })
-    //     }
+    // 翻页改变书本厚度
+    $("#magazine").bind("turned", function (event, page, view) {
+      console.log("turned", page, view);
+      $(".thickness")[0].style.width=(self.allPages.length - page) / 2 + "px";
+      
+    });
 
     // vue开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新
     this.$nextTick(() => {
 
-      $("#magazine").bind("start", function (event, pages, corner) {
-        // console.log("pages", pages.page)
-        if (pages.page == self.allPages.length) {
-          $(".thickness").css("visibility", "hidden");
-        } else {
-          $(".thickness").css("width", (self.allPages.length - pages.page) + "px");
-        }
-      });
+      // $("#magazine").bind("start", function (event, pages, corner) {
+      //   console.log("pages", pages.page)
+      //   if (pages.page == self.allPages.length) {
+      //     // $(".thickness").css("visibility", "hidden");
+      //   } else {
+      //     // $(".thickness").css("width", (self.allPages.length - pages.page) + "px");
+      //   }
+      // });
 
       $("#magazine").turn({
         // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
@@ -199,44 +196,6 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-}
-
-.text1 {
-  background: url("@/assets/images/f1.png") no-repeat;
-  background-size: 100% 100%;
-
-
-}
-
-.text2 {
-  background: url("@/assets/images/f2.png") no-repeat;
-  background-size: 100% 100%;
-
-
-}
-
-.text3 {
-  background: url("@/assets/images/f1.png") no-repeat;
-  background-size: 100% 100%;
-
-}
-
-.text4 {
-  background: url("@/assets/images/f2.png") no-repeat;
-  background-size: 100% 100%;
-
-}
-
-.text5 {
-  background: url("@/assets/images/f1.png") no-repeat;
-  background-size: 100% 100%;
-
-}
-
-.text6 {
-  background: url("@/assets/images/f2.png") no-repeat;
-  background-size: 100% 100%;
-
 }
 
 .current-page {
@@ -339,7 +298,6 @@ body {
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
   background-size: 100% 100%;
   transition: width 500ms, right 500ms;
-  height: 952px;
   right: 516px;
   z-index: 50;
 }
