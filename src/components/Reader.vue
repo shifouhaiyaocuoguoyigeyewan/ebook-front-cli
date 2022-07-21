@@ -4,8 +4,6 @@
     <div style="color:aliceblue">sm移动端</div>
   </div>
 
-  <!-- 放大缩小按钮 -->
-  <div class="zoom-icon zoom-icon-in"></div>
   <!-- 阅读器整个视图 -->
   <div class="flipbook-viewport animate__animated animate__zoomInRight hidden-sm-and-down">
     <!-- 阅读器的页面渲染 -->
@@ -28,14 +26,24 @@
         </div>
       </div>
     </div>
-    <!-- v-if="item.page == 1 || item.page % 2 != 0"  style="width: 12px; right: 570px;" -->
     <!-- 右边页面厚度效果视图 -->
     <div class="thickness" :style="{ width: allPages.length / 2 + 'px', height: '952px' }"></div>
-
     <!-- 左边页面厚度效果视图 -->
-    <!-- v-if="(item.page - 1) % 2 != 0 || item.page - 1 == allPages.length - 1" style="width: 12px; left: -2px;" -->
     <div class="thickness_left"></div>
+  </div>
 
+  <!-- 阅读器的底部功能视图 -->
+  <div class="bottom_bar bottom_tools">底部</div>
+
+  <!-- 阅读器的右边导航栏目录 -->
+  <div v-if="isCatalogOpen == false"
+    class="catalogTrue_button catalogTrue_tools animate__animated animate__bounceInRight">
+    <div @click="onCatalog">打开导航栏目录</div>
+  </div>
+  <div v-if="isCatalogOpen == true"
+    class="catalogFalse_button catalogFalse_tools animate__animated animate__bounceInRight" style=" display: flex;
+align-items:center;">
+    <div @click="onCatalog">隐藏导航栏目录</div>
   </div>
 
 </template>
@@ -47,9 +55,9 @@ import 'element-plus/theme-chalk/display.css';
 export default {
   name: "Pages",
   data() {
-    let a  = require("@/assets/images/f1.png"),b=require("@/assets/images/f2.png"),
-    allPages = [];
-    for (let i = 0; i < 50; i+=2) {
+    let a = require("@/assets/images/f1.png"), b = require("@/assets/images/f2.png"),
+      allPages = [];
+    for (let i = 0; i < 50; i += 2) {
       allPages.push({
         url: a,
         page: i + 1
@@ -65,6 +73,8 @@ export default {
       //放大标志
       isZoom: false,
       allPages,
+      // 导航栏目录打开标志
+      isCatalogOpen: false,
     };
   },
   watch: {
@@ -105,29 +115,28 @@ export default {
     $("#magazine").turn("page");
     // 双击
     $("#magazine").dblclick(function (e) {
-      console.log("双击");
-      e.preventDefault();
+      // 判断是否已经放大
       if (self.isZoom == false) {
-        $("#magazine").turn("zoom", 1.3);
+        $("#magazine").turn("zoom", 1.2);
         var t1 = $(".thickness")[0].style.height;
         // console.log("t1",t1);
         // console.log("ti",parseInt(t1));
-        $(".thickness")[0].style.height = parseInt(t1) *1.3+'px';
+        $(".thickness")[0].style.height = parseInt(t1) * 1.2 + 'px';
         // var th = $(".thickness")[0].style.height
         // console.log("th",th);
         self.isZoom = true;
       } else {
         $("#magazine").turn("zoom", 1);
         var t2 = $(".thickness")[0].style.height;
-        $(".thickness")[0].style.height = parseInt(t2) *1/1.3+'px';
+        $(".thickness")[0].style.height = parseInt(t2) * 1 / 1.2 + 'px';
         self.isZoom = false;
       }
     });
     // 翻页改变书本厚度
     $("#magazine").bind("turned", function (event, page, view) {
       console.log("turned", page, view);
-      $(".thickness")[0].style.width=(self.allPages.length - page) / 2 + "px";
-      
+      $(".thickness")[0].style.width = (self.allPages.length - page) / 2 + "px";
+
     });
 
     // vue开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新
@@ -178,7 +187,15 @@ export default {
 
     });
   },
-  methods: {},
+  methods: {
+    onCatalog() {
+      if (this.isCatalogOpen == false) {
+        this.isCatalogOpen = true;
+      } else {
+        this.isCatalogOpen = false;
+      }
+    }
+  },
   components: {}
 };
 </script>
@@ -189,6 +206,50 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+.bottom_bar {
+  bottom: 0;
+  text-align: center;
+  transition: transform 500ms, -webkit-transform 500ms;
+}
+
+.bottom_tools {
+  position: absolute;
+  height: 54px;
+  width: 100%;
+  z-index: 999000;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.catalogTrue_button {
+  right: 0;
+  background: url("@/assets/images/catalog_popup.png") no-repeat center center;
+}
+
+.catalogTrue_tools {
+  width: 64px;
+  height: 160px;
+  position: absolute;
+  top: 50%;
+  margin-top: -80px;
+  cursor: pointer;
+  z-index: 888000;
+}
+
+.catalogFalse_button {
+  right: 0;
+  background: url("@/assets/images/catalog_false.png") no-repeat center center;
+  backdrop-filter: blur(5px);
+}
+
+.catalogFalse_tools {
+  width: 164px;
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  cursor: pointer;
+  z-index: 888000;
 }
 
 .flipbook-viewport {
@@ -210,9 +271,6 @@ body {
 #magazine {
   width: 1152px;
   height: 752px;
-  /* margin: 500px; */
-  /* left: 500px; */
-  /* top: 120px; */
 }
 
 .even-numbers {
