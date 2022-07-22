@@ -6,12 +6,16 @@
 
   <!-- 阅读器整个视图 -->
   <div class="flipbook-viewport animate__animated animate__zoomInRight hidden-sm-and-down">
+    <!-- 左边页面厚度效果视图 -->
+    <div class="thickness_left" :style="{ width: thickness_left_width + 'px', height: thickness_left_height + 'px' }">
+    </div>
     <!-- 阅读器的页面渲染 -->
     <div id="magazine">
+      <!-- 中间两个页数 -->
       <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div id="text"
+        <div
           :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
-          <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="current-page ">
+          <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="currentpage ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
               {{ item.page - 1 }}
             </div>
@@ -27,27 +31,27 @@
       </div>
     </div>
     <!-- 右边页面厚度效果视图 -->
-    <div class="thickness" :style="{ width: allPages.length / 2 + 'px', height: '952px' }"></div>
-    <!-- 左边页面厚度效果视图 -->
-    <div class="thickness_left"></div>
+    <div class="thickness" :style="{ width: thickness_width + 'px', height: thickness_height + 'px' }"></div>
   </div>
 
   <!-- 阅读器的底部功能视图 -->
   <div class="bottom_bar bottom_tools">底部</div>
 
   <!-- 阅读器的右边导航栏目录 -->
-  <div v-if="isCatalogOpen == false"
+  <div v-if="isCatalogOpen == false" @click="onCatalog"
     class="catalogTrue_button catalogTrue_tools animate__animated animate__bounceInRight">
-    <div @click="onCatalog">打开导航栏目录</div>
+    <div>打开导航栏目录</div>
   </div>
-  <div v-if="isCatalogOpen == true"
+  <div v-if="isCatalogOpen == true" @click="onCatalog"
     class="catalogFalse_button catalogFalse_tools animate__animated animate__bounceInRight" style=" display: flex;
 align-items:center;">
-    <div @click="onCatalog">隐藏导航栏目录</div>
+    <div>隐藏导航栏目录</div>
   </div>
 
 </template>
+
 <script>
+let that
 import $ from "jquery";
 import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
@@ -75,15 +79,31 @@ export default {
       allPages,
       // 导航栏目录打开标志
       isCatalogOpen: false,
+
+      // 书本厚度 高
+      thickness_height: 952,
+      // 书本厚度 宽
+      thickness_width: allPages.length / 2,
+
+      // 书本厚度 左边 高
+      thickness_left_height: 952,
+      // 书本厚度 左边 宽
+      thickness_left_width: 0,
+
+      // 书本
+      book_width: 1252,
+      book_height: 952,
     };
+  },
+  created() {
+    that = this
   },
   watch: {
 
   },
   mounted() {
-    let self = this;
-    //jquery初始化函数，相当于js的onload函数
-    $(function () {
+    let self = this,that=this;
+      
       //禁止鼠标滚轴+ctrl
       document.addEventListener('keydown', function (event) {
         //  if ((event.ctrlKey === true || event.metaKey === true)
@@ -107,49 +127,10 @@ export default {
           event.preventDefault();
         }
       }, { passive: false });
-    });
-
     // 设置阅读器位置
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
-    // 双击
-    $("#magazine").dblclick(function (e) {
-      // 判断是否已经放大
-      if (self.isZoom == false) {
-        $("#magazine").turn("zoom", 1.2);
-        var t1 = $(".thickness")[0].style.height;
-        // console.log("t1",t1);
-        // console.log("ti",parseInt(t1));
-        $(".thickness")[0].style.height = parseInt(t1) * 1.2 + 'px';
-        // var th = $(".thickness")[0].style.height
-        // console.log("th",th);
-        self.isZoom = true;
-      } else {
-        $("#magazine").turn("zoom", 1);
-        var t2 = $(".thickness")[0].style.height;
-        $(".thickness")[0].style.height = parseInt(t2) * 1 / 1.2 + 'px';
-        self.isZoom = false;
-      }
-    });
-    // 翻页改变书本厚度
-    $("#magazine").bind("turned", function (event, page, view) {
-      console.log("turned", page, view);
-      $(".thickness")[0].style.width = (self.allPages.length - page) / 2 + "px";
-
-    });
-
-    // vue开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新
-    this.$nextTick(() => {
-
-      // $("#magazine").bind("start", function (event, pages, corner) {
-      //   console.log("pages", pages.page)
-      //   if (pages.page == self.allPages.length) {
-      //     // $(".thickness").css("visibility", "hidden");
-      //   } else {
-      //     // $(".thickness").css("width", (self.allPages.length - pages.page) + "px");
-      //   }
-      // });
 
       $("#magazine").turn({
         // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
@@ -167,33 +148,55 @@ export default {
         // 设置’初始化’页面数量
         page: self.page,
         // 页面宽度
-        width: 1252,
-        height: 952,
+        width: self.book_width,
+        height: self.book_height,
         // 何时事件
         when: {
-          // turned: function () {
-          //   //当前页
-          //   console.log("Current view: ", $(this).turn("view"));
-          //   //总页数
-          //   console.log(
-          //     "#magazine has " + $("#magazine").turn("pages") + " pages"
-          //   );
-          //   // $("#magazine").turn("hasPage", 10);
-          //   // $("#magazine").turn("pages", 5);
-          // }
+          turned: function (e, page, view) {
+            let thisPage = self.allPages.length - page;
+            that.thickness_width = thisPage / 2;
+            page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
+          },
+
+          zooming: function(e,newzoom,oldzoom){
+            self.dblclick_page();
+          }
 
         }
       });
-
-    });
+      
   },
   methods: {
+    dblclick_page(){
+        console.log("父元素双击")
+        // 判断是否已经放大
+        if (this.isZoom == false) {
+          let fangda = 1.2;
+          $("#magazine").turn("zoom", fangda);
+          this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
+          this.isZoom = true;
+        } else {
+          $("#magazine").turn("zoom", 1);
+          this.thickness_height = this.thickness_left_height = this.book_height;
+          this.isZoom = false;
+        }
+    },
+
+
+    dfg() {
+      setTimeout(() => {
+        $(".thickness")[0].style.height = parseInt($("#magazine")[0].style.height) + 'px';
+      })
+    },
+    abc() {
+      $("#magazine").turn("zoom", that.isZoom ? 1.2 : 1);
+      that.isZoom = !that.isZoom;
+      that.dfg();
+    },
     onCatalog() {
-      if (this.isCatalogOpen == false) {
-        this.isCatalogOpen = true;
-      } else {
-        this.isCatalogOpen = false;
-      }
+      console.log("onCatalog", this.isCatalogOpen);
+      this.isCatalogOpen = !this.isCatalogOpen;
+      // that.dfg()
     }
   },
   components: {}
@@ -260,7 +263,7 @@ body {
   justify-content: center;
 }
 
-.current-page {
+.currentpage {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -357,8 +360,8 @@ body {
   background: repeating-linear-gradient(to right, #FCFCFC, #C9C9C9 2px);
   background-size: 100% 100%;
   transition: width 500ms, right 500ms;
-  right: 516px;
   z-index: 50;
+  /* position: absolute; */
 }
 
 /* -webkit-transition: width 500ms, right 500ms; */
@@ -371,6 +374,7 @@ body {
   background-size: 100% 100%;
   z-index: 50;
   transition: width 500ms, left 500ms;
+  /* position: absolute; */
 }
 
 /* -webkit-transition: width 500ms, left 500ms; */
