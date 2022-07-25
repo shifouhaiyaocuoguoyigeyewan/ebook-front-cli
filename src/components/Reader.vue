@@ -17,13 +17,16 @@
           :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
           <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="currentpage ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-              {{ item.page - 1 }}
+              {{ item.page }}
             </div>
-            <div v-else class="odd-number">{{ item.page - 1 }}
+            <div v-else class="odd-number">{{ item.page }}
             </div>
           </footer>
           <div v-if="item.page == 1" class="firstShadow">
             <div class="pageFirstShadow"></div>
+          </div>
+          <div v-if="item.page == allPages.length" class="normal_right_border">
+            <div class="ysj_dsd"></div>
           </div>
           <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
           <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
@@ -35,26 +38,132 @@
   </div>
 
   <!-- 阅读器的底部功能视图 -->
-  <div class="bottom_bar bottom_tools">底部</div>
+  <div class="bottom_bar bottom_tools">
+    <!-- 设置外边距 -->
+    <div class="center_btn">
+      <!-- 放置所有元素的盒子 -->
+      <div class="center_btnn">
+        <!-- 目录 -->
+        <div class="btnbox" @click="onCatalog">
+          <div class="btn">
+            <el-tooltip content="目录" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <Reading />
+              </el-icon>
+            </el-tooltip>
+          </div>
+        </div>
+
+        <!-- 跳到第一页 -->
+        <div class="btnbox" @click="turnFirstPage">
+          <div class="btn">
+            <el-tooltip content="第一页" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <DArrowLeft />
+              </el-icon>
+            </el-tooltip>
+          </div>
+        </div>
+
+        <div class="btnbox" @click="turnPreviousPage">
+          <div class="btn">
+            <el-tooltip content="上一页" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <ArrowLeftBold />
+              </el-icon>
+            </el-tooltip>
+          </div>
+        </div>
+
+        <div class="bottomNumPageBtn">
+          <div class="btn">
+            <el-input-number size="large" style="margin: 7px 0px;" v-model="bottomNum" :min="1" :max="allPages.length"
+              :step="1" @change="turnPage" />
+          </div>
+        </div>
+
+        <div class="btnbox" @click="turnNextPage">
+          <div class="btn">
+            <el-tooltip content="下一页" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <ArrowRightBold />
+              </el-icon>
+            </el-tooltip>
+          </div>
+        </div>
+
+        <div class="btnbox" @click="turnLastPage">
+          <div class="btn">
+            <el-tooltip content="最后一页" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <DArrowRight />
+              </el-icon>
+            </el-tooltip>
+          </div>
+        </div>
+
+        <div class="btnbox" @click="dblclick_page">
+          <div class="btn">
+            <el-tooltip v-if="!isZoom" content="放大" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <ZoomIn />
+              </el-icon>
+            </el-tooltip>
+
+            <el-tooltip v-if="isZoom" content="缩小" placement="top" effect="light">
+              <el-icon :size="30" style="height:100%;color:aliceblue;">
+                <ZoomOut />
+              </el-icon>
+            </el-tooltip>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- 阅读器的右边导航栏目录 -->
+  <!-- <div v-if="isCatalogOpen == false" @click="onCatalog"
+    class="catalogTrue_button catalogTrue_tools animate__animated animate__bounceInRight"> -->
   <div v-if="isCatalogOpen == false" @click="onCatalog"
-    class="catalogTrue_button catalogTrue_tools animate__animated animate__bounceInRight">
-    <div>打开导航栏目录</div>
+    class="csdn-plugin-note-btn animate__animated animate__bounceInRight">
+    <div style="color:black; user-select:none">打开导航栏目录</div>
   </div>
-  <div v-if="isCatalogOpen == true" @click="onCatalog"
+  <!-- <div v-if="isCatalogOpen == true" @click="onCatalog"
     class="catalogFalse_button catalogFalse_tools animate__animated animate__bounceInRight" style=" display: flex;
-align-items:center;">
-    <div>隐藏导航栏目录</div>
+align-items:center;"> -->
+  <div v-if="isCatalogOpen == true" class="cololect-box animate__animated animate__bounceInRight">
+    <div class="l_tit">
+      <el-icon :size="40" style="margin:30px 0px;">
+        <Tickets />
+      </el-icon>
+      <div style="font-size: 35px;margin: 25px 10px;user-select:none">目录</div>
+      <el-icon :size="40" @click="onCatalog" style="margin:30px 0px; cursor: pointer; margin-left: 200px;">
+        <CloseBold />
+      </el-icon>
+    </div>
+
+    <div class="catalog_list">
+      <!-- cursor: pointer -->
+      <div class="singleBoxIndex" v-for="(item, index) in allCatalog" :key="`test_${index}`">
+        <div class="singleBox">
+          <div class="catalog_li" @click="turnPage(item.page)">{{ item.title }}: {{ item.description }} </div>
+          <div style="position: absolute;right: 10px;margin-top: 15px;">-->{{ item.page }}</div>
+        </div>
+        <el-divider />
+      </div>
+    </div>
   </div>
 
 </template>
 
 <script>
-let that
+// let that
 import $ from "jquery";
 import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
+import { DArrowLeft } from '@element-plus/icons-vue'
+
 
 export default {
   name: "Pages",
@@ -79,109 +188,212 @@ export default {
       allPages,
       // 导航栏目录打开标志
       isCatalogOpen: false,
-
       // 书本厚度 高
       thickness_height: 952,
       // 书本厚度 宽
       thickness_width: allPages.length / 2,
-
       // 书本厚度 左边 高
       thickness_left_height: 952,
       // 书本厚度 左边 宽
       thickness_left_width: 0,
-
       // 书本
       book_width: 1252,
       book_height: 952,
+      //底部按钮页数
+      bottomNum: 1,
+      // 该书的所有章节
+      allCatalog: [
+        {
+          title: "第一章",
+          description: "第一章描述",
+          page: 1
+        },
+        {
+          title: "第二章",
+          description: "第二章描述",
+          page: 11
+        },
+        {
+          title: "第三章",
+          description: "第三章描述",
+          page: 21
+        },
+        {
+          title: "第四章",
+          description: "第四章描述",
+          page: 31
+        },
+        {
+          title: "第五章",
+          description: "第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述",
+          page: 41
+        }
+      ],
     };
   },
   created() {
-    that = this
+
   },
   watch: {
 
   },
   mounted() {
-    let self = this,that=this;
-      
-      //禁止鼠标滚轴+ctrl
-      document.addEventListener('keydown', function (event) {
-        //  if ((event.ctrlKey === true || event.metaKey === true)
-        //   && (event.which === 61 || event.which === 107
-        //     || event.which === 173 || event.which === 109
-        //     || event.which === 187 || event.which === 189)) {
-        if (event.ctrlKey === true || event.metaKey === true) {
-          event.preventDefault();
-        }
-      }, false);
-      // Chrome IE 360
-      window.addEventListener('mousewheel', function (event) {
-        if (event.ctrlKey === true || event.metaKey) {
-          event.preventDefault();
-        }
-      }, { passive: false });
+    let self = this, that = this;
+    // $("#magazine ").dblclick(function () {
+    //   self.dblclick_page();
+    // });
+    //禁止鼠标滚轴+ctrl
+    document.addEventListener('keydown', function (event) {
+      //  if ((event.ctrlKey === true || event.metaKey === true)
+      //   && (event.which === 61 || event.which === 107
+      //     || event.which === 173 || event.which === 109
+      //     || event.which === 187 || event.which === 189)) {
+      if (event.ctrlKey === true || event.metaKey === true) {
+        event.preventDefault();
+      }
+    }, false);
+    // Chrome IE 360
+    window.addEventListener('mousewheel', function (event) {
+      if (event.ctrlKey === true || event.metaKey) {
+        event.preventDefault();
+      }
+    }, { passive: false });
 
-      //firefox
-      window.addEventListener('DOMMouseScroll', function (event) {
-        if (event.ctrlKey === true || event.metaKey) {
-          event.preventDefault();
-        }
-      }, { passive: false });
+    //firefox
+    window.addEventListener('DOMMouseScroll', function (event) {
+      if (event.ctrlKey === true || event.metaKey) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
     // 设置阅读器位置
     $("#magazine").turn("center");
     // 设置开始页数
     $("#magazine").turn("page");
-
-      $("#magazine").turn({
-        // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
-        display: "double",
-        // 设置过度期间页面的高程
-        elevation: 0,
-        // 动画持续时间
-        duration: 200,
-        // 在过渡期间显示渐变和阴影。
-        gradients: true,
-        // 设置居中
-        autoCenter: true,
-        // 加速
-        acceleration: true,
-        // 设置’初始化’页面数量
-        page: self.page,
-        // 页面宽度
-        width: self.book_width,
-        height: self.book_height,
-        // 何时事件
-        when: {
-          turned: function (e, page, view) {
-            let thisPage = self.allPages.length - page;
-            that.thickness_width = thisPage / 2;
-            page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
-          },
-
-          zooming: function(e,newzoom,oldzoom){
-            self.dblclick_page();
+    $("#magazine").turn({
+      // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
+      display: "double",
+      // 设置过度期间页面的高程
+      elevation: 0,
+      // 动画持续时间
+      duration: 200,
+      // 在过渡期间显示渐变和阴影。
+      gradients: true,
+      // 设置居中
+      autoCenter: true,
+      // 加速
+      acceleration: true,
+      // 设置’初始化’页面数量
+      page: self.page,
+      // 页面宽度
+      width: self.book_width,
+      height: self.book_height,
+      // 何时事件
+      when: {
+        // 翻页完成时触发
+        turned: function (e, page, view) {
+          let thisPage = self.allPages.length - page;
+          that.thickness_width = thisPage / 2;
+          page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
+          self.bottomNum = page;
+          if (page == self.allPages.length) {
+            self.isZoom ? $(".normal_right_border").css("margin-left", "738px") : $(".normal_right_border").css("margin-left", "615px");
+          }
+          // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
+        },
+        // 开始翻页时触发
+        turning: function (e, page, view) {
+          if (page == self.allPages.length && self.isZoom) {
+            $(".thickness_left").css("margin-right", "-377px");
+          } else if (page == self.allPages.length) {
+            $(".thickness_left").css("margin-right", "-313px");
+          } else {
+            $(".thickness_left").css("margin-right", "0px");
           }
 
-        }
-      });
-      
+          if (page != 1) {
+            $(".thickness_left").css("visibility", "visible");
+          }
+          if (page != self.allPages.length) {
+            $(".thickness").css("visibility", "visible");
+          }
+        },
+        // 点击拖动页脚触发
+        start: function (event, pageobject, corner) {
+          // console.log("start",pageobject);
+          if (pageobject.page == 1 || pageobject.page == 2) {
+            // console.log("第一页页脚");
+            $(".thickness_left").css("visibility", "hidden");
+          } else if (pageobject.page == self.allPages.length - 1) {
+            // console.log("最后一页页脚");
+            $(".thickness").css("visibility", "hidden");
+          }
+        },
+
+      }
+    });
+
   },
   methods: {
-    dblclick_page(){
-        console.log("父元素双击")
-        // 判断是否已经放大
-        if (this.isZoom == false) {
-          let fangda = 1.2;
-          $("#magazine").turn("zoom", fangda);
-          this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
-          this.isZoom = true;
-        } else {
-          $("#magazine").turn("zoom", 1);
-          this.thickness_height = this.thickness_left_height = this.book_height;
-          this.isZoom = false;
+    dblclick_page() {
+      var currentPage;
+      // 判断是否已经放大
+      if (this.isZoom == false) {
+        let fangda = 1.2;
+        currentPage = $("#magazine").turn("page");
+        console.log("当前页面", currentPage);
+        if (currentPage == this.allPages.length) {
+          $(".thickness_left").css("margin-right", "-377px");
+          $(".normal_right_border").css("margin-left", "738px");
         }
+        $("#magazine").turn("zoom", fangda);
+        this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
+        this.isZoom = true;
+      } else {
+        currentPage = $("#magazine").turn("page");
+        console.log("当前页面", currentPage);
+        if (currentPage == this.allPages.length) {
+          $(".normal_right_border").css("margin-left", "615px");
+          $(".thickness_left").css("margin-right", "-313px");
+
+        }
+        $("#magazine").turn("zoom", 1);
+        this.thickness_height = this.thickness_left_height = this.book_height;
+        this.isZoom = false;
+      }
     },
 
+    turnFirstPage() {
+      $("#magazine").turn("page", 1);
+      $(".thickness_left").css("visibility", "hidden");
+    },
+
+    turnLastPage() {
+      $("#magazine").turn("page", this.allPages.length);
+      $(".thickness").css("visibility", "hidden");
+      $(".thickness_left").css("visibility", "visible");
+    },
+
+    turnPreviousPage() {
+      $("#magazine").turn("previous");
+    },
+
+    turnNextPage() {
+      $("#magazine").turn("next");
+    },
+
+    turnPage(page) {
+      $("#magazine").turn("page", page);
+      if (page == 1) {
+        $(".thickness_left").css("visibility", "hidden");
+      } else if (page == this.allPages.length) {
+        $(".thickness").css("visibility", "hidden");
+        $(".thickness_left").css("visibility", "visible");
+      } else {
+        $(".thickness_left").css("visibility", "visible");
+        $(".thickness").css("visibility", "visible");
+      }
+    },
 
     dfg() {
       setTimeout(() => {
@@ -196,7 +408,6 @@ export default {
     onCatalog() {
       console.log("onCatalog", this.isCatalogOpen);
       this.isCatalogOpen = !this.isCatalogOpen;
-      // that.dfg()
     }
   },
   components: {}
@@ -221,9 +432,49 @@ body {
   position: absolute;
   height: 54px;
   width: 100%;
-  z-index: 999000;
+  z-index: 777000;
   background: rgba(0, 0, 0, 0.6);
 }
+
+.center_btn {
+  height: 100%;
+  width: 804px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.center_btnn {
+  display: inline-block;
+  height: 100%;
+}
+
+.btnbox {
+  width: 42px;
+  height: 100%;
+  float: left;
+  display: inline-block;
+  padding: 0;
+  margin-right: 30px;
+}
+
+.bottomNumPageBtn {
+  width: 200px;
+  height: 100%;
+  float: left;
+  display: inline-block;
+  padding: 0;
+  margin-right: 30px;
+}
+
+.btn {
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+}
+
 
 .catalogTrue_button {
   right: 0;
@@ -240,19 +491,107 @@ body {
   z-index: 888000;
 }
 
+.l_tit {
+  color: #fff;
+  line-height: 42px;
+  margin-left: 30px;
+  font-size: 1em;
+  display: flex;
+  flex-direction: row;
+}
+
+.catalog_list {
+  color: #fff;
+  padding: 10px 10px 10px 0;
+  font-size: 20px;
+  margin-left: -10px;
+  height: calc(100% - 62px);
+}
+
+.singleBoxIndex {
+  margin: 0 0 0 20px;
+  user-select: none;
+}
+
+.singleBox {
+  display: flex;
+  flex-direction: row;
+}
+
+.singleBox:hover,
+.singleBox:active {
+  background-color: #ccc;
+}
+
+
+.catalog_li {
+  padding: 0 5px 0 5px;
+  margin: 20px 20px;
+  width: 80%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.csdn-plugin-note-btn {
+  position: fixed;
+  z-index: 100;
+  width: 25px;
+  box-sizing: content-box;
+  right: 0px;
+  top: 20%;
+  color: rgb(255, 255, 255);
+  background: #fff;
+  cursor: pointer;
+  border-bottom-left-radius: 6px;
+  padding: 10px 5px;
+  border-top-left-radius: 6px;
+  font-size: 16px;
+  letter-spacing: 4px;
+  box-shadow: 0px 2px 12px 0px rgb(123 123 123 / 26%);
+}
+
+.cololect-box {
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
+  position: absolute;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: rgba(0, 0, 0, 0.773);
+  width: 450px;
+  top: 0px;
+  bottom: 54px;
+  right: 0px;
+  /* cursor: pointer; */
+  z-index: 888000;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px 0 0 8px;
+}
+
 .catalogFalse_button {
   right: 0;
-  background: url("@/assets/images/catalog_false.png") no-repeat center center;
+  /* background: url("@/assets/images/catalog_false.png") no-repeat center center; */
+  background: #fff;
+  height: 100%;
   backdrop-filter: blur(5px);
 }
 
 .catalogFalse_tools {
   width: 164px;
+  height: 20px;
   position: absolute;
   top: 15%;
   bottom: 15%;
   cursor: pointer;
   z-index: 888000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .flipbook-viewport {
@@ -300,16 +639,6 @@ body {
 
 }
 
-::-webkit-scrollbar {
-  width: 0 !important;
-}
-
-::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0;
-}
-
-
 .firstShadow {
   left: 0;
   top: 0;
@@ -324,6 +653,23 @@ body {
   height: 100%;
   width: 100%;
   left: -1px;
+}
+
+.normal_right_border {
+  right: 0;
+  top: 0;
+  width: 2%;
+  height: 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(20, 20, 20, 0.5)), to(rgba(240, 240, 200, 0)));
+  margin-left: 615px;
+}
+
+.ysj_dsd {
+  background: url("@/assets/images/zsj_dsd.png") no-repeat right;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+  right: -1px;
 }
 
 .evenshadow {
@@ -374,10 +720,5 @@ body {
   background-size: 100% 100%;
   z-index: 50;
   transition: width 500ms, left 500ms;
-  /* position: absolute; */
 }
-
-/* -webkit-transition: width 500ms, left 500ms; */
-/* -o-transition: width 500ms, left 500ms; */
-/* background: -o-repeating-linear-gradient(left, #FCFCFC, #C9C9C9 2px); */
 </style>

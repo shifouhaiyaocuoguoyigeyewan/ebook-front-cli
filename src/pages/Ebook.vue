@@ -7,13 +7,14 @@
 
 <script>
 import Reader from "../components/Reader.vue";
-import Flipbook from "../components/Flipbook.vue";
+// import Flipbook from "../components/Flipbook.vue";
 import 'element-plus/theme-chalk/display.css';
+
 export default {
   name: 'Ebook',
   components: {
     Reader,
-    Flipbook
+    // Flipbook
   }
 }
 </script>
