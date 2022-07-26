@@ -13,9 +13,9 @@
     <div id="magazine">
       <!-- 中间两个页数 -->
       <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div
+        <div v-if="index !=1"
           :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
-          <footer v-if="item.page - 1 !== 0 && item.page - 1 !== allPages.length - 1" class="currentpage ">
+          <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
               {{ item.page }}
             </div>
@@ -30,6 +30,14 @@
           </div>
           <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
           <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
+        </div>
+        <div v-if="index == 1" style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%">
+            测试
+        <footer class="currentpage">
+          <div class="odd-number">2</div>
+        </footer>
+        <div class="evenshadow"></div>
+          <div class="oddshadow"></div>
         </div>
       </div>
     </div>
@@ -162,8 +170,6 @@ align-items:center;"> -->
 import $ from "jquery";
 import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
-import { DArrowLeft } from '@element-plus/icons-vue'
-
 
 export default {
   name: "Pages",
@@ -266,6 +272,9 @@ export default {
       }
     }, { passive: false });
 
+    var element = $("<div />", { "class": "p2" }).html("Loading...");
+    $("#magazine").turn("addPage", element);
+
     // 设置阅读器位置
     $("#magazine").turn("center");
     // 设置开始页数
@@ -301,6 +310,16 @@ export default {
           }
           // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
         },
+
+        missing: function (e, pages) {
+          console.log(pages);
+          if (page == 1) {
+            for (let i = 1; i < self.allPages.length; i++) {
+              self.allPages[i]++;
+            }
+          }
+        },
+
         // 开始翻页时触发
         turning: function (e, page, view) {
           if (page == self.allPages.length && self.isZoom) {
