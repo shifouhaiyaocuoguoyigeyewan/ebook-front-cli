@@ -13,7 +13,7 @@
     <div id="magazine">
       <!-- 中间两个页数 -->
       <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div v-if="index !=1"
+        <div v-if="index != 1"
           :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
           <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
             <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
@@ -31,12 +31,28 @@
           <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
           <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
         </div>
-        <div v-if="index == 1" style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%">
-            测试
-        <footer class="currentpage">
-          <div class="odd-number">2</div>
-        </footer>
-        <div class="evenshadow"></div>
+        <!-- 第二页目录页 -->
+        <div v-if="index == 1"
+          style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
+          <div class="topCatalog"></div>
+          <div class="catalogText">目录</div>
+          <div class="catalogEn">Contents</div>
+          <div style="display: flex; flex-direction: row;" v-for="(item, index) in allCatalog" :key="`test_${index}`" >
+            <div class="catalogDetail">
+              <div class="singleCatalog" @click="turnPage(item.page)">
+                {{ item.title }}: {{ item.description }}
+              </div>
+            </div>
+
+            <div class="catalogPageNum">
+              ...{{ item.page }}
+            </div>
+          </div>
+
+          <footer class="currentpage">
+            <div class="odd-number">2</div>
+          </footer>
+          <div class="evenshadow"></div>
           <div class="oddshadow"></div>
         </div>
       </div>
@@ -52,7 +68,7 @@
       <!-- 放置所有元素的盒子 -->
       <div class="center_btnn">
         <!-- 目录 -->
-        <div class="btnbox" @click="onCatalog">
+        <div class="btnbox" @click="turnCatalogPage">
           <div class="btn">
             <el-tooltip content="目录" placement="top" effect="light">
               <el-icon :size="30" style="height:100%;color:aliceblue;">
@@ -231,7 +247,7 @@ export default {
         },
         {
           title: "第五章",
-          description: "第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述",
+          description: "第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦",
           page: 41
         }
       ],
@@ -414,6 +430,10 @@ export default {
       }
     },
 
+    turnCatalogPage() {
+      $("#magazine").turn("page", 2);
+    },
+
     dfg() {
       setTimeout(() => {
         $(".thickness")[0].style.height = parseInt($("#magazine")[0].style.height) + 'px';
@@ -439,6 +459,65 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+.topCatalog {
+  margin: 0;
+  padding: 0;
+  background: url("@/assets/images/catalog.jpg") 100% 100%;
+  height: 20%;
+  width: 100%;
+}
+
+.catalogText {
+  position: absolute;
+  user-select: none;
+  width: 210px;
+  left: 43px;
+  top: 93px;
+  font-size: 69px;
+}
+
+.catalogEn {
+  position: absolute;
+  user-select: none;
+  width: 230px;
+  left: 196px;
+  top: 138px;
+  font-size: 28px;
+  word-wrap: break-word;
+  color: rgba(47, 108, 115, 0.64);
+}
+
+.catalogDetail {
+  margin: 0px 0px 0px 40px;
+  height: 100%;
+  width: 80%;
+}
+
+.singleCatalog {
+  font-size: 22px;
+  margin-top: 20px;
+  user-select: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  cursor: pointer;
+}
+
+.singleCatalog:hover,
+.singleCatalog:active {
+  background-color: #ccc;
+}
+
+.catalogPageNum {
+  position: absolute;
+  font-size: 22px;
+  margin-top: 20px;
+  user-select: none;
+  right: 30px;
 }
 
 .bottom_bar {
