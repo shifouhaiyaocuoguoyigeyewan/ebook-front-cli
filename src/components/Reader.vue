@@ -4,13 +4,46 @@
     <div class="animate__animated animate__zoomInRight" style="z-index: 1000;min-height: 100vh; width: 100%;">
       <!-- 阅读器整个视图 -->
       <div class="magazineMobileView">
-
-
         <div id="magazineMobile">
           <div v-for="(item, index) in allPages" :key="`test_${index}`">
             <div v-if="index != 1"
               :style="{ background: 'url(' + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
+              <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
+                <div class="even-numbers ">
+                  {{ item.page }}
+                </div>
+              </footer>
+              <div v-if="item.page == 1" class="firstShadow">
+                <div class="pageFirstShadow"></div>
+              </div>
+              <!-- <div v-if="item.page == allPages.length" class="normal_right_border">
+                <div class="ysj_dsd"></div>
+              </div> -->
             </div>
+            <!-- 目录页 -->
+            <div v-if="index == 1"
+              style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
+              <div class="topCatalog"></div>
+              <div class="catalogText">目录</div>
+              <div class="catalogEn">Contents</div>
+              <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
+                <div class="catalogDetail">
+                  <div class="singleCatalog" @click="turnPage(item.page)">
+                    {{ item.content }}
+                  </div>
+                </div>
+
+                <div class="catalogPageNum">
+                  P{{ item.page }}
+                </div>
+              </div>
+
+              <footer class="currentpage">
+                <div class="even-numbers">2</div>
+              </footer>
+              <!-- <div class="evenshadow"></div> -->
+            </div>
+
           </div>
         </div>
       </div>
@@ -75,7 +108,6 @@
             <div class="evenshadow"></div>
           </div>
 
-
           <!-- <div v-if="allCatalog.length > 10">
           <div v-if="index != 1 || index != 2"
             :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
@@ -106,12 +138,10 @@
                   {{ item.title }}: {{ item.description }}
                 </div>
               </div>
-
               <div class="catalogPageNum">
                 P{{ item.page }}
               </div>
             </div>
-
             <footer class="currentpage">
               <div class="odd-number">2</div>
             </footer>
@@ -120,15 +150,12 @@
           <div v-if="index == 2"
             style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
             <div class="topCatalog"></div>
-
             <footer class="currentpage">
               <div class="even-number">3</div>
             </footer>
             <div class="oddshadow"></div>
           </div>
-
         </div> -->
-
 
         </div>
       </div>
@@ -332,8 +359,8 @@ export default {
       }
     }, { passive: false });
 
-
     if ($(window).width() > 1024 && $(window).height() > 700) {
+      console.log("大屏幕");
       // 设置阅读器位置
       $("#magazine").turn("center");
       // 设置开始页数
@@ -411,7 +438,7 @@ export default {
         }
       });
     } else {
-
+      console.log("小屏幕");
       // 设置阅读器位置
       $("#magazineMobile").turn("center");
       // 设置开始页数
@@ -435,9 +462,6 @@ export default {
         height: 556,
       });
     }
-
-
-
 
 
   },
