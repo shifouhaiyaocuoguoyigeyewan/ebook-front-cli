@@ -1,182 +1,253 @@
 <template>
 
-  <div id="readerForMobile" class="animate__animated animate__zoomInRight hidden-sm-and-up" style="z-index: 1;">
-    <div style="color:aliceblue">sm移动端</div>
+  <div class="background hidden-sm-and-up">
+    <div class="animate__animated animate__zoomInRight" style="z-index: 1000;min-height: 100vh; width: 100%;">
+      <!-- 阅读器整个视图 -->
+      <div class="magazineMobileView">
+
+
+        <div id="magazineMobile">
+          <div v-for="(item, index) in allPages" :key="`test_${index}`">
+            <div v-if="index != 1"
+              :style="{ background: 'url(' + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阅读器的底部功能视图 -->
+      <div class="bottom_bar_mobile bottom_tools_mobile">测试</div>
+    </div>
   </div>
 
-  <!-- 阅读器整个视图 -->
-  <div class="flipbook-viewport animate__animated animate__zoomInRight hidden-sm-and-down">
-    <!-- 左边页面厚度效果视图 -->
-    <div class="thickness_left" :style="{ width: thickness_left_width + 'px', height: thickness_left_height + 'px' }">
-    </div>
-    <!-- 阅读器的页面渲染 -->
-    <div id="magazine">
-      <!-- 中间两个页数 -->
-      <div v-for="(item, index) in allPages" :key="`test_${index}`">
-        <div v-if="index != 1"
-          :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
-          <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
-            <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-              {{ item.page }}
+  <div class="background hidden-sm-and-down">
+    <!-- 阅读器整个视图 -->
+    <div class="flipbook-viewport animate__animated animate__zoomInRight ">
+      <!-- 左边页面厚度效果视图 -->
+      <div class="thickness_left" :style="{ width: thickness_left_width + 'px', height: thickness_left_height + 'px' }">
+      </div>
+      <!-- 阅读器的页面渲染 -->
+      <div id="magazine">
+        <!-- 中间两个页数 -->
+        <div v-for="(item, index) in allPages" :key="`test_${index}`">
+
+          <div v-if="index != 1"
+            :style="{ background: 'url(' + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
+            <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
+              <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
+                {{ item.page }}
+              </div>
+              <div v-else class="odd-number">{{ item.page }}
+              </div>
+            </footer>
+            <div v-if="item.page == 1" class="firstShadow">
+              <div class="pageFirstShadow"></div>
             </div>
-            <div v-else class="odd-number">{{ item.page }}
+            <div v-if="item.page == allPages.length" class="normal_right_border">
+              <div class="ysj_dsd"></div>
             </div>
-          </footer>
-          <div v-if="item.page == 1" class="firstShadow">
-            <div class="pageFirstShadow"></div>
+            <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
+            <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
+
           </div>
-          <div v-if="item.page == allPages.length" class="normal_right_border">
-            <div class="ysj_dsd"></div>
-          </div>
-          <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
-          <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
-        </div>
-        <!-- 第二页目录页 -->
-        <div v-if="index == 1"
-          style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-          <div class="topCatalog"></div>
-          <div class="catalogText">目录</div>
-          <div class="catalogEn">Contents</div>
-          <div style="display: flex; flex-direction: row;" v-for="(item, index) in allCatalog" :key="`test_${index}`" >
-            <div class="catalogDetail">
-              <div class="singleCatalog" @click="turnPage(item.page)">
-                {{ item.title }}: {{ item.description }}
+
+          <!-- 第二页目录页 -->
+          <div v-if="index == 1"
+            style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
+            <div class="topCatalog"></div>
+            <div class="catalogText">目录</div>
+            <div class="catalogEn">Contents</div>
+            <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
+              <div class="catalogDetail">
+                <div class="singleCatalog" @click="turnPage(item.page)">
+                  {{ item.content }}
+                </div>
+              </div>
+
+              <div class="catalogPageNum">
+                P{{ item.page }}
               </div>
             </div>
 
-            <div class="catalogPageNum">
-              ...{{ item.page }}
+            <footer class="currentpage">
+              <div class="odd-number">2</div>
+            </footer>
+            <div class="evenshadow"></div>
+          </div>
+
+
+          <!-- <div v-if="allCatalog.length > 10">
+          <div v-if="index != 1 || index != 2"
+            :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
+            <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
+              <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
+                {{ item.page }}
+              </div>
+              <div v-else class="odd-number">{{ item.page }}
+              </div>
+            </footer>
+            <div v-if="item.page == 1" class="firstShadow">
+              <div class="pageFirstShadow"></div>
+            </div>
+            <div v-if="item.page == allPages.length" class="normal_right_border">
+              <div class="ysj_dsd"></div>
+            </div>
+            <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
+            <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
+          </div>
+          <div v-if="index == 1"
+            style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
+            <div class="topCatalog"></div>
+            <div class="catalogText">目录</div>
+            <div class="catalogEn">Contents</div>
+            <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
+              <div class="catalogDetail">
+                <div class="singleCatalog" @click="turnPage(item.page)">
+                  {{ item.title }}: {{ item.description }}
+                </div>
+              </div>
+
+              <div class="catalogPageNum">
+                P{{ item.page }}
+              </div>
+            </div>
+
+            <footer class="currentpage">
+              <div class="odd-number">2</div>
+            </footer>
+            <div class="evenshadow"></div>
+          </div>
+          <div v-if="index == 2"
+            style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
+            <div class="topCatalog"></div>
+
+            <footer class="currentpage">
+              <div class="even-number">3</div>
+            </footer>
+            <div class="oddshadow"></div>
+          </div>
+
+        </div> -->
+
+
+        </div>
+      </div>
+      <!-- 右边页面厚度效果视图 -->
+      <div class="thickness" :style="{ width: thickness_width + 'px', height: thickness_height + 'px' }"></div>
+    </div>
+
+    <!-- 阅读器的底部功能视图 -->
+    <div class="bottom_bar bottom_tools">
+      <!-- 设置外边距 -->
+      <div class="center_btn">
+        <!-- 放置所有元素的盒子 -->
+        <div class="center_btnn">
+          <!-- 目录 -->
+          <div class="btnbox" @click="turnCatalogPage">
+            <div class="btn">
+              <el-tooltip content="目录" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <Reading />
+                </el-icon>
+              </el-tooltip>
             </div>
           </div>
 
-          <footer class="currentpage">
-            <div class="odd-number">2</div>
-          </footer>
-          <div class="evenshadow"></div>
-          <div class="oddshadow"></div>
+          <!-- 跳到第一页 -->
+          <div class="btnbox" @click="turnFirstPage">
+            <div class="btn">
+              <el-tooltip content="第一页" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <DArrowLeft />
+                </el-icon>
+              </el-tooltip>
+            </div>
+          </div>
+
+          <div class="btnbox" @click="turnPreviousPage">
+            <div class="btn">
+              <el-tooltip content="上一页" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <ArrowLeftBold />
+                </el-icon>
+              </el-tooltip>
+            </div>
+          </div>
+
+          <div class="bottomNumPageBtn">
+            <div class="btn">
+              <el-input-number size="large" style="margin: 7px 0px;" v-model="bottomNum" :min="1" :max="allPages.length"
+                :step="1" @change="turnPage" />
+            </div>
+          </div>
+
+          <div class="btnbox" @click="turnNextPage">
+            <div class="btn">
+              <el-tooltip content="下一页" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <ArrowRightBold />
+                </el-icon>
+              </el-tooltip>
+            </div>
+          </div>
+
+          <div class="btnbox" @click="turnLastPage">
+            <div class="btn">
+              <el-tooltip content="最后一页" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <DArrowRight />
+                </el-icon>
+              </el-tooltip>
+            </div>
+          </div>
+
+          <div class="btnbox" @click="dblclick_page">
+            <div class="btn">
+              <el-tooltip v-if="!isZoom" content="放大" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <ZoomIn />
+                </el-icon>
+              </el-tooltip>
+
+              <el-tooltip v-if="isZoom" content="缩小" placement="top" effect="light">
+                <el-icon :size="30" style="height:100%;color:aliceblue;">
+                  <ZoomOut />
+                </el-icon>
+              </el-tooltip>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
-    <!-- 右边页面厚度效果视图 -->
-    <div class="thickness" :style="{ width: thickness_width + 'px', height: thickness_height + 'px' }"></div>
-  </div>
 
-  <!-- 阅读器的底部功能视图 -->
-  <div class="bottom_bar bottom_tools">
-    <!-- 设置外边距 -->
-    <div class="center_btn">
-      <!-- 放置所有元素的盒子 -->
-      <div class="center_btnn">
-        <!-- 目录 -->
-        <div class="btnbox" @click="turnCatalogPage">
-          <div class="btn">
-            <el-tooltip content="目录" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <Reading />
-              </el-icon>
-            </el-tooltip>
+    <!-- 阅读器的右边导航栏目录 -->
+    <div v-if="isCatalogOpen == false" @click="onCatalog"
+      class="csdn-plugin-note-btn animate__animated animate__bounceInRight">
+      <div style="color:black; user-select:none">打开导航栏目录</div>
+    </div>
+    <div v-if="isCatalogOpen == true" class="cololect-box animate__animated animate__bounceInRight">
+      <div class="l_tit">
+        <el-icon :size="40" style="margin:30px 0px;">
+          <Tickets />
+        </el-icon>
+        <div style="font-size: 35px;margin: 25px 10px;user-select:none">目录</div>
+        <el-icon :size="40" @click="onCatalog" style="margin:30px 0px; cursor: pointer; margin-left: 200px;">
+          <CloseBold />
+        </el-icon>
+      </div>
+
+      <div class="catalog_list">
+        <div class="singleBoxIndex" v-for="(item, index) in allCatalog" :key="`test_${index}`">
+          <div class="singleBox">
+            <div class="catalog_li" @click="turnPage(item.page)">{{ item.title }}: {{ item.description }} </div>
+            <div style="position: absolute;right: 10px;margin-top: 15px;">-->{{ item.page }}</div>
           </div>
+          <el-divider />
         </div>
-
-        <!-- 跳到第一页 -->
-        <div class="btnbox" @click="turnFirstPage">
-          <div class="btn">
-            <el-tooltip content="第一页" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <DArrowLeft />
-              </el-icon>
-            </el-tooltip>
-          </div>
-        </div>
-
-        <div class="btnbox" @click="turnPreviousPage">
-          <div class="btn">
-            <el-tooltip content="上一页" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <ArrowLeftBold />
-              </el-icon>
-            </el-tooltip>
-          </div>
-        </div>
-
-        <div class="bottomNumPageBtn">
-          <div class="btn">
-            <el-input-number size="large" style="margin: 7px 0px;" v-model="bottomNum" :min="1" :max="allPages.length"
-              :step="1" @change="turnPage" />
-          </div>
-        </div>
-
-        <div class="btnbox" @click="turnNextPage">
-          <div class="btn">
-            <el-tooltip content="下一页" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <ArrowRightBold />
-              </el-icon>
-            </el-tooltip>
-          </div>
-        </div>
-
-        <div class="btnbox" @click="turnLastPage">
-          <div class="btn">
-            <el-tooltip content="最后一页" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <DArrowRight />
-              </el-icon>
-            </el-tooltip>
-          </div>
-        </div>
-
-        <div class="btnbox" @click="dblclick_page">
-          <div class="btn">
-            <el-tooltip v-if="!isZoom" content="放大" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <ZoomIn />
-              </el-icon>
-            </el-tooltip>
-
-            <el-tooltip v-if="isZoom" content="缩小" placement="top" effect="light">
-              <el-icon :size="30" style="height:100%;color:aliceblue;">
-                <ZoomOut />
-              </el-icon>
-            </el-tooltip>
-          </div>
-        </div>
-
       </div>
     </div>
-  </div>
 
-  <!-- 阅读器的右边导航栏目录 -->
-  <!-- <div v-if="isCatalogOpen == false" @click="onCatalog"
-    class="catalogTrue_button catalogTrue_tools animate__animated animate__bounceInRight"> -->
-  <div v-if="isCatalogOpen == false" @click="onCatalog"
-    class="csdn-plugin-note-btn animate__animated animate__bounceInRight">
-    <div style="color:black; user-select:none">打开导航栏目录</div>
-  </div>
-  <!-- <div v-if="isCatalogOpen == true" @click="onCatalog"
-    class="catalogFalse_button catalogFalse_tools animate__animated animate__bounceInRight" style=" display: flex;
-align-items:center;"> -->
-  <div v-if="isCatalogOpen == true" class="cololect-box animate__animated animate__bounceInRight">
-    <div class="l_tit">
-      <el-icon :size="40" style="margin:30px 0px;">
-        <Tickets />
-      </el-icon>
-      <div style="font-size: 35px;margin: 25px 10px;user-select:none">目录</div>
-      <el-icon :size="40" @click="onCatalog" style="margin:30px 0px; cursor: pointer; margin-left: 200px;">
-        <CloseBold />
-      </el-icon>
-    </div>
-
-    <div class="catalog_list">
-      <!-- cursor: pointer -->
-      <div class="singleBoxIndex" v-for="(item, index) in allCatalog" :key="`test_${index}`">
-        <div class="singleBox">
-          <div class="catalog_li" @click="turnPage(item.page)">{{ item.title }}: {{ item.description }} </div>
-          <div style="position: absolute;right: 10px;margin-top: 15px;">-->{{ item.page }}</div>
-        </div>
-        <el-divider />
-      </div>
-    </div>
   </div>
 
 </template>
@@ -186,19 +257,20 @@ align-items:center;"> -->
 import $ from "jquery";
 import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
+import { request } from "../utils/request";
 
 export default {
   name: "Pages",
   data() {
-    let a = require("@/assets/images/f1.png"), b = require("@/assets/images/f2.png"),
-      allPages = [];
-    for (let i = 0; i < 50; i += 2) {
+    let allPages = [];
+    let a = require("@/assets/images/f1.png"), b = require("@/assets/images/f2.png");
+    for (let i = 0; i < 5; i += 2) {
       allPages.push({
-        url: a,
+        content: a,
         page: i + 1
       });
       allPages.push({
-        url: b,
+        content: b,
         page: i + 2
       });
     }
@@ -224,53 +296,25 @@ export default {
       //底部按钮页数
       bottomNum: 1,
       // 该书的所有章节
-      allCatalog: [
-        {
-          title: "第一章",
-          description: "第一章描述",
-          page: 1
-        },
-        {
-          title: "第二章",
-          description: "第二章描述",
-          page: 11
-        },
-        {
-          title: "第三章",
-          description: "第三章描述",
-          page: 21
-        },
-        {
-          title: "第四章",
-          description: "第四章描述",
-          page: 31
-        },
-        {
-          title: "第五章",
-          description: "第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述第五章描述啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦",
-          page: 41
-        }
-      ],
+      allCatalog: [],
     };
   },
   created() {
-
+    this.requestBookAllPages(28);
   },
-  watch: {
 
-  },
   mounted() {
     let self = this, that = this;
+    // console.log("de", this.allCatalog[1].description.length);
     // $("#magazine ").dblclick(function () {
     //   self.dblclick_page();
     // });
     //禁止鼠标滚轴+ctrl
     document.addEventListener('keydown', function (event) {
-      //  if ((event.ctrlKey === true || event.metaKey === true)
-      //   && (event.which === 61 || event.which === 107
-      //     || event.which === 173 || event.which === 109
-      //     || event.which === 187 || event.which === 189)) {
-      if (event.ctrlKey === true || event.metaKey === true) {
+      if ((event.ctrlKey === true || event.metaKey === true)
+        && (event.which === 61 || event.which === 107
+          || event.which === 173 || event.which === 109
+          || event.which === 187 || event.which === 189)) {
         event.preventDefault();
       }
     }, false);
@@ -288,85 +332,113 @@ export default {
       }
     }, { passive: false });
 
-    var element = $("<div />", { "class": "p2" }).html("Loading...");
-    $("#magazine").turn("addPage", element);
 
-    // 设置阅读器位置
-    $("#magazine").turn("center");
-    // 设置开始页数
-    $("#magazine").turn("page");
-    $("#magazine").turn({
-      // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
-      display: "double",
-      // 设置过度期间页面的高程
-      elevation: 0,
-      // 动画持续时间
-      duration: 200,
-      // 在过渡期间显示渐变和阴影。
-      gradients: true,
-      // 设置居中
-      autoCenter: true,
-      // 加速
-      acceleration: true,
-      // 设置’初始化’页面数量
-      page: self.page,
-      // 页面宽度
-      width: self.book_width,
-      height: self.book_height,
-      // 何时事件
-      when: {
-        // 翻页完成时触发
-        turned: function (e, page, view) {
-          let thisPage = self.allPages.length - page;
-          that.thickness_width = thisPage / 2;
-          page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
-          self.bottomNum = page;
-          if (page == self.allPages.length) {
-            self.isZoom ? $(".normal_right_border").css("margin-left", "738px") : $(".normal_right_border").css("margin-left", "615px");
-          }
-          // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
-        },
-
-        missing: function (e, pages) {
-          console.log(pages);
-          if (page == 1) {
-            for (let i = 1; i < self.allPages.length; i++) {
-              self.allPages[i]++;
+    if ($(window).width() > 1024 && $(window).height() > 700) {
+      // 设置阅读器位置
+      $("#magazine").turn("center");
+      // 设置开始页数
+      $("#magazine").turn("page");
+      $("#magazine").turn({
+        // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
+        display: "double",
+        // 设置过度期间页面的高程
+        elevation: 0,
+        // 动画持续时间
+        duration: 200,
+        // 在过渡期间显示渐变和阴影。
+        gradients: true,
+        // 设置居中
+        autoCenter: true,
+        // 加速
+        acceleration: true,
+        // 设置’初始化’页面数量
+        page: self.page,
+        // 页面宽度
+        width: self.book_width,
+        height: self.book_height,
+        // 何时事件
+        when: {
+          // 翻页完成时触发
+          turned: function (e, page, view) {
+            let thisPage = self.allPages.length - page;
+            that.thickness_width = thisPage / 2;
+            page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
+            self.bottomNum = page;
+            if (page == self.allPages.length) {
+              self.isZoom ? $(".normal_right_border").css("margin-left", "738px") : $(".normal_right_border").css("margin-left", "615px");
             }
-          }
-        },
+            // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
+          },
 
-        // 开始翻页时触发
-        turning: function (e, page, view) {
-          if (page == self.allPages.length && self.isZoom) {
-            $(".thickness_left").css("margin-right", "-377px");
-          } else if (page == self.allPages.length) {
-            $(".thickness_left").css("margin-right", "-313px");
-          } else {
-            $(".thickness_left").css("margin-right", "0px");
-          }
+          missing: function (e, pages) {
+            console.log(pages);
+            if (page == 1) {
+              for (let i = 1; i < self.allPages.length; i++) {
+                self.allPages[i]++;
+              }
+            }
+          },
 
-          if (page != 1) {
-            $(".thickness_left").css("visibility", "visible");
-          }
-          if (page != self.allPages.length) {
-            $(".thickness").css("visibility", "visible");
-          }
-        },
-        // 点击拖动页脚触发
-        start: function (event, pageobject, corner) {
-          // console.log("start",pageobject);
-          if (pageobject.page == 1 || pageobject.page == 2) {
-            // console.log("第一页页脚");
-            $(".thickness_left").css("visibility", "hidden");
-          } else if (pageobject.page == self.allPages.length - 1) {
-            // console.log("最后一页页脚");
-            $(".thickness").css("visibility", "hidden");
-          }
-        },
+          // 开始翻页时触发
+          turning: function (e, page, view) {
+            if (page == self.allPages.length && self.isZoom) {
+              $(".thickness_left").css("margin-right", "-377px");
+            } else if (page == self.allPages.length) {
+              $(".thickness_left").css("margin-right", "-313px");
+            } else {
+              $(".thickness_left").css("margin-right", "0px");
+            }
 
-      }
-    });
+            if (page != 1) {
+              $(".thickness_left").css("visibility", "visible");
+            }
+            if (page != self.allPages.length) {
+              $(".thickness").css("visibility", "visible");
+            }
+          },
+          // 点击拖动页脚触发
+          start: function (event, pageobject, corner) {
+            // console.log("start",pageobject);
+            if (pageobject.page == 1 || pageobject.page == 2) {
+              // console.log("第一页页脚");
+              $(".thickness_left").css("visibility", "hidden");
+            } else if (pageobject.page == self.allPages.length - 1) {
+              // console.log("最后一页页脚");
+              $(".thickness").css("visibility", "hidden");
+            }
+          },
+
+        }
+      });
+    } else {
+
+      // 设置阅读器位置
+      $("#magazineMobile").turn("center");
+      // 设置开始页数
+      $("#magazineMobile").turn("page");
+      $("#magazineMobile").turn({
+        display: "single",
+        // 设置过度期间页面的高程
+        elevation: 0,
+        // 动画持续时间
+        duration: 200,
+        // 在过渡期间显示渐变和阴影。
+        gradients: true,
+        // 设置居中
+        autoCenter: true,
+        // 加速
+        acceleration: true,
+        // 设置’初始化’页面数量
+        page: self.page,
+        // 页面宽度
+        width: 394,
+        height: 556,
+      });
+    }
+
+
+
+
 
   },
   methods: {
@@ -434,31 +506,71 @@ export default {
       $("#magazine").turn("page", 2);
     },
 
-    dfg() {
-      setTimeout(() => {
-        $(".thickness")[0].style.height = parseInt($("#magazine")[0].style.height) + 'px';
-      })
-    },
-    abc() {
-      $("#magazine").turn("zoom", that.isZoom ? 1.2 : 1);
-      that.isZoom = !that.isZoom;
-      that.dfg();
-    },
     onCatalog() {
       console.log("onCatalog", this.isCatalogOpen);
       this.isCatalogOpen = !this.isCatalogOpen;
-    }
+    },
+
+    // 请求书籍的全部页数和全部章节
+    requestBookAllPages(bookId) {
+      var __this = this;
+      request({
+        url: "/book/book",
+        method: "get",
+        params: {
+          id: bookId
+        },
+        success(res) {
+          console.log("res", res)
+          if (res.code === 200) {
+            // __this.allPages = res.page;
+            __this.allCatalog = res.chapter;
+            console.log("__this", __this.allCatalog)
+          }
+        }
+      })
+    },
   },
+
   components: {}
 };
 </script>
 <style>
 body {
-  background: white;
   z-index: 50;
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+.magazineMobileView {
+  /* position: absolute;
+  width: 394px;
+  height: 556px;
+  left: -197px;
+  top: -278.449px;
+  position: relative;
+  transform: translate3d(0px, 0px, 0px);
+  margin-left: 0px; */
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom_bar_mobile {
+  bottom: 0;
+  text-align: center;
+}
+
+.bottom_tools_mobile {
+  position: absolute;
+  height: 54px;
+  width: 100%;
+  z-index: 777000;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .topCatalog {
@@ -489,6 +601,17 @@ body {
   color: rgba(47, 108, 115, 0.64);
 }
 
+.catalogSeclect {
+  display: flex;
+  flex-direction: row;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.catalogSeclect:hover,
+.catalogSeclect:active {
+  background-color: #ccc;
+}
+
 .catalogDetail {
   margin: 0px 0px 0px 40px;
   height: 100%;
@@ -497,7 +620,8 @@ body {
 
 .singleCatalog {
   font-size: 22px;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   user-select: none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -505,11 +629,6 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   cursor: pointer;
-}
-
-.singleCatalog:hover,
-.singleCatalog:active {
-  background-color: #ccc;
 }
 
 .catalogPageNum {
@@ -672,7 +791,6 @@ body {
 
 .catalogFalse_button {
   right: 0;
-  /* background: url("@/assets/images/catalog_false.png") no-repeat center center; */
   background: #fff;
   height: 100%;
   backdrop-filter: blur(5px);
@@ -692,7 +810,17 @@ body {
   overflow-x: hidden;
 }
 
+.background {
+  background: url("../assets/images/background.jpg") no-repeat;
+  background-size: cover;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .flipbook-viewport {
+  /* background: url("../assets/images/background.jpg") no-repeat;
+  background-size: cover;
+  width: 100%; */
   min-height: 100vh;
   display: flex;
   flex-direction: row;

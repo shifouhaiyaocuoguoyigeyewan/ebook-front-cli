@@ -1,5 +1,6 @@
 <template>
-  <div class="background">
+  <!-- <div class="background"> -->
+  <div>
     <Reader></Reader>
     
   </div>
