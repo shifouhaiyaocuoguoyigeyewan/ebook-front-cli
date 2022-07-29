@@ -1,13 +1,13 @@
 <template>
 
   <div class="background hidden-sm-and-up">
-    <div class="animate__animated animate__zoomInRight" style="z-index: 1000;min-height: 100vh; width: 100%;">
+    <div class="animate__animated animate__zoomInRight" style="z-index: 100;min-height: 100vh; width: 100%;">
       <!-- 阅读器整个视图 -->
       <div class="magazineMobileView">
         <div id="magazineMobile">
           <div v-for="(item, index) in allPages" :key="`test_${index}`">
             <div v-if="index != 1"
-              :style="{ background: 'url(' + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
+              :style="{ background: 'url('+host + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
               <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
                 <div class="even-numbers ">
                   {{ item.page }}
@@ -24,8 +24,8 @@
             <div v-if="index == 1"
               style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
               <div class="topCatalog"></div>
-              <div class="catalogText">目录</div>
-              <div class="catalogEn">Contents</div>
+              <div class="catalogTextMobile">目录</div>
+              <div class="catalogEnMobile">Contents</div>
               <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
                 <div class="catalogDetail">
                   <div class="singleCatalog" @click="turnPage(item.page)">
@@ -65,7 +65,7 @@
         <div v-for="(item, index) in allPages" :key="`test_${index}`">
 
           <div v-if="index != 1"
-            :style="{ background: 'url(' + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
+            :style="{ background: 'url('+host + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
             <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
               <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
                 {{ item.page }}
@@ -91,9 +91,9 @@
             <div class="catalogText">目录</div>
             <div class="catalogEn">Contents</div>
             <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
-              <div class="catalogDetail">
-                <div class="singleCatalog" @click="turnPage(item.page)">
-                  {{ item.content }}
+              <div class="catalogDetail" @click="turnPage(item.page)">
+                <div class="singleCatalog">
+                  {{ item.title }} : {{ item.describe }}
                 </div>
               </div>
 
@@ -285,34 +285,42 @@ import $ from "jquery";
 import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
 import { request } from "../utils/request";
+import { ElMessage  } from 'element-plus';
+import host from "../utils/host";
+console.log(host);
 
 export default {
   name: "Pages",
   data() {
-    let allPages = [];
-    let a = require("@/assets/images/f1.png"), b = require("@/assets/images/f2.png");
-    for (let i = 0; i < 5; i += 2) {
-      allPages.push({
-        content: a,
-        page: i + 1
-      });
-      allPages.push({
-        content: b,
-        page: i + 2
-      });
-    }
+    // let allPages = [];
+    // let a = require("@/assets/images/f1.png"), b = require("@/assets/images/f2.png");
+    // for (let i = 0; i < 50; i += 2) {
+    //   allPages.push({
+    //     content: "",
+    //     page: i + 1
+    //   });
+    //   allPages.push({
+    //     content: "",
+    //     page: i + 2
+    //   });
+    // }
     return {
+      // 服务器host
+      host,
       value: "",
       page: 1,
+      cover: "",
       //放大标志
       isZoom: false,
-      allPages,
+      allPages :[],
+      // 该书的所有章节
+      allCatalog: [],
       // 导航栏目录打开标志
       isCatalogOpen: false,
       // 书本厚度 高
       thickness_height: 952,
       // 书本厚度 宽
-      thickness_width: allPages.length / 2,
+      thickness_width:0,
       // 书本厚度 左边 高
       thickness_left_height: 952,
       // 书本厚度 左边 宽
@@ -322,20 +330,139 @@ export default {
       book_height: 952,
       //底部按钮页数
       bottomNum: 1,
-      // 该书的所有章节
-      allCatalog: [],
     };
   },
   created() {
-    this.requestBookAllPages(28);
+    
   },
 
   mounted() {
-    let self = this, that = this;
-    // console.log("de", this.allCatalog[1].description.length);
-    // $("#magazine ").dblclick(function () {
-    //   self.dblclick_page();
-    // });
+    var that = this;
+    this.requestBookAllPages(28).then(
+      (res) =>{
+        console.log(res);
+         that.loodBook();
+      }
+    )
+
+  },
+
+  methods: {
+    dblclick_page() {
+      var currentPage;
+      // 判断是否已经放大
+      if (this.isZoom == false) {
+        let fangda = 1.2;
+        currentPage = $("#magazine").turn("page");
+        console.log("当前页面", currentPage);
+        if (currentPage == this.allPages.length) {
+          $(".thickness_left").css("margin-right", "-377px");
+          $(".normal_right_border").css("margin-left", "738px");
+        }
+        $("#magazine").turn("zoom", fangda);
+        this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
+        this.isZoom = true;
+      } else {
+        currentPage = $("#magazine").turn("page");
+        console.log("当前页面", currentPage);
+        if (currentPage == this.allPages.length) {
+          $(".normal_right_border").css("margin-left", "615px");
+          $(".thickness_left").css("margin-right", "-313px");
+
+        }
+        $("#magazine").turn("zoom", 1);
+        this.thickness_height = this.thickness_left_height = this.book_height;
+        this.isZoom = false;
+      }
+    },
+
+    turnFirstPage() {
+      $("#magazine").turn("page", 1);
+      $(".thickness_left").css("visibility", "hidden");
+    },
+
+    turnLastPage() {
+      $("#magazine").turn("page", this.allPages.length);
+      $(".thickness").css("visibility", "hidden");
+      $(".thickness_left").css("visibility", "visible");
+    },
+
+    turnPreviousPage() {
+      $("#magazine").turn("previous");
+    },
+
+    turnNextPage() {
+      $("#magazine").turn("next");
+    },
+
+    turnPage(page) {
+      console.log("翻到第" + page + "页");
+      console.log("总" + this.allPages.length + "页");
+      if (page > this.allPages.length){
+        console.log("书本页数不存在，请联系管理员修改");
+        ElMessage.error('书本页数不存在，请联系管理员修改');
+      }
+      $("#magazine").turn("page", page);
+      if (page == 1) {
+        $(".thickness_left").css("visibility", "hidden");
+      } else if (page == this.allPages.length) {
+        $(".thickness").css("visibility", "hidden");
+        $(".thickness_left").css("visibility", "visible");
+      } else {
+        $(".thickness_left").css("visibility", "visible");
+        $(".thickness").css("visibility", "visible");
+      }
+    },
+
+    turnCatalogPage() {
+      $("#magazine").turn("page", 2);
+    },
+
+    onCatalog() {
+      console.log("onCatalog", this.isCatalogOpen);
+      this.isCatalogOpen = !this.isCatalogOpen;
+    },
+
+    // 请求书籍的全部页数和全部章节
+    async requestBookAllPages(bookId) {
+      var __this = this;
+      request({
+        url: "/book/book",
+        method: "get",
+        params: {
+          id: bookId
+        },
+        // success(res) {
+        //   console.log("res", res)
+        //   if (res.code === 200) {
+        //     // __this.allPages = res.page;
+        //     __this.allCatalog = res.chapter;
+        //     __this.cover = cover
+        //     console.log("__this", __this.allCatalog)
+        //   }
+        // }
+        success: (res) => {
+          console.log("res", res)
+          if (res.code === 200) {
+            this.allPages = res.page;
+            this.allCatalog = res.chapter;
+            this.cover = res.cover;
+            this.cover = this.host + this.cover;
+            this.thickness_width = allPages.length / 2;
+            console.log("this.thickness_width", this.thickness_width)
+            console.log("this.cover", this.cover)
+            console.log("__this", this.allCatalog)
+            console.log("allPages", this.allPages)
+          }
+        }
+
+      })
+    },
+
+    // 加载阅读器视图
+    loodBook(){
+      let self = this, that = this;
+    self.requestBookAllPages(28);
     //禁止鼠标滚轴+ctrl
     document.addEventListener('keydown', function (event) {
       if ((event.ctrlKey === true || event.metaKey === true)
@@ -361,6 +488,7 @@ export default {
 
     if ($(window).width() > 1024 && $(window).height() > 700) {
       console.log("大屏幕");
+      console.log(self.allPages);
       // 设置阅读器位置
       $("#magazine").turn("center");
       // 设置开始页数
@@ -378,7 +506,7 @@ export default {
         autoCenter: true,
         // 加速
         acceleration: true,
-        // 设置’初始化’页面数量
+        // 设置’初始化’页面
         page: self.page,
         // 页面宽度
         width: self.book_width,
@@ -446,7 +574,7 @@ export default {
       $("#magazineMobile").turn({
         display: "single",
         // 设置过度期间页面的高程
-        elevation: 0,
+        elevation: 50,
         // 动画持续时间
         duration: 200,
         // 在过渡期间显示渐变和阴影。
@@ -458,103 +586,17 @@ export default {
         // 设置’初始化’页面数量
         page: self.page,
         // 页面宽度
-        width: 394,
+        width: 364,
         height: 556,
       });
+      $("#magazineMobile").css("overflow", "visible");
+
     }
 
+    },
 
   },
-  methods: {
-    dblclick_page() {
-      var currentPage;
-      // 判断是否已经放大
-      if (this.isZoom == false) {
-        let fangda = 1.2;
-        currentPage = $("#magazine").turn("page");
-        console.log("当前页面", currentPage);
-        if (currentPage == this.allPages.length) {
-          $(".thickness_left").css("margin-right", "-377px");
-          $(".normal_right_border").css("margin-left", "738px");
-        }
-        $("#magazine").turn("zoom", fangda);
-        this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
-        this.isZoom = true;
-      } else {
-        currentPage = $("#magazine").turn("page");
-        console.log("当前页面", currentPage);
-        if (currentPage == this.allPages.length) {
-          $(".normal_right_border").css("margin-left", "615px");
-          $(".thickness_left").css("margin-right", "-313px");
-
-        }
-        $("#magazine").turn("zoom", 1);
-        this.thickness_height = this.thickness_left_height = this.book_height;
-        this.isZoom = false;
-      }
-    },
-
-    turnFirstPage() {
-      $("#magazine").turn("page", 1);
-      $(".thickness_left").css("visibility", "hidden");
-    },
-
-    turnLastPage() {
-      $("#magazine").turn("page", this.allPages.length);
-      $(".thickness").css("visibility", "hidden");
-      $(".thickness_left").css("visibility", "visible");
-    },
-
-    turnPreviousPage() {
-      $("#magazine").turn("previous");
-    },
-
-    turnNextPage() {
-      $("#magazine").turn("next");
-    },
-
-    turnPage(page) {
-      $("#magazine").turn("page", page);
-      if (page == 1) {
-        $(".thickness_left").css("visibility", "hidden");
-      } else if (page == this.allPages.length) {
-        $(".thickness").css("visibility", "hidden");
-        $(".thickness_left").css("visibility", "visible");
-      } else {
-        $(".thickness_left").css("visibility", "visible");
-        $(".thickness").css("visibility", "visible");
-      }
-    },
-
-    turnCatalogPage() {
-      $("#magazine").turn("page", 2);
-    },
-
-    onCatalog() {
-      console.log("onCatalog", this.isCatalogOpen);
-      this.isCatalogOpen = !this.isCatalogOpen;
-    },
-
-    // 请求书籍的全部页数和全部章节
-    requestBookAllPages(bookId) {
-      var __this = this;
-      request({
-        url: "/book/book",
-        method: "get",
-        params: {
-          id: bookId
-        },
-        success(res) {
-          console.log("res", res)
-          if (res.code === 200) {
-            // __this.allPages = res.page;
-            __this.allCatalog = res.chapter;
-            console.log("__this", __this.allCatalog)
-          }
-        }
-      })
-    },
-  },
+  
 
   components: {}
 };
@@ -573,7 +615,6 @@ body {
   height: 556px;
   left: -197px;
   top: -278.449px;
-  position: relative;
   transform: translate3d(0px, 0px, 0px);
   margin-left: 0px; */
 
@@ -582,6 +623,13 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+}
+
+.magazineMobileView .page {
+  background-color: white;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .bottom_bar_mobile {
@@ -614,6 +662,15 @@ body {
   font-size: 69px;
 }
 
+.catalogTextMobile {
+  position: absolute;
+  user-select: none;
+  width: 210px;
+  left: 43px;
+  top: 43px;
+  font-size: 49px;
+}
+
 .catalogEn {
   position: absolute;
   user-select: none;
@@ -621,6 +678,17 @@ body {
   left: 196px;
   top: 138px;
   font-size: 28px;
+  word-wrap: break-word;
+  color: rgba(47, 108, 115, 0.64);
+}
+
+.catalogEnMobile {
+  position: absolute;
+  user-select: none;
+  width: 230px;
+  left: 150px;
+  top: 76px;
+  font-size: 20px;
   word-wrap: break-word;
   color: rgba(47, 108, 115, 0.64);
 }
@@ -661,6 +729,14 @@ body {
   margin-top: 20px;
   user-select: none;
   right: 30px;
+}
+
+.catalogPageNumMobile {
+  position: absolute;
+  font-size: 22px;
+  margin-top: 20px;
+  user-select: none;
+  right: 15px;
 }
 
 .bottom_bar {
