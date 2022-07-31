@@ -633,7 +633,7 @@ export default {
         let fangda = 1.1;
         currentPage = $("#magazineMobile").turn("page");
         if (currentPage == this.allPages.length) {
-          // $(".normal_right_border").css("margin-left", "738px");
+          $(".normal_right_border_mobile").css("visibility", "hidden");
         }
         $("#magazineMobile").turn("zoom", fangda);
         this.isZoom = true;
@@ -641,7 +641,7 @@ export default {
         currentPage = $("#magazineMobile").turn("page");
 
         if (currentPage == this.allPages.length) {
-          // $(".normal_right_border").css("margin-left", "615px");
+          $(".normal_right_border_mobile").css("visibility", "visible");
         }
         $("#magazineMobile").turn("zoom", 1);
         this.isZoom = false;
