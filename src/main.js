@@ -5,7 +5,7 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import * as Icons from '@element-plus/icons-vue';
 import axios from 'axios';
-// import router from './router/index';
+import router from './router/index';
 // import store from "./store/index";
 // import * as echarts from 'echarts';
 // import Button from "@/components/Button.vue"
@@ -15,7 +15,7 @@ const app = createApp(App)
 app.config.globalProperties.$http = axios;
 // app.config.globalProperties.$echarts = echarts
 // app.component('Button',Button);
-// app.use(router)
+app.use(router)
 // app.use(store)
 app.use(ElementPlus)
 app.use(animated)

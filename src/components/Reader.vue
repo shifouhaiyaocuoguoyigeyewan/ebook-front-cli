@@ -19,8 +19,8 @@
                   <div class="pageFirstShadow"></div>
                 </div>
                 <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
-                    <div class="ysj_dsd"></div>
-                  </div>
+                  <div class="ysj_dsd"></div>
+                </div>
               </div>
               <!-- 目录页 -->
               <div v-if="index == 1"
@@ -52,86 +52,86 @@
         <!-- 阅读器的底部功能视图 -->
         <div class="bottom_bar_mobile bottom_tools_mobile">
           <!-- 设置外边距 -->
-        <div class="center_btn_mobile">
-          <!-- 放置所有元素的盒子 -->
-          <div class="center_btnn">
-            <!-- 目录 -->
-            <div class="btnbox_mobile" @click="turnCatalogPageMobile">
-              <div class="btn">
-                <el-tooltip content="目录" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <Reading />
-                  </el-icon>
-                </el-tooltip>
+          <div class="center_btn_mobile">
+            <!-- 放置所有元素的盒子 -->
+            <div class="center_btnn">
+              <!-- 目录 -->
+              <div class="btnbox_mobile" @click="turnCatalogPageMobile">
+                <div class="btn">
+                  <el-tooltip content="目录" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <Reading />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
-            </div>
 
-            <!-- 跳到第一页 -->
-            <div class="btnbox_mobile" @click="turnFirstPageMobile">
-              <div class="btn">
-                <el-tooltip content="第一页" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <DArrowLeft />
-                  </el-icon>
-                </el-tooltip>
+              <!-- 跳到第一页 -->
+              <div class="btnbox_mobile" @click="turnFirstPageMobile">
+                <div class="btn">
+                  <el-tooltip content="第一页" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <DArrowLeft />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
-            </div>
 
-            <div class="btnbox_mobile" @click="turnPreviousPageMobile">
-              <div class="btn">
-                <el-tooltip content="上一页" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <ArrowLeftBold />
-                  </el-icon>
-                </el-tooltip>
+              <div class="btnbox_mobile" @click="turnPreviousPageMobile">
+                <div class="btn">
+                  <el-tooltip content="上一页" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <ArrowLeftBold />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
-            </div>
 
-            <div class="bottomNumPageBtnMobile">
-              <div class="btn">
-                <el-input-number style="margin: 10px 0px;width: 100px;" v-model="bottomNum" :min="1"
-                  :max="allPages.length" :step="1" @change="turnPageMobile" />
+              <div class="bottomNumPageBtnMobile">
+                <div class="btn">
+                  <el-input-number style="margin: 10px 0px;width: 100px;" v-model="bottomNum" :min="1"
+                    :max="allPages.length" :step="1" @change="turnPageMobile" />
+                </div>
               </div>
-            </div>
 
-            <div class="btnbox_mobile" @click="turnNextPageMobile">
-              <div class="btn">
-                <el-tooltip content="下一页" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <ArrowRightBold />
-                  </el-icon>
-                </el-tooltip>
+              <div class="btnbox_mobile" @click="turnNextPageMobile">
+                <div class="btn">
+                  <el-tooltip content="下一页" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <ArrowRightBold />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
-            </div>
 
-            <div class="btnbox_mobile" @click="turnLastPageMobile">
-              <div class="btn">
-                <el-tooltip content="最后一页" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <DArrowRight />
-                  </el-icon>
-                </el-tooltip>
+              <div class="btnbox_mobile" @click="turnLastPageMobile">
+                <div class="btn">
+                  <el-tooltip content="最后一页" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <DArrowRight />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
-            </div>
 
-            <div class="btnbox_mobile" @click="dblclick_pageMobile">
-              <div class="btn">
-                <el-tooltip v-if="!isZoom" content="放大" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <ZoomIn />
-                  </el-icon>
-                </el-tooltip>
+              <div class="btnbox_mobile" @click="dblclick_pageMobile">
+                <div class="btn">
+                  <el-tooltip v-if="!isZoom" content="放大" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <ZoomIn />
+                    </el-icon>
+                  </el-tooltip>
 
-                <el-tooltip v-if="isZoom" content="缩小" placement="top" effect="light">
-                  <el-icon :size="30" style="height:100%;color:aliceblue;">
-                    <ZoomOut />
-                  </el-icon>
-                </el-tooltip>
+                  <el-tooltip v-if="isZoom" content="缩小" placement="top" effect="light">
+                    <el-icon :size="30" style="height:100%;color:aliceblue;">
+                      <ZoomOut />
+                    </el-icon>
+                  </el-tooltip>
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -389,16 +389,16 @@ export default {
       // 导航栏目录打开标志
       isCatalogOpen: false,
       // 书本厚度 高
-      thickness_height: 952,
+      thickness_height: 822,
       // 书本厚度 宽
       thickness_width: 0,
       // 书本厚度 左边 高
-      thickness_left_height: 952,
+      thickness_left_height: 822,
       // 书本厚度 左边 宽
       thickness_left_width: 0,
       // 书本
-      book_width: 1252,
-      book_height: 952,
+      book_width: 1122,
+      book_height: 822,
       //底部按钮页数
       bottomNum: 1,
     };
@@ -453,113 +453,112 @@ export default {
         $("#magazine").turn("center");
         // 设置开始页数
         $("#magazine").turn("page");
-        this.$nextTick(() => {
-          $("#magazine").turn({
-            // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
-            display: "double",
-            // 设置过度期间页面的高程
-            elevation: 0,
-            // 动画持续时间
-            duration: 200,
-            // 在过渡期间显示渐变和阴影。
-            gradients: true,
-            // 设置居中
-            autoCenter: true,
-            // 加速
-            acceleration: true,
-            // 设置’初始化’页面
-            page: self.page,
-            // 页面宽度
-            width: self.book_width,
-            height: self.book_height,
-            // 何时事件
-            when: {
-              // 翻页完成时触发
-              turned: function (e, page, view) {
-                let thisPage = self.allPages.length - page;
-                that.thickness_width = thisPage / 2;
-                page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
-                self.bottomNum = page;
-                if (page == self.allPages.length) {
-                  self.isZoom ? $(".normal_right_border").css("margin-left", "738px") : $(".normal_right_border").css("margin-left", "615px");
-                }
-                // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
-              },
 
-              missing: function (e, pages) {
-                console.log(pages);
-                if (page == 1) {
-                  for (let i = 1; i < self.allPages.length; i++) {
-                    self.allPages[i]++;
-                  }
-                }
-              },
+        $("#magazine").turn({
+          // 设置显示模式。使用单页 single 显示每个视图仅一页，或使用双页 double 显示两个页面。
+          display: "double",
+          // 设置过度期间页面的高程
+          elevation: 0,
+          // 动画持续时间
+          duration: 200,
+          // 在过渡期间显示渐变和阴影。
+          gradients: true,
+          // 设置居中
+          autoCenter: true,
+          // 加速
+          acceleration: true,
+          // 设置’初始化’页面
+          page: self.page,
+          // 页面宽度
+          width: self.book_width,
+          height: self.book_height,
+          // 何时事件
+          when: {
+            // 翻页完成时触发
+            turned: function (e, page, view) {
+              let thisPage = self.allPages.length - page;
+              that.thickness_width = thisPage / 2;
+              page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
+              self.bottomNum = page;
+              if (page == self.allPages.length) {
+                self.isZoom ? $(".normal_right_border").css("margin-left", "664px") : $(".normal_right_border").css("margin-left", "555px");
+              }
+              // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
+            },
 
-              // 开始翻页时触发
-              turning: function (e, page, view) {
-                if (page == self.allPages.length && self.isZoom) {
-                  $(".thickness_left").css("margin-right", "-377px");
-                } else if (page == self.allPages.length) {
-                  $(".thickness_left").css("margin-right", "-313px");
-                } else {
-                  $(".thickness_left").css("margin-right", "0px");
+            missing: function (e, pages) {
+              console.log(pages);
+              if (page == 1) {
+                for (let i = 1; i < self.allPages.length; i++) {
+                  self.allPages[i]++;
                 }
+              }
+            },
 
-                if (page != 1) {
-                  $(".thickness_left").css("visibility", "visible");
-                }
-                if (page != self.allPages.length) {
-                  $(".thickness").css("visibility", "visible");
-                }
-              },
-              // 点击拖动页脚触发
-              start: function (event, pageobject, corner) {
-                // console.log("start",pageobject);
-                if (pageobject.page == 1 || pageobject.page == 2) {
-                  // console.log("第一页页脚");
-                  $(".thickness_left").css("visibility", "hidden");
-                } else if (pageobject.page == self.allPages.length - 1) {
-                  // console.log("最后一页页脚");
-                  $(".thickness").css("visibility", "hidden");
-                }
-              },
+            // 开始翻页时触发
+            turning: function (e, page, view) {
+              if (page == self.allPages.length && self.isZoom) {
+                $(".thickness_left").css("margin-right", "-337px");
+              } else if (page == self.allPages.length) {
+                $(".thickness_left").css("margin-right", "-281px");
+              } else {
+                $(".thickness_left").css("margin-right", "0px");
+              }
 
-            }
-          });
+              if (page != 1) {
+                $(".thickness_left").css("visibility", "visible");
+              }
+              if (page != self.allPages.length) {
+                $(".thickness").css("visibility", "visible");
+              }
+            },
+            // 点击拖动页脚触发
+            start: function (event, pageobject, corner) {
+              // console.log("start",pageobject);
+              if (pageobject.page == 1 || pageobject.page == 2) {
+                // console.log("第一页页脚");
+                $(".thickness_left").css("visibility", "hidden");
+              } else if (pageobject.page == self.allPages.length - 1) {
+                // console.log("最后一页页脚");
+                $(".thickness").css("visibility", "hidden");
+              }
+            },
+
+          }
         });
+
       } else {
         console.log("小屏幕");
         // 设置阅读器位置
         $("#magazineMobile").turn("center");
         // 设置开始页数
         $("#magazineMobile").turn("page");
-        this.$nextTick(() => {
-          $("#magazineMobile").turn({
-            display: "single",
-            // 设置过度期间页面的高程
-            elevation: 50,
-            // 动画持续时间
-            duration: 200,
-            // 在过渡期间显示渐变和阴影。
-            gradients: true,
-            // 设置居中
-            autoCenter: true,
-            // 加速
-            acceleration: true,
-            // 设置’初始化’页面数量
-            page: self.page,
-            // 页面宽度
-            width: 364,
-            height: 556,
-            when: {
-              // 翻页完成时触发
-              turned: function (e, page, view) {
-                self.bottomNum = page;
-              },
-            }
-          });
-          $("#magazineMobile").css("overflow", "visible");
+        $("#magazineMobile").turn({
+          display: "single",
+          // 设置过度期间页面的高程
+          elevation: 50,
+          // 动画持续时间
+          duration: 200,
+          // 在过渡期间显示渐变和阴影。
+          gradients: true,
+          // 设置居中
+          autoCenter: true,
+          // 加速
+          acceleration: true,
+          // 设置’初始化’页面数量
+          page: self.page,
+          // 页面宽度
+          width: 364,
+          height: 556,
+          when: {
+            // 翻页完成时触发
+            turned: function (e, page, view) {
+              self.bottomNum = page;
+            },
+          }
         });
+        $("#magazineMobile").css("overflow", "visible");
+
       }
     },
 
@@ -592,8 +591,6 @@ export default {
             this.allCatalog[i].page += 2;
           }
           this.thickness_width = this.allPages.length / 2;
-          // console.log("this.thickness_width", this.thickness_width);
-          // console.log("this.allPages", this.allPages);
         }
       })
     },
@@ -606,8 +603,8 @@ export default {
         currentPage = $("#magazine").turn("page");
         // console.log("当前页面", currentPage);
         if (currentPage == this.allPages.length) {
-          $(".thickness_left").css("margin-right", "-377px");
-          $(".normal_right_border").css("margin-left", "738px");
+          $(".thickness_left").css("margin-right", "-337px");
+          $(".normal_right_border").css("margin-left", "664px");
         }
         $("#magazine").turn("zoom", fangda);
         this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
@@ -617,8 +614,7 @@ export default {
         // console.log("当前页面", currentPage);
         if (currentPage == this.allPages.length) {
           $(".normal_right_border").css("margin-left", "615px");
-          $(".thickness_left").css("margin-right", "-313px");
-
+          $(".thickness_left").css("margin-right", "-281px");
         }
         $("#magazine").turn("zoom", 1);
         this.thickness_height = this.thickness_left_height = this.book_height;
@@ -626,7 +622,7 @@ export default {
       }
     },
 
-    dblclick_pageMobile(){
+    dblclick_pageMobile() {
       var currentPage;
       // 判断是否已经放大
       if (this.isZoom == false) {
@@ -653,7 +649,7 @@ export default {
       $(".thickness_left").css("visibility", "hidden");
     },
 
-    turnFirstPageMobile(){
+    turnFirstPageMobile() {
       $("#magazineMobile").turn("page", 1);
     },
 
@@ -899,7 +895,7 @@ body {
   text-align: center;
 }
 
-.center_btn_mobile{
+.center_btn_mobile {
   height: 100%;
   width: 100%;
   margin: 0 auto;
@@ -938,7 +934,7 @@ body {
   margin-right: 30px;
 }
 
-.bottomNumPageBtnMobile{
+.bottomNumPageBtnMobile {
   width: 110px;
   height: 100%;
   float: left;
@@ -1148,7 +1144,7 @@ body {
   width: 2%;
   height: 100%;
   background-image: -webkit-gradient(linear, right top, left top, from(rgba(20, 20, 20, 0.5)), to(rgba(240, 240, 200, 0)));
-  margin-left: 615px;
+  margin-left: 555px;
 }
 
 .normal_right_border_mobile {
