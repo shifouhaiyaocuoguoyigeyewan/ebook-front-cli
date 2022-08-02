@@ -1,9 +1,26 @@
 <template>
 
-	<div style="min-height: 100vh; width:100%;display: flex;flex-direction: column;">
-		<div style="text-align: center;height: 100px;font-size: 50px;color: black;">所有书籍</div>
-		<div style="height: 100% ;padding: 20px;display: flex;flex-direction: row;">
-			<div v-for="(item, index) in allBooks" style="margin-right: 30px;display: flex;flex-direction: column;" @click="getBook(item.id)">
+	<div>
+		<div class="banner">
+			<!-- <div style="text-align: center;height: 100px;font-size: 50px;color: black;">所有书籍</div> -->
+			<h2 id="text">所有书籍</h2>
+			<div class="clouds">
+				<img src="@/assets/images/cloud1.png" style="--i:1;">
+				<img src="@/assets/images/cloud2.png" style="--i:1;">
+				<img src="@/assets/images/cloud3.png" style="--i:1;">
+				<img src="@/assets/images/cloud4.png" style="--i:1;">
+				<img src="@/assets/images/cloud5.png" style="--i:1;">
+				<img src="@/assets/images/cloud1.png" style="--i:1;">
+				<img src="@/assets/images/cloud2.png" style="--i:1;">
+				<img src="@/assets/images/cloud3.png" style="--i:1;">
+				<img src="@/assets/images/cloud4.png" style="--i:1;">
+				<img src="@/assets/images/cloud5.png" style="--i:1;">
+			</div>
+		</div>
+
+		<div style="height: 100%;padding: 50px;display: flex;flex-direction: row;background-color:#F5F5F5;">
+			<div v-for="(item, index) in allBooks" style="margin-right: 30px;display: flex;flex-direction: column;"
+				@click="getBook(item.id)">
 				<div style="width: 100px;height: 100px;">
 					<img :src="item.cover" style="width: 100%;height: 100%;">
 				</div>
@@ -12,24 +29,17 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 
-
-	<!-- <li @click="getBook()">
-		<img :src="imgUrl">
-		<div class="book-info">
-			<p class="book-title">{{book.title}}</p>
-			<p class="book-author">{{book.author}} | {{book.cat}}</p>
-			<p class="short-intro">{{book.shortIntro}}</p>
-			<p class="reader-info">{{latelyFollower}}万人气 | {{book.retentionRatio}}%读者留存</p>
-		</div>
-	</li> -->
 </template>
 
 <script>
-// import util from '@/utils/util'
+
+
 export default {
 	name: 'Bookslist',
+
 	data() {
 		return {
 			allBooks: [
@@ -46,6 +56,16 @@ export default {
 			],
 		}
 	},
+	created() {
+		this.Move();
+	},
+	mounted() {
+		let text = document.getElementById('text');
+		window.addEventListener('scroll', function () {
+			let value = window.scrollY;
+			text.style.marginBotton = value * 2 + 'px';
+		});
+	},
 	props: ['book'],
 	computed: {
 		// latelyFollower () {
@@ -57,62 +77,99 @@ export default {
 	},
 	methods: {
 		getBook(_id) {
-			this.$router.push('/reader/' + _id)
+			this.$router.push({
+				path: '/reader/' + _id,
+				params: {
+					id: _id,
+				}
+
+			})
+		},
+		// 开启页面滚动
+		Move() {
+			let m = function (e) { e.preventDefault(); };
+			document.body.style.overflow = '';//出现滚动条
+			document.removeEventListener("touchmove", m, { passive: true });
 		}
+
 	}
+
 }
+
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style >
-img {
-	width: 4rem;
-	height: 5rem;
-	float: left;
-	margin-right: 0.4rem;
-}
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-li {
-	margin-left: 1rem;
-	margin-right: 1rem;
-	border-bottom: 1px solid #e6dbdb;
-	padding-bottom: 0.2rem;
-	padding-top: 0.2rem;
-}
-
-li:active,
-li:focus {
-	background: #f2f2f2;
-}
-
-.book-info {
+body {
+	margin: 0;
+	padding: 0;
 	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+	overflow: scroll !important;
+}
+
+.banner {
+	position: relative;
 	width: 100%;
-	height: 5rem;
-	padding-left: 5rem;
-	padding-top: 0.2rem;
-	padding-bottom: 0.2rem;
+	height: 100vh;
+	background: url('@/assets/images/bookbg.jpg');
+	background-size: cover;
+	background-position: bottom;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.book-title {
-	font-weight: bold;
+.banner #text {
+	position: relative;
+	font-size: 100px;
+	color: #fff;
+	margin-bottom: 10%;
 }
 
-.short-intro {
+.banner .clouds {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	color: #655555;
+	pointer-events: none;
 }
 
-.book-author {
-	color: #655555;
+.banner .clouds img {
+	position: absolute;
+	bottom: 0;
+	max-width: 100%;
+	animation: animate calc(3s * var(--i)) linear infinite;
 }
 
-.book-info p {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 0.7rem;
-	line-height: 1.2rem;
+@keyframes animate {
+	0% {
+		opacity: 0;
+		transform: scale(1);
+	}
+
+	25%,
+	79% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(3);
+	}
+}
+
+section {
+	position: relative;
+	padding: 75px 100px;
+}
+
+section h2 {
+	position: relative;
+	font-size: 2.5em;
+	margin-bottom: 20px;
 }
 </style>

@@ -192,55 +192,6 @@
               <div class="evenshadow"></div>
             </div>
 
-            <!-- <div v-if="allCatalog.length > 10">
-          <div v-if="index != 1 || index != 2"
-            :style="{ background: 'url(' + item.url + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
-            <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
-              <div v-if="(item.page - 1) % 2 == 0" class="even-numbers ">
-                {{ item.page }}
-              </div>
-              <div v-else class="odd-number">{{ item.page }}
-              </div>
-            </footer>
-            <div v-if="item.page == 1" class="firstShadow">
-              <div class="pageFirstShadow"></div>
-            </div>
-            <div v-if="item.page == allPages.length" class="normal_right_border">
-              <div class="ysj_dsd"></div>
-            </div>
-            <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
-            <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
-          </div>
-          <div v-if="index == 1"
-            style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-            <div class="topCatalog"></div>
-            <div class="catalogText">目录</div>
-            <div class="catalogEn">Contents</div>
-            <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
-              <div class="catalogDetail">
-                <div class="singleCatalog" @click="turnPage(item.page)">
-                  {{ item.title }}: {{ item.description }}
-                </div>
-              </div>
-              <div class="catalogPageNum">
-                P{{ item.page }}
-              </div>
-            </div>
-            <footer class="currentpage">
-              <div class="odd-number">2</div>
-            </footer>
-            <div class="evenshadow"></div>
-          </div>
-          <div v-if="index == 2"
-            style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-            <div class="topCatalog"></div>
-            <footer class="currentpage">
-              <div class="even-number">3</div>
-            </footer>
-            <div class="oddshadow"></div>
-          </div>
-        </div> -->
-
           </div>
         </div>
         <!-- 右边页面厚度效果视图 -->
@@ -372,8 +323,10 @@ import { ElMessage } from 'element-plus';
 import host from "../utils/host";
 import axios from 'axios';
 
+
 export default {
   name: "Pages",
+
   data() {
     return {
       // 服务器host
@@ -405,7 +358,10 @@ export default {
   },
 
   created() {
-    this.requestBookAllPages(28);
+    this.stopMove();
+
+    // console.log(  this.$route.params.id );
+    this.requestBookAllPages(this.$route.params.id);
   },
 
   mounted() {
@@ -423,27 +379,7 @@ export default {
   methods: {
     loodBook() {
       let self = this, that = this;
-      //禁止鼠标滚轴+ctrl
-      document.addEventListener('keydown', function (event) {
-        if ((event.ctrlKey === true || event.metaKey === true)
-          && (event.which === 61 || event.which === 107
-            || event.which === 173 || event.which === 109
-            || event.which === 187 || event.which === 189)) {
-          event.preventDefault();
-        }
-      }, false);
-      // Chrome IE 360
-      window.addEventListener('mousewheel', function (event) {
-        if (event.ctrlKey === true || event.metaKey) {
-          event.preventDefault();
-        }
-      }, { passive: false });
-      //firefox
-      window.addEventListener('DOMMouseScroll', function (event) {
-        if (event.ctrlKey === true || event.metaKey) {
-          event.preventDefault();
-        }
-      }, { passive: false });
+
 
       // 加载书籍
       if ($(window).width() > 1024 && $(window).height() > 700) {
@@ -718,12 +654,41 @@ export default {
       this.isCatalogOpen = !this.isCatalogOpen;
     },
 
+    //停止页面滚动
+    stopMove() {
+      let m = function (e) { e.preventDefault(); };
+      document.body.style.overflow = 'hidden';
+      document.addEventListener("touchmove", m, { passive: false });//禁止页面滑动
+
+      //禁止鼠标滚轴+ctrl
+      document.addEventListener('keydown', function (event) {
+        if ((event.ctrlKey === true || event.metaKey === true)
+          && (event.which === 61 || event.which === 107
+            || event.which === 173 || event.which === 109
+            || event.which === 187 || event.which === 189)) {
+          event.preventDefault();
+        }
+      }, false);
+      // Chrome IE 360
+      window.addEventListener('mousewheel', function (event) {
+        if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+        }
+      }, { passive: false });
+      //firefox
+      window.addEventListener('DOMMouseScroll', function (event) {
+        if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+        }
+      }, { passive: false });
+    },
+
   },
 
   components: {}
 };
 </script>
-<style>
+<style scoped>
 body {
   z-index: 50;
   overflow: hidden;
@@ -732,14 +697,6 @@ body {
 }
 
 .magazineMobileView {
-  /* position: absolute;
-  width: 394px;
-  height: 556px;
-  left: -197px;
-  top: -278.449px;
-  transform: translate3d(0px, 0px, 0px);
-  margin-left: 0px; */
-
   min-height: 100vh;
   display: flex;
   flex-direction: row;
@@ -891,7 +848,7 @@ body {
 .center_btn {
   height: 100%;
   width: 804px;
-  margin: 0 auto;
+  margin: 0px 0px 0px 600px;
   text-align: center;
 }
 

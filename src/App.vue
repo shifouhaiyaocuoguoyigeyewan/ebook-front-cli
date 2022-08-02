@@ -1,15 +1,18 @@
 <template>
 
  <router-view></router-view>
+ <!-- <Reader></Reader> -->
 
 </template>
 
 <script>
+import Reader from './components/Reader.vue'
+
 export default {
   name: 'App',
   components: {
-
-  }
+    Reader
+}
 }
 </script>
 
@@ -22,4 +25,5 @@ body,
   margin: 0;
   min-height: 100vh;
 }
+
 </style>
