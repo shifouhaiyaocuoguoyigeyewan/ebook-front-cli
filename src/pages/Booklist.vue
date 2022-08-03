@@ -18,46 +18,76 @@
 			</div>
 		</div>
 
-		<div style="height: 100%;padding: 50px;display: flex;flex-direction: row;background-color:#F5F5F5;">
-			<div v-for="(item, index) in allBooks" style="margin-right: 30px;display: flex;flex-direction: column;"
-				@click="getBook(item.id)">
-				<div style="width: 100px;height: 100px;">
-					<img :src="item.cover" style="width: 100%;height: 100%;">
-				</div>
-				<div style="flex: 1;">
-					<div style="font-size: 20px;">{{ item.name }}</div>
+		<div class="writeFarming"
+			style="height: 100%;padding: 2% 20%;display: flex;flex-direction: row;flex-wrap: wrap;">
+			<div class="book" v-for="(item, index) in allBooks" @click="getBook(item.id)">
+				<div style="margin: 10%; height: 100%;">
+					<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;">
+						<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
+						<div class="book_name">{{ item.name }}</div>
+					</div>
 				</div>
 			</div>
+			<div v-for="item1 in shelfNum" class="shelf-bg"></div>
 		</div>
+
 
 	</div>
 
 </template>
 
 <script>
-
+import axios from 'axios';
+import host from "../utils/host";
 
 export default {
 	name: 'Bookslist',
-
+	components: {
+		// Books,
+	},
 	data() {
 		return {
+			host,
 			allBooks: [
 				{
-					name: '红楼梦',
-					cover: '',
+					name: '钢铁是怎样炼成的',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
 					id: '28',
 				},
 				{
 					name: '西游记',
-					cover: '',
-					id: '2',
-				}
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '红楼梦',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '三国演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '水浒传',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
 			],
+			shelfNum:0,
 		}
 	},
 	created() {
 		this.Move();
+		// this.getAllBooks();
+		this.shelfNum =  Math.ceil(this.allBooks.length/5);
+		console.log("this.shelfNum",this.shelfNum);
 	},
 	mounted() {
 		let text = document.getElementById('text');
@@ -66,23 +96,31 @@ export default {
 			text.style.marginBotton = value * 2 + 'px';
 		});
 	},
-	props: ['book'],
+	// props: ['book'],
 	computed: {
-		// latelyFollower () {
-		//   return (this.book.latelyFollower / 10000).toFixed(1)
-		// },
-		// imgUrl () {
-		//   return util.staticPath + this.book.cover
-		// }
+
 	},
 	methods: {
+		// 路由跳转
 		getBook(_id) {
 			this.$router.push({
 				path: '/reader/' + _id,
 				params: {
 					id: _id,
 				}
-
+			})
+		},
+		// 得到所有书籍信息
+		getAllBooks() {
+			var _this = this;
+			axios({
+				method: "get",
+				url: '/book/allbooks',
+			}).then((res) => {
+				console.log("res", res);
+				if (res.data.code == 200) {
+					_this.allBooks = res.data.allBooks;
+				}
 			})
 		},
 		// 开启页面滚动
@@ -99,14 +137,40 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
 body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	font-family: 'Poppins', sans-serif;
 	overflow: scroll !important;
+}
+
+.writeFarming {
+	background: linear-gradient(-45deg, #ffffff, #f1f7f4f1, #c7c3c0c0, #6e6b6ada);
+	animation: gradientBG 10s ease infinite;
+	background-size: 400% 400%;
+}
+
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.shelf-bg {
+	width: 100%;
+	height: 114px;
+	background: url('@/assets/images/banner_shelf.jpg');
+	background-size: 100% 100%;
+	margin-top: -35px;
 }
 
 .banner {
@@ -162,14 +226,22 @@ body {
 	}
 }
 
-section {
-	position: relative;
-	padding: 75px 100px;
+.book {
+	width: 20%;
+	float: left;
+	height: 300px;
+
 }
 
-section h2 {
-	position: relative;
-	font-size: 2.5em;
-	margin-bottom: 20px;
+.book_name {
+	height: 10%;
+	width: 90%;
+	margin: 0px 7px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: bold;
+	font-family: Georgia, "Times New Roman", Times, serif;
 }
 </style>

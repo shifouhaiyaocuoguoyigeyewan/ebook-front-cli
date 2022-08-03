@@ -1,14 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-// import mutations from './mutations'
+import { createStore } from "vuex";
 
-Vue.use(Vuex)
-
-const state = {
-  id : '',
-}
-
-export default new Vuex.Store({
-  state,
-  // mutations
-})
+export default createStore({
+  state:{
+    allBooks : [],
+  },
+  mutations:{}
+});

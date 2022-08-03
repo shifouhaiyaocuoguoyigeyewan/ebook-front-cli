@@ -3,14 +3,6 @@ const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
 
 module.exports = defineConfig({
-  // // 打包时复制文件插件
-  // plugins: [
-  //   new CopyPlugin({
-  //     patterns: [
-  //       { from: "src/assest/*", to: "dist/public/assest" }
-  //     ],
-  //   }),
-  // ],
   transpileDependencies: true,
   // 禁用esLint检查
   lintOnSave: false,

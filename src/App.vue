@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Reader from './components/Reader.vue'
+import Reader from './pages/Reader.vue'
 
 export default {
   name: 'App',

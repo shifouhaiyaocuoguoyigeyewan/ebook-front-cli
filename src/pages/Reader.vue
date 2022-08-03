@@ -54,7 +54,7 @@
           <!-- 设置外边距 -->
           <div class="center_btn_mobile">
             <!-- 放置所有元素的盒子 -->
-            <div class="center_btnn">
+            <div class="center_btnn_mobile">
               <!-- 目录 -->
               <div class="btnbox_mobile" @click="turnCatalogPageMobile">
                 <div class="btn">
@@ -204,7 +204,7 @@
         <div class="center_btn">
           <!-- 放置所有元素的盒子 -->
           <div class="center_btnn">
-            <!-- 目录 -->
+          
             <div class="btnbox" @click="turnCatalogPage">
               <div class="btn">
                 <el-tooltip content="目录" placement="top" effect="light">
@@ -215,7 +215,6 @@
               </div>
             </div>
 
-            <!-- 跳到第一页 -->
             <div class="btnbox" @click="turnFirstPage">
               <div class="btn">
                 <el-tooltip content="第一页" placement="top" effect="light">
@@ -419,7 +418,6 @@ export default {
               if (page == self.allPages.length) {
                 self.isZoom ? $(".normal_right_border").css("margin-left", "664px") : $(".normal_right_border").css("margin-left", "555px");
               }
-              // page == allPages.length ? that.thickness_width = 0 : that.thickness_width = (allPages.length - page) / 2;
             },
 
             missing: function (e, pages) {
@@ -549,7 +547,7 @@ export default {
         currentPage = $("#magazine").turn("page");
         // console.log("当前页面", currentPage);
         if (currentPage == this.allPages.length) {
-          $(".normal_right_border").css("margin-left", "615px");
+          $(".normal_right_border").css("margin-left", "555px");
           $(".thickness_left").css("margin-right", "-281px");
         }
         $("#magazine").turn("zoom", 1);
@@ -848,7 +846,7 @@ body {
 .center_btn {
   height: 100%;
   width: 804px;
-  margin: 0px 0px 0px 600px;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -860,15 +858,22 @@ body {
 }
 
 .center_btnn {
-  display: inline-block;
+  display: block;
   height: 100%;
+  margin: 0 0 0 80px;
+}
+
+.center_btnn_mobile {
+  display: block;
+  height: 100%;
+  margin: 0 0 0 30px;
 }
 
 .btnbox {
   width: 42px;
   height: 100%;
   float: left;
-  display: inline-block;
+  display: block;
   padding: 0;
   margin-right: 30px;
 }

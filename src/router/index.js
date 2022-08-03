@@ -3,12 +3,12 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
     {
         path: '/',
-        component: ()=>import('../components/Booklist.vue'),           
+        component: ()=>import('../pages/Booklist.vue'),           
     },
     {
         path: '/reader/:id',
         name: "reader",
-        component: ()=>import('../components/Reader.vue'), 
+        component: ()=>import('../pages/Reader.vue'), 
     },
 ]
 export const router = createRouter({
