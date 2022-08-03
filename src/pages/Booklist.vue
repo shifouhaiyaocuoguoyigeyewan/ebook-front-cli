@@ -1,6 +1,6 @@
 <template>
 
-	<div>
+	<div style="min-height: 100vh;">
 		<div class="banner">
 			<!-- <div style="text-align: center;height: 100px;font-size: 50px;color: black;">所有书籍</div> -->
 			<h2 id="text">所有书籍</h2>
@@ -19,17 +19,22 @@
 		</div>
 
 		<div class="writeFarming"
-			style="height: 100%;padding: 2% 20%;display: flex;flex-direction: row;flex-wrap: wrap;">
+			style="height: 100%;padding: 0% 20%;display: flex;flex-direction: row;flex-wrap: wrap;position: absolute;overflow: hidden;">
 			<div class="book" v-for="(item, index) in allBooks" @click="getBook(item.id)">
-				<div style="margin: 10%; height: 100%;">
+				<div style="padding: 10%  10% ; height: 100%;">
 					<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;">
 						<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
 						<div class="book_name">{{ item.name }}</div>
 					</div>
 				</div>
 			</div>
-			<div v-for="item1 in shelfNum" class="shelf-bg"></div>
+
+			<div
+				style="position:absolute ;display: flex; flex-direction: column;width: 60%;margin-top: 260px;overflow: hidden;height: 100%;">
+				<div v-for="item1 in shelfNum" class="shelf-bg"></div>
+			</div>
 		</div>
+
 
 
 	</div>
@@ -80,14 +85,13 @@ export default {
 					id: '28',
 				},
 			],
-			shelfNum:0,
+			shelfNum: 0,
 		}
 	},
 	created() {
 		this.Move();
 		// this.getAllBooks();
-		this.shelfNum =  Math.ceil(this.allBooks.length/5);
-		console.log("this.shelfNum",this.shelfNum);
+		this.shelfNum = Math.ceil(this.allBooks.length / 5);
 	},
 	mounted() {
 		let text = document.getElementById('text');
@@ -170,7 +174,8 @@ body {
 	height: 114px;
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
-	margin-top: -35px;
+	margin-bottom: 250px;
+	overflow: hidden;
 }
 
 .banner {
@@ -230,7 +235,8 @@ body {
 	width: 20%;
 	float: left;
 	height: 300px;
-
+	margin-bottom: 40px;
+	z-index: 50;
 }
 
 .book_name {

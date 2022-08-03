@@ -204,7 +204,7 @@
         <div class="center_btn">
           <!-- 放置所有元素的盒子 -->
           <div class="center_btnn">
-          
+
             <div class="btnbox" @click="turnCatalogPage">
               <div class="btn">
                 <el-tooltip content="目录" placement="top" effect="light">
@@ -358,8 +358,6 @@ export default {
 
   created() {
     this.stopMove();
-
-    // console.log(  this.$route.params.id );
     this.requestBookAllPages(this.$route.params.id);
   },
 
@@ -715,7 +713,7 @@ body {
 }
 
 .bottom_tools_mobile {
-  position: absolute;
+  position: fixed;
   height: 54px;
   width: 100%;
   z-index: 777000;
@@ -836,7 +834,7 @@ body {
 }
 
 .bottom_tools {
-  position: absolute;
+  position: fixed;
   height: 54px;
   width: 100%;
   z-index: 777000;
