@@ -26,8 +26,8 @@
 			</div>
 			<!-- 书本呈现 -->
 			<div
-				style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;margin-top: 2%;">
-				<div id="test" v-for="(item, index) in allBooks" style="z-index: 50;margin-left: 15px;margin-right: 18px;  ">
+				style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;">
+				<div id="test" v-for="(item, index) in allBooks" style="z-index: 50;margin-left: 15px;margin-right: 18px;margin-top: 10px;  ">
 					<div class="book" style="height: 260px; " v-if="item.name.indexOf(input_search) != -1">
 						
 							<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;"
@@ -41,8 +41,11 @@
 
 				<!-- 书架 -->
 				<div
-					style="position: absolute;display: flex; flex-direction: column;width: 100%;overflow: hidden;padding-top: 25px;">
-					<div v-for="item1 in shelfNum" class="shelf-bg"></div>
+					style="position: absolute;display: flex; flex-direction: column;width: 100%;overflow: hidden;padding-top: 41px;">
+					<div v-for="(item1,index1) in shelfNum" >
+					<div v-if="index1 == 0" class="shelf-bg-first"></div>
+					<div v-if="index1 != 0" class="shelf-bg"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -85,6 +88,76 @@ export default {
 				},
 				{
 					name: '水浒传',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
 					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
 					id: '28',
 				},
@@ -275,7 +348,7 @@ body {
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
-	margin-top: 20.3%;
+	margin-top: 19.8%;
 }
 
 .shelf-bg-first {
@@ -284,7 +357,7 @@ body {
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
-	margin-top: 22%;
+	margin-top: 18.6%;
 }
 
 .banner {
