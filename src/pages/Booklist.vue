@@ -1,6 +1,6 @@
 <template>
 
-	<div style="min-height: 100vh;">
+	<div>
 		<div class="banner">
 			<!-- <div style="text-align: center;height: 100px;font-size: 50px;color: black;">所有书籍</div> -->
 			<h2 id="text">所有书籍</h2>
@@ -18,25 +18,32 @@
 			</div>
 		</div>
 
-		<div class="writeFarming"
-			style="height: 100%;padding: 0% 20%;display: flex;flex-direction: row;flex-wrap: wrap;position: absolute;overflow: hidden;">
-			<div class="book" v-for="(item, index) in allBooks" @click="getBook(item.id)">
-				<div style="padding: 10%  10% ; height: 100%;">
-					<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;">
-						<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
-						<div class="book_name">{{ item.name }}</div>
+		<div class="book_list" style="height: 100%;padding: 0% 20%;">
+			<!-- 搜索框 -->
+			<div style="display: flex;justify-content: center;">
+				<el-input style="margin-top: 2%;" v-model="input_search" placeholder="输入书名">
+				</el-input>
+			</div>
+			<!-- 书本呈现 -->
+			<div style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;">
+				<div v-for="(item, index) in allBooks">
+					<div class="book" style="height: 300px; width: ; " v-if="item.name.indexOf(input_search) != -1">
+						<!-- v-if="item.name.indexOf(input_search) != -1" -->
+						<div style="margin: 10% 10%; height: 100%;" @click="getBook(item.id)">
+							<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;">
+								<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
+								<div class="book_name">{{ item.name }}</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-
-			<div
-				style="position:absolute ;display: flex; flex-direction: column;width: 60%;margin-top: 260px;overflow: hidden;height: 100%;">
-				<div v-for="item1 in shelfNum" class="shelf-bg"></div>
+				<!-- 书架 -->
+				<div
+					style="position: absolute;display: flex; flex-direction: column;width: 100%;overflow: hidden;padding-top: 33px;">
+					<div v-for="item1 in shelfNum" class="shelf-bg"></div>
+				</div>
 			</div>
 		</div>
-
-
-
 	</div>
 
 </template>
@@ -52,6 +59,7 @@ export default {
 	},
 	data() {
 		return {
+			input_search: "",
 			host,
 			allBooks: [
 				{
@@ -76,6 +84,101 @@ export default {
 				},
 				{
 					name: '水浒传',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
+					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
+					id: '28',
+				},
+				{
+					name: '隋唐演义',
 					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
 					id: '28',
 				},
@@ -119,7 +222,7 @@ export default {
 			var _this = this;
 			axios({
 				method: "get",
-				url: '/book/allbooks',
+				url: '/book/list',
 			}).then((res) => {
 				console.log("res", res);
 				if (res.data.code == 200) {
@@ -132,7 +235,7 @@ export default {
 			let m = function (e) { e.preventDefault(); };
 			document.body.style.overflow = '';//出现滚动条
 			document.removeEventListener("touchmove", m, { passive: true });
-		}
+		},
 
 	}
 
@@ -149,7 +252,7 @@ body {
 	overflow: scroll !important;
 }
 
-.writeFarming {
+.book_list {
 	background: linear-gradient(-45deg, #ffffff, #f1f7f4f1, #c7c3c0c0, #6e6b6ada);
 	animation: gradientBG 10s ease infinite;
 	background-size: 400% 400%;
@@ -171,11 +274,20 @@ body {
 
 .shelf-bg {
 	width: 100%;
-	height: 114px;
+	height: 90px;
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
-	margin-bottom: 250px;
 	overflow: hidden;
+	margin-top: 21.4%;
+}
+
+.shelf-bg-first {
+	width: 100%;
+	height: 90px;
+	background: url('@/assets/images/banner_shelf.jpg');
+	background-size: 100% 100%;
+	overflow: hidden;
+	margin-top: 22%;
 }
 
 .banner {
@@ -233,9 +345,6 @@ body {
 
 .book {
 	width: 20%;
-	float: left;
-	height: 300px;
-	margin-bottom: 40px;
 	z-index: 50;
 }
 
