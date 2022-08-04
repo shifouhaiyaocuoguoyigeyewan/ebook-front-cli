@@ -25,21 +25,23 @@
 				</el-input>
 			</div>
 			<!-- 书本呈现 -->
-			<div style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;">
-				<div v-for="(item, index) in allBooks">
-					<div class="book" style="height: 300px; width: ; " v-if="item.name.indexOf(input_search) != -1">
-						<!-- v-if="item.name.indexOf(input_search) != -1" -->
-						<div style="margin: 10% 10%; height: 100%;" @click="getBook(item.id)">
-							<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;">
+			<div
+				style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;margin-top: 2%;">
+				<div id="test" v-for="(item, index) in allBooks" style="z-index: 50;margin-left: 15px;margin-right: 18px;  ">
+					<div class="book" style="height: 260px; " v-if="item.name.indexOf(input_search) != -1">
+						
+							<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;"
+								@click="getBook(item.id)">
 								<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
 								<div class="book_name">{{ item.name }}</div>
 							</div>
-						</div>
+						
 					</div>
 				</div>
+
 				<!-- 书架 -->
 				<div
-					style="position: absolute;display: flex; flex-direction: column;width: 100%;overflow: hidden;padding-top: 33px;">
+					style="position: absolute;display: flex; flex-direction: column;width: 100%;overflow: hidden;padding-top: 25px;">
 					<div v-for="item1 in shelfNum" class="shelf-bg"></div>
 				</div>
 			</div>
@@ -51,7 +53,6 @@
 <script>
 import axios from 'axios';
 import host from "../utils/host";
-
 export default {
 	name: 'Bookslist',
 	components: {
@@ -205,7 +206,6 @@ export default {
 	},
 	// props: ['book'],
 	computed: {
-
 	},
 	methods: {
 		// 路由跳转
@@ -236,11 +236,8 @@ export default {
 			document.body.style.overflow = '';//出现滚动条
 			document.removeEventListener("touchmove", m, { passive: true });
 		},
-
 	}
-
 }
-
 </script>
 
 <style scoped>
@@ -278,7 +275,7 @@ body {
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
-	margin-top: 21.4%;
+	margin-top: 20.3%;
 }
 
 .shelf-bg-first {
@@ -344,8 +341,9 @@ body {
 }
 
 .book {
-	width: 20%;
-	z-index: 50;
+	width: 100%;
+	/* z-index: 50; */
+	/* margin: 0 20%; */
 }
 
 .book_name {
