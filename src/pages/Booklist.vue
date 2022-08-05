@@ -24,30 +24,33 @@
 				<el-input style="margin-top: 2%;" v-model="input_search" placeholder="输入书名">
 				</el-input>
 			</div>
-			<!-- 书本呈现 -->
-			<div
-				style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;">
-				<div id="test" v-for="(item, index) in allBooks" style="z-index: 50;margin-left: 15px;margin-right: 18px;margin-top: 10px;  ">
-					<div class="book" style="height: 260px; " v-if="item.name.indexOf(input_search) != -1">
-						
-							<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;"
-								@click="getBook(item.id)">
-								<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
-								<div class="book_name">{{ item.name }}</div>
-							</div>
-						
-					</div>
-				</div>
 
-				<!-- 书架 -->
-				<div
-					style="position: absolute;display: flex; flex-direction: column;width: 100%;overflow: hidden;padding-top: 41px;">
-					<div v-for="(item1,index1) in shelfNum" >
-					<div v-if="index1 == 0" class="shelf-bg-first"></div>
-					<div v-if="index1 != 0" class="shelf-bg"></div>
+
+					<!-- 书本呈现 -->
+					<div style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;">
+						<div id="test" v-for="(item, index) in allBooks"
+							style="z-index: 50;max-width: 150px;margin-left: 25px;margin-right: 18px;margin-top: 10px;  ">
+							<div class="book" style="height: 260px; " v-if="item.name.indexOf(input_search) != -1">
+
+								<div style="background: rgb(255, 255, 255);height: 90%;cursor: pointer;"
+									@click="getBook(item.id)">
+									<img style="height: 90%;width: 100%;" :src="host + item.cover" alt="">
+									<div class="book_name">{{ item.name }}</div>
+								</div>
+
+							</div>
+						</div>
+
+						<!-- 书架 -->
+						<div id="bookshelf"
+							style="">
+							<div v-for="(item1, index1) in shelfNum">
+								<div v-if="index1 == 0" class="shelf-bg-first"></div>
+								<div v-if="index1 != 0" class="shelf-bg"></div>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
+
 		</div>
 	</div>
 
@@ -59,216 +62,25 @@ import host from "../utils/host";
 export default {
 	name: 'Bookslist',
 	components: {
-		// Books,
 	},
 	data() {
 		return {
 			input_search: "",
 			host,
 			allBooks: [
-				{
-					name: '钢铁是怎样炼成的',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '西游记',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '红楼梦',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '三国演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '水浒传',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
-				{
-					name: '隋唐演义',
-					cover: '/upload/cb/fdb4f9050d183d9680e24184ab08c9.webp',
-					id: '28',
-				},
+
+
+
+
+
 			],
 			shelfNum: 0,
 		}
 	},
 	created() {
 		this.Move();
-		// this.getAllBooks();
-		this.shelfNum = Math.ceil(this.allBooks.length / 5);
+		this.getAllBooks();
+		
 	},
 	mounted() {
 		let text = document.getElementById('text');
@@ -299,7 +111,8 @@ export default {
 			}).then((res) => {
 				console.log("res", res);
 				if (res.data.code == 200) {
-					_this.allBooks = res.data.allBooks;
+					_this.allBooks = res.data.data;
+					_this.shelfNum = Math.ceil(this.allBooks.length / 6);
 				}
 			})
 		},
@@ -320,6 +133,18 @@ body {
 	box-sizing: border-box;
 	font-family: 'Poppins', sans-serif;
 	overflow: scroll !important;
+}
+
+@media only screen and (min-width:1880px) and (max-width:1930px) {
+	#bookshelf{
+		visibility: visible;
+		position: absolute;
+		display: flex; 
+		flex-direction: column;
+		width: 100%;
+		overflow: hidden;
+		padding-top: 4.5px;
+	}
 }
 
 .book_list {
@@ -348,7 +173,7 @@ body {
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
-	margin-top: 19.8%;
+	margin-top: 15.8%;
 }
 
 .shelf-bg-first {
@@ -357,7 +182,7 @@ body {
 	background: url('@/assets/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
-	margin-top: 18.6%;
+	margin-top: 17.7%;
 }
 
 .banner {
@@ -374,7 +199,7 @@ body {
 
 .banner #text {
 	position: relative;
-	font-size: 100px;
+	font-size: 88px;
 	color: #fff;
 	margin-bottom: 10%;
 }

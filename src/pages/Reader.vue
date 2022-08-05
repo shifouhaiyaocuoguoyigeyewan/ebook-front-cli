@@ -18,7 +18,7 @@
                 <div v-if="item.page == 1" class="firstShadow">
                   <div class="pageFirstShadow"></div>
                 </div>
-                <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
+                <div v-if="  allPages.length /2 ==0 " class="normal_right_border_mobile">
                   <div class="ysj_dsd"></div>
                 </div>
               </div>
@@ -160,7 +160,7 @@
               <div v-if="item.page == 1" class="firstShadow">
                 <div class="pageFirstShadow"></div>
               </div>
-              <div v-if="item.page == allPages.length" class="normal_right_border">
+              <div v-if="item.page == allPages.length &&allPages.length /2 ==0 " class="normal_right_border">
                 <div class="ysj_dsd"></div>
               </div>
               <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
@@ -431,7 +431,7 @@ export default {
             turning: function (e, page, view) {
               if (page == self.allPages.length && self.isZoom) {
                 $(".thickness_left").css("margin-right", "-337px");
-              } else if (page == self.allPages.length) {
+              } else if (page == self.allPages.length && self.allPages.length /2 ==0) {
                 $(".thickness_left").css("margin-right", "-281px");
               } else {
                 $(".thickness_left").css("margin-right", "0px");
@@ -534,7 +534,7 @@ export default {
         let fangda = 1.2;
         currentPage = $("#magazine").turn("page");
         // console.log("当前页面", currentPage);
-        if (currentPage == this.allPages.length) {
+        if (currentPage == this.allPages.length &&  this.allPages.length /2 ==0) {
           $(".thickness_left").css("margin-right", "-337px");
           $(".normal_right_border").css("margin-left", "664px");
         }
@@ -544,7 +544,7 @@ export default {
       } else {
         currentPage = $("#magazine").turn("page");
         // console.log("当前页面", currentPage);
-        if (currentPage == this.allPages.length) {
+        if (currentPage == this.allPages.length &&  this.allPages.length /2 ==0) {
           $(".normal_right_border").css("margin-left", "555px");
           $(".thickness_left").css("margin-right", "-281px");
         }

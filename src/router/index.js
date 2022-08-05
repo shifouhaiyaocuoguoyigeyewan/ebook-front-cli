@@ -5,6 +5,10 @@ const routes = [
         path: '/',
         component: ()=>import('../pages/Booklist.vue'),           
     },
+    // {
+    //     path: '/',
+    //     component: ()=>import('../pages/Test.vue'),           
+    // },
     {
         path: '/reader/:id',
         name: "reader",
