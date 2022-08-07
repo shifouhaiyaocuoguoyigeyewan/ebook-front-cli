@@ -3,6 +3,8 @@ const webpack = require('webpack');
 
 module.exports = defineConfig({
   transpileDependencies: true,
+  // 去掉打包生成的.map 文件
+  productionSourceMap:false,
   // 禁用esLint检查
   lintOnSave: false,
   // 配置jquery
