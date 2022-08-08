@@ -34,8 +34,4 @@ module.exports = defineConfig({
     },
   },
 
-  // 生产模式
-  // publicPath: './',
-  // outputDir:process.env.outputDir,
-
 })

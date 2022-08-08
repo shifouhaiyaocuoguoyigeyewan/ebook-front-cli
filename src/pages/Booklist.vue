@@ -2,19 +2,18 @@
 
 	<div>
 		<div class="banner">
-			<!-- <div style="text-align: center;height: 100px;font-size: 50px;color: black;">所有书籍</div> -->
 			<h2 id="text">所有书籍</h2>
 			<div class="clouds">
-				<img src="@/assets/images/cloud1.png" style="--i:1;">
-				<img src="@/assets/images/cloud2.png" style="--i:1;">
-				<img src="@/assets/images/cloud3.png" style="--i:1;">
-				<img src="@/assets/images/cloud4.png" style="--i:1;">
-				<img src="@/assets/images/cloud5.png" style="--i:1;">
-				<img src="@/assets/images/cloud1.png" style="--i:1;">
-				<img src="@/assets/images/cloud2.png" style="--i:1;">
-				<img src="@/assets/images/cloud3.png" style="--i:1;">
-				<img src="@/assets/images/cloud4.png" style="--i:1;">
-				<img src="@/assets/images/cloud5.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud1.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud2.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud3.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud4.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud5.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud1.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud2.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud3.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud4.png" style="--i:1;">
+				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud5.png" style="--i:1;">
 			</div>
 		</div>
 
@@ -67,13 +66,7 @@ export default {
 		return {
 			input_search: "",
 			host,
-			allBooks: [
-
-
-
-
-
-			],
+			allBooks: [],
 			shelfNum: 0,
 		}
 	},
@@ -170,7 +163,7 @@ body {
 .shelf-bg {
 	width: 100%;
 	height: 90px;
-	background: url('@/assets/images/banner_shelf.jpg');
+	background: url('http://huadajiyin_book.wdsjxiaochen.xin/book/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
 	margin-top: 15.8%;
@@ -179,7 +172,7 @@ body {
 .shelf-bg-first {
 	width: 100%;
 	height: 90px;
-	background: url('@/assets/images/banner_shelf.jpg');
+	background: url('http://huadajiyin_book.wdsjxiaochen.xin/book/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
 	margin-top: 17.7%;
@@ -189,7 +182,7 @@ body {
 	position: relative;
 	width: 100%;
 	height: 100vh;
-	background: url('@/assets/images/bookbg.jpg');
+	background: url('http://huadajiyin_book.wdsjxiaochen.xin/book/images/bookbg.jpg');
 	background-size: cover;
 	background-position: bottom;
 	display: flex;
@@ -240,8 +233,6 @@ body {
 
 .book {
 	width: 100%;
-	/* z-index: 50; */
-	/* margin: 0 20%; */
 }
 
 .book_name {
