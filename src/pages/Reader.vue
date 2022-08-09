@@ -18,7 +18,7 @@
               <div v-if="item.page == 1" class="firstShadow">
                 <div class="pageFirstShadow"></div>
               </div>
-              <div v-if="allPages.length / 2 == 0" class="normal_right_border_mobile">
+              <div class="normal_right_border_mobile">
                 <div class="ysj_dsd"></div>
               </div>
             </div>
@@ -90,7 +90,7 @@
             <div class="bottomNumPageBtnMobile">
               <div class="btn">
                 <el-input-number style="margin: 10px 0px;width: 100px;" v-model="bottomNum" :min="1" :step="1"
-                  @change="turnPageMobile" />
+                  step-strictly @change="turnPageMobile" />
               </div>
             </div>
 
@@ -161,7 +161,7 @@
             <div v-if="item.page == 1" class="firstShadow">
               <div class="pageFirstShadow"></div>
             </div>
-            <div v-if="item.page == allPages.length && allPages.length / 2 == 0" class="normal_right_border">
+            <div v-if="item.page == allPages.length && allPages.length % 2 == 0" class="normal_right_border">
               <div class="ysj_dsd"></div>
             </div>
             <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
@@ -239,7 +239,7 @@
           <div class="bottomNumPageBtn">
             <div class="btn">
               <el-input-number size="large" style="margin: 7px 0px;" v-model="bottomNum" :min="1" :step="1"
-                @change="turnPage" />
+                step-strictly @change="turnPage" />
             </div>
           </div>
 
@@ -330,7 +330,6 @@ export default {
     return {
       // 服务器host
       host,
-      value: "",
       page: 1,
       cover: "",
       //放大标志
@@ -358,7 +357,7 @@ export default {
 
   created() {
     this.stopMove();
-    console.log(this.$route.params.id);
+    // console.log(this.$route.params.id);
     this.requestBookAllPages(this.$route.params.id);
   },
 
@@ -377,8 +376,6 @@ export default {
   methods: {
     loodBook() {
       let self = this, that = this;
-
-
       // 加载书籍
       if ($(window).width() > 1024 && $(window).height() > 700) {
         console.log("大屏幕开始渲染", self.allPages);
@@ -432,7 +429,7 @@ export default {
             turning: function (e, page, view) {
               if (page == self.allPages.length && self.isZoom) {
                 $(".thickness_left").css("margin-right", "-337px");
-              } else if (page == self.allPages.length && self.allPages.length / 2 == 0) {
+              } else if (page == self.allPages.length && self.allPages.length % 2 == 0) {
                 $(".thickness_left").css("margin-right", "-281px");
               } else {
                 $(".thickness_left").css("margin-right", "0px");
@@ -534,8 +531,7 @@ export default {
       if (this.isZoom == false) {
         let fangda = 1.2;
         currentPage = $("#magazine").turn("page");
-        // console.log("当前页面", currentPage);
-        if (currentPage == this.allPages.length && this.allPages.length / 2 == 0) {
+        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
           $(".thickness_left").css("margin-right", "-337px");
           $(".normal_right_border").css("margin-left", "664px");
         }
@@ -544,8 +540,7 @@ export default {
         this.isZoom = true;
       } else {
         currentPage = $("#magazine").turn("page");
-        // console.log("当前页面", currentPage);
-        if (currentPage == this.allPages.length && this.allPages.length / 2 == 0) {
+        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
           $(".normal_right_border").css("margin-left", "555px");
           $(".thickness_left").css("margin-right", "-281px");
         }
@@ -587,14 +582,16 @@ export default {
     },
 
     turnLastPage() {
+      console.log("this.allPages.length", this.allPages.length);
       $("#magazine").turn("page", this.allPages.length);
       $(".thickness").css("visibility", "hidden");
       $(".thickness_left").css("visibility", "visible");
+      this.bottomNum = this.allPages.length;
     },
 
     turnLastPageMobile() {
       $("#magazineMobile").turn("page", this.allPages.length);
-
+      this.bottomNum = this.allPages.length;
     },
 
     turnPreviousPage() {
@@ -614,11 +611,6 @@ export default {
     },
 
     turnPage(page) {
-      if (page > this.allPages.length) {
-        // ElMessage.error('书本页数不存在，请联系管理员修改');
-        turnLastPage();
-      }
-      $("#magazine").turn("page", page);
       if (page == 1) {
         $(".thickness_left").css("visibility", "hidden");
       } else if (page == this.allPages.length) {
@@ -628,14 +620,21 @@ export default {
         $(".thickness_left").css("visibility", "visible");
         $(".thickness").css("visibility", "visible");
       }
+      if (page > this.allPages.length) {
+        this.turnLastPage();
+      } else {
+        $("#magazine").turn("page", page);
+      }
+
     },
 
     turnPageMobile(page) {
       if (page > this.allPages.length) {
         // ElMessage.error('书本页数不存在，请联系管理员修改');
-        turnLastPage();
+        this.turnLastPageMobile();
+      } else {
+        $("#magazineMobile").turn("page", page);
       }
-      $("#magazineMobile").turn("page", page);
     },
 
     turnCatalogPage() {
