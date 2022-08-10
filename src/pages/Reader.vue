@@ -89,8 +89,8 @@
 
             <div class="bottomNumPageBtnMobile">
               <div class="btn">
-                <el-input-number style="margin: 10px 0px;width: 100px;" v-model="bottomNum" :min="1" :step="1"
-                  step-strictly @change="turnPageMobile" />
+                <el-input-number style="margin: 10px 0px;width: 100px;" v-model="bottomNum" :min="1"
+                  :max="allPagesLength" :step="1" step-strictly @change="turnPageMobile" />
               </div>
             </div>
 
@@ -238,8 +238,8 @@
 
           <div class="bottomNumPageBtn">
             <div class="btn">
-              <el-input-number size="large" style="margin: 7px 0px;" v-model="bottomNum" :min="1" :step="1"
-                step-strictly @change="turnPage" />
+              <el-input-number size="large" style="margin: 7px 0px;" v-model="bottomNum" :min="1" :max="allPagesLength"
+                :step="1" step-strictly @change="turnPage" />
             </div>
           </div>
 
@@ -335,6 +335,7 @@ export default {
       //放大标志
       isZoom: false,
       allPages: [],
+      allPagesLength: 10,
       // 该书的所有章节
       allCatalog: [],
       // 导航栏目录打开标志
@@ -379,7 +380,6 @@ export default {
       // 加载书籍
       if ($(window).width() > 1024 && $(window).height() > 700) {
         console.log("大屏幕开始渲染", self.allPages);
-        // console.log("大屏幕开始渲染", self.thickness_width);
         // 设置阅读器位置
         $("#magazine").turn("center");
         // 设置开始页数
@@ -444,7 +444,6 @@ export default {
             },
             // 点击拖动页脚触发
             start: function (event, pageobject, corner) {
-              // console.log("start",pageobject);
               if (pageobject.page == 1 || pageobject.page == 2) {
                 // console.log("第一页页脚");
                 $(".thickness_left").css("visibility", "hidden");
@@ -488,7 +487,6 @@ export default {
           }
         });
         $("#magazineMobile").css("overflow", "visible");
-
       }
     },
 
@@ -516,6 +514,7 @@ export default {
           for (let i = 2; i < _this.allPages.length; i++) {
             _this.allPages[i].page += 2;
           }
+          _this.allPagesLength = _this.allPages.length;
           this.allCatalog = res.data.chapter;
           for (let i = 0; i < this.allCatalog.length; i++) {
             this.allCatalog[i].page += 2;
@@ -563,7 +562,6 @@ export default {
         this.isZoom = true;
       } else {
         currentPage = $("#magazineMobile").turn("page");
-
         if (currentPage == this.allPages.length) {
           $(".normal_right_border_mobile").css("visibility", "visible");
         }
@@ -586,12 +584,10 @@ export default {
       $("#magazine").turn("page", this.allPages.length);
       $(".thickness").css("visibility", "hidden");
       $(".thickness_left").css("visibility", "visible");
-      this.bottomNum = this.allPages.length;
     },
 
     turnLastPageMobile() {
       $("#magazineMobile").turn("page", this.allPages.length);
-      this.bottomNum = this.allPages.length;
     },
 
     turnPreviousPage() {
@@ -630,7 +626,6 @@ export default {
 
     turnPageMobile(page) {
       if (page > this.allPages.length) {
-        // ElMessage.error('书本页数不存在，请联系管理员修改');
         this.turnLastPageMobile();
       } else {
         $("#magazineMobile").turn("page", page);

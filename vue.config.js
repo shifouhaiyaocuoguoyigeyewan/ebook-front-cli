@@ -21,6 +21,7 @@ module.exports = defineConfig({
   },
 
   devServer: {
+    host:'',
     port: 8080,
     proxy: {
       "/book": {
