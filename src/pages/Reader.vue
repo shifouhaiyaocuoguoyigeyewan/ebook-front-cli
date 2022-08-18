@@ -137,7 +137,6 @@
     </div>
   </div>
 
-
   <div class="background hidden-sm-and-down">
     <!-- 阅读器整个视图 -->
     <div class="flipbook-viewport animate__animated animate__zoomInRight ">
@@ -379,7 +378,7 @@ export default {
       let self = this, that = this;
       // 加载书籍
       if ($(window).width() > 1024 && $(window).height() > 700) {
-        console.log("大屏幕开始渲染", self.allPages);
+        // console.log("大屏幕开始渲染", self.allPages);
         // 设置阅读器位置
         $("#magazine").turn("center");
         // 设置开始页数
@@ -417,7 +416,7 @@ export default {
             },
 
             missing: function (e, pages) {
-              console.log(pages);
+              // console.log(pages);
               if (page == 1) {
                 for (let i = 1; i < self.allPages.length; i++) {
                   self.allPages[i]++;
@@ -457,7 +456,7 @@ export default {
         });
 
       } else {
-        console.log("小屏幕");
+        // console.log("小屏幕");
         // 设置阅读器位置
         $("#magazineMobile").turn("center");
         // 设置开始页数
@@ -499,7 +498,7 @@ export default {
           id: bookId
         }
       }).then((res) => {
-        console.log("res", res);
+        // console.log("res", res);
         if (res.data.code == 200) {
           this.cover = res.data.cover;
           _this.allPages = res.data.page;
@@ -580,7 +579,7 @@ export default {
     },
 
     turnLastPage() {
-      console.log("this.allPages.length", this.allPages.length);
+      // console.log("this.allPages.length", this.allPages.length);
       $("#magazine").turn("page", this.allPages.length);
       $(".thickness").css("visibility", "hidden");
       $(".thickness_left").css("visibility", "visible");
@@ -694,7 +693,7 @@ body {
 
 }
 
-.magazineMobileView .page {
+ #magazineMobile .page {
   background-color: white;
   background-repeat: no-repeat;
   background-size: 100% 100%;

@@ -2,6 +2,9 @@ const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
 
 module.exports = defineConfig({
+  outputDir:'dist',
+  assetsDir:'static',
+  publicPath:'./',
   transpileDependencies: true,
   // 去掉打包生成的.map 文件
   productionSourceMap:false,
@@ -24,12 +27,12 @@ module.exports = defineConfig({
     host:'',
     port: 8080,
     proxy: {
-      "/book": {
-        target: 'http://huadajiyin_book.wdsjxiaochen.xin/',
+      "/": {
+        target: 'http://159.75.201.225:8000/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
-          "^/book": "/book"
+          "^/": "/"
         }
       },
     },

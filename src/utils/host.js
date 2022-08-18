@@ -1,3 +1,3 @@
-const host = "http://huadajiyin_book.wdsjxiaochen.xin";
+const host = "";
 
 export default host;

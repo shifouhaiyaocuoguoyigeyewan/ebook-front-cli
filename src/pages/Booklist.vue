@@ -1,19 +1,19 @@
 <template>
 
 	<div>
-		<div class="banner">
+		<div class="banner" :style="{ background: 'url(' + host + '/static/images/bookbg.jpg)'}">
 			<h2 id="text">所有书籍</h2>
 			<div class="clouds">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud1.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud2.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud3.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud4.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud5.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud1.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud2.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud3.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud4.png" style="--i:1;">
-				<img src="http://huadajiyin_book.wdsjxiaochen.xin/book/images/cloud5.png" style="--i:1;">
+				<img src="/static/images/cloud1.png" style="--i:1;">
+				<img src="/static/images/cloud2.png" style="--i:1;">
+				<img src="/static/images/cloud3.png" style="--i:1;">
+				<img src="/static/images/cloud4.png" style="--i:1;">
+				<img src="/static/images/cloud5.png" style="--i:1;">
+				<img src="/static/images/cloud1.png" style="--i:1;">
+				<img src="/static/images/cloud2.png" style="--i:1;">
+				<img src="/static/images/cloud3.png" style="--i:1;">
+				<img src="/static/images/cloud4.png" style="--i:1;">
+				<img src="/static/images/cloud5.png" style="--i:1;">
 			</div>
 		</div>
 
@@ -44,8 +44,8 @@
 						<div id="bookshelf"
 							style="">
 							<div v-for="(item1, index1) in shelfNum">
-								<div v-if="index1 == 0" class="shelf-bg-first"></div>
-								<div v-if="index1 != 0" class="shelf-bg"></div>
+								<div v-if="index1 == 0" class="shelf-bg-first" :style="{ background: 'url(' + host + '/static/images/banner_shelf.jpg)'}"></div>
+								<div v-if="index1 != 0" class="shelf-bg" :style="{ background: 'url(' + host + '/static/images/banner_shelf.jpg)'}"></div>
 							</div>
 						</div>
 					</div>
@@ -102,7 +102,7 @@ export default {
 				method: "get",
 				url: '/book/list',
 			}).then((res) => {
-				console.log("res", res);
+				// console.log("res", res);
 				if (res.data.code == 200) {
 					_this.allBooks = res.data.data;
 					_this.shelfNum = Math.ceil(this.allBooks.length / 6);
@@ -163,7 +163,6 @@ body {
 .shelf-bg {
 	width: 100%;
 	height: 90px;
-	background: url('http://huadajiyin_book.wdsjxiaochen.xin/book/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
 	margin-top: 15.8%;
@@ -172,7 +171,6 @@ body {
 .shelf-bg-first {
 	width: 100%;
 	height: 90px;
-	background: url('http://huadajiyin_book.wdsjxiaochen.xin/book/images/banner_shelf.jpg');
 	background-size: 100% 100%;
 	overflow: hidden;
 	margin-top: 17.7%;
@@ -182,7 +180,6 @@ body {
 	position: relative;
 	width: 100%;
 	height: 100vh;
-	background: url('http://huadajiyin_book.wdsjxiaochen.xin/book/images/bookbg.jpg');
 	background-size: cover;
 	background-position: bottom;
 	display: flex;
