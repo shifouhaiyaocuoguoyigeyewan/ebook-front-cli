@@ -1,7 +1,7 @@
 <template>
     <div class="screen">
-        <div style="position: sticky; top:0px">
-            <Navbar/>
+        <div style="position: sticky; top:0px;">
+            <Navbar />
         </div>
 
     </div>
@@ -9,7 +9,8 @@
 
 <script>
 import Navbar from '../component/Navbar.vue';
-    export default {
+
+export default {
     name: "Index",
     data() {
         return {
@@ -23,5 +24,7 @@ import Navbar from '../component/Navbar.vue';
 <style lang="scss" scoped>
 .screen {
     min-height: 100vh;
+    min-width: 100vw;
 }
+
 </style>

@@ -18,7 +18,7 @@
               <div v-if="item.page == 1" class="firstShadow">
                 <div class="pageFirstShadow"></div>
               </div>
-              <div class="normal_right_border_mobile">
+              <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
                 <div class="ysj_dsd"></div>
               </div>
             </div>
@@ -690,11 +690,10 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
 }
 
- #magazineMobile .page {
-  background-color: white;
+ /deep/.magazineMobileView .page {
+  background-color: white !important;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }

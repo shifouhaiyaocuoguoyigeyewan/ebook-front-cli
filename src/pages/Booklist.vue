@@ -44,8 +44,9 @@
 						<div id="bookshelf"
 							style="">
 							<div v-for="(item1, index1) in shelfNum">
-								<div v-if="index1 == 0" class="shelf-bg-first" :style="{ background: 'url(' + host + '/static/images/banner_shelf.jpg)'}"></div>
-								<div v-if="index1 != 0" class="shelf-bg" :style="{ background: 'url(' + host + '/static/images/banner_shelf.jpg)'}"></div>
+							<!--  -->
+								<div v-if="index1 == 0" class="shelf-bg-first" :style="{ background: 'url(' + host + '/static/images/banner_shelf.jpg)','background-size': '100% 100%'}"></div>
+								<div v-if="index1 != 0" class="shelf-bg" :style="{ background: 'url(' + host + '/static/images/banner_shelf.jpg)','background-size': '100% 100%'}"></div>
 							</div>
 						</div>
 					</div>
@@ -169,8 +170,9 @@ body {
 }
 
 .shelf-bg-first {
-	width: 100%;
+	/* width: 100%; */
 	height: 90px;
+	/* background: url("http://159.75.201.225:8000/static/images/banner_shelf.jpg"); */
 	background-size: 100% 100%;
 	overflow: hidden;
 	margin-top: 17.7%;
