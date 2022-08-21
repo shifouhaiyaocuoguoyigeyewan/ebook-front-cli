@@ -23,7 +23,6 @@ export default {
     },
     methods: {
         turn2Index() {
-            console.log("turn2Index");
             this.$router.push('/');
         },
     }
