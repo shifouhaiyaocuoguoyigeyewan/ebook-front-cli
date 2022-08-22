@@ -139,7 +139,7 @@
 
   <div class="background hidden-sm-and-down">
     <!-- 阅读器整个视图 -->
-    <div class="flipbook-viewport animate__animated animate__zoomInRight ">
+    <div class="flipbook-viewport animate__animated animate__zoomInRight">
       <!-- 左边页面厚度效果视图 -->
       <div class="thickness_left" :style="{ width: thickness_left_width + 'px', height: thickness_left_height + 'px' }">
       </div>
@@ -333,6 +333,8 @@ export default {
       cover: "",
       //放大标志
       isZoom: false,
+      //放大倍数
+      zoom: 1,
       allPages: [],
       allPagesLength: 10,
       // 该书的所有章节
@@ -357,7 +359,6 @@ export default {
 
   created() {
     this.stopMove();
-    // console.log(this.$route.params.id);
     this.requestBookAllPages(this.$route.params.id);
   },
 
@@ -444,10 +445,8 @@ export default {
             // 点击拖动页脚触发
             start: function (event, pageobject, corner) {
               if (pageobject.page == 1 || pageobject.page == 2) {
-                // console.log("第一页页脚");
                 $(".thickness_left").css("visibility", "hidden");
               } else if (pageobject.page == self.allPages.length - 1) {
-                // console.log("最后一页页脚");
                 $(".thickness").css("visibility", "hidden");
               }
             },
@@ -526,25 +525,35 @@ export default {
     dblclick_page() {
       var currentPage;
       // 判断是否已经放大
-      if (this.isZoom == false) {
-        let fangda = 1.2;
+      if (this.isZoom == false && this.zoom == 1) {
+        this.zoom = 1.2;
         currentPage = $("#magazine").turn("page");
         if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
           $(".thickness_left").css("margin-right", "-337px");
           $(".normal_right_border").css("margin-left", "664px");
         }
-        $("#magazine").turn("zoom", fangda);
+        $("#magazine").turn("zoom", this.zoom);
         this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
+        this.isZoom = false;
+
+      } else if (this.isZoom == false && this.zoom == 1.2) {
+        this.zoom = 1.5;
+        $("#magazine").turn("zoom", this.zoom);
+        this.thickness_height = this.thickness_left_height = this.book_height * 1.5;
         this.isZoom = true;
-      } else {
+
+      }
+      else {
+        this.zoom = 1;
         currentPage = $("#magazine").turn("page");
         if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
           $(".normal_right_border").css("margin-left", "555px");
           $(".thickness_left").css("margin-right", "-281px");
         }
-        $("#magazine").turn("zoom", 1);
+        $("#magazine").turn("zoom", this.zoom);
         this.thickness_height = this.thickness_left_height = this.book_height;
         this.isZoom = false;
+
       }
     },
 
@@ -647,7 +656,8 @@ export default {
     stopMove() {
       let m = function (e) { e.preventDefault(); };
       document.body.style.overflow = 'hidden';
-      document.addEventListener("touchmove", m, { passive: false });//禁止页面滑动
+      //禁止页面滑动
+      // document.addEventListener("touchmove", m, { passive: false });
 
       //禁止鼠标滚轴+ctrl
       document.addEventListener('keydown', function (event) {
@@ -672,6 +682,47 @@ export default {
       }, { passive: false });
     },
 
+    //页面元素拖动
+    Move() {
+     //鼠标按下后的效果
+        document.onmousedown = function(e){
+            flag = true;
+            e = e || window.event;
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+            console.log(mouseX);
+        };
+
+        //鼠标松开后的效果
+        document.onmouseup = function(e){
+            flag = false;
+            body.style.webkitTransform = "scale(1)";
+            mouseX = e.pageX;
+            mouseX = e.pageY;
+            console.log(1111111);
+
+        };
+
+        //鼠标移动的效果
+        document.onmousemove = function(e){
+            console.log("a");
+            e = e || window.event;
+            var a_mouseX = e.pageX;
+            var a_mouseY = e.pageY;
+            var scaleNumx = (a_mouseX - mouseX)/bodyWidth + 1;  //X放大倍数
+            var scaleNumy = (a_mouseY - mouseY)/bodyHeight + 1; //Y放大倍数
+            console.log(scaleNumx+"--"+scaleNumy)
+
+            //如果鼠标按下了
+            if(flag){
+                body.style.webkitTransform = "scale(" + scaleNumx + "," + scaleNumy + ")";
+            }else{
+                return false;
+            }
+
+        }
+    }
+
   },
 
 };
@@ -692,7 +743,7 @@ body {
   justify-content: center;
 }
 
- /deep/.magazineMobileView .page {
+/deep/.magazineMobileView .page {
   background-color: white !important;
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -1131,17 +1182,12 @@ body {
 }
 
 .oddshadow {
-  position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  width: 12%;
+  width: 15%;
   pointer-events: none;
   background-image: -webkit-gradient(linear, left top, right top, from(rgba(60, 60, 60, 0.4)), color-stop(40%, rgba(60, 60, 60, 0.2)), color-stop(60%, rgba(60, 60, 60, 0.1)), to(rgba(200, 200, 200, 0)));
-  background-image: linear-gradient(left, rgba(60, 60, 60, 0.4) 0, rgba(60, 60, 60, 0.2) 40%, rgba(60, 60, 60, 0.1) 60%, rgba(200, 200, 200, 0) 100%);
-  background-image: -o-linear-gradient(left, rgba(60, 60, 60, 0.4) 0, rgba(60, 60, 60, 0.2) 40%, rgba(60, 60, 60, 0.1) 60%, rgba(200, 200, 200, 0) 100%);
-  background-image: -ms-linear-gradient(left, rgba(60, 60, 60, 0.4) 0, rgba(60, 60, 60, 0.2) 40%, rgba(60, 60, 60, 0.1) 60%, rgba(200, 200, 200, 0) 100%);
-  filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, EndColorStr='#00C8C8C8', StartColorStr='#CC5D5D5D')
 }
 
 .thickness {

@@ -24,7 +24,6 @@
 				</el-input>
 			</div>
 
-
 					<!-- 书本呈现 -->
 					<div style="display: flex;flex-direction: row;flex-wrap: wrap;position: relative;overflow: hidden;">
 						<div id="test" v-for="(item, index) in allBooks"

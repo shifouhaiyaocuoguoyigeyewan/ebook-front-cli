@@ -29,7 +29,7 @@ module.exports = defineConfig({
     proxy: {
       "/": {
         target: 'http://159.75.201.225:8000/',
-        ws: true,
+        ws: false,
         changeOrigin: true,
         pathRewrite: {
           "^/": "/"
