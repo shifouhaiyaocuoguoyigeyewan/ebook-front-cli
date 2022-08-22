@@ -1,34 +1,18 @@
 <template>
-    <div class="navbar">
-        <!-- <div class="box">
-            <div class="company_text">同行TongXíng</div>
-        </div> -->
-
-        <el-row>
-            <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-                <div class="box">
-                    <div class="company_text">同行TongXíng</div>
-                </div>
-            </el-col>
-            <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-                <div class="box">
-                    <div class="company_text">同行TongXíng</div>
-                </div>
-            </el-col>
-            <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-                <div class="box">
-                    <div class="company_text">同行TongXíng</div>
-                </div>
-            </el-col>
-            <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-                <div class="box">
-                    <div class="company_text">同行TongXíng</div>
-                </div>
-            </el-col>
-        </el-row>
 
 
-    </div>
+    <el-row class="navbar">
+        <el-col :span="12" style="display:flex">
+            <div class="company_text" @click="turn2Index">同行TongXíng</div>
+        </el-col>
+        <el-col :span="12" style="display:flex">
+            <div class="login_text">
+                欢迎登录
+            </div>
+        </el-col>
+    </el-row>
+
+
 </template>
 
 <script>
@@ -38,6 +22,11 @@ export default {
         return {
             msg: 'Welcome to Your Vue.js App'
         }
+    },
+    methods: {
+        turn2Index() {
+            this.$router.push('/');
+        },
     }
 }
 </script>
@@ -45,7 +34,7 @@ export default {
 <style lang="scss" scoped>
 .navbar {
     width: 100%;
-    height: 40px;
+    min-height: 6vh;
     background-color: rgb(242, 246, 247);
 }
 
@@ -58,28 +47,26 @@ export default {
 }
 
 .company_text {
-    font-size: 20px;
+    font-size: 1vw;
     font-family: "Fira Sans";
     font-weight: bold;
     color: rgb(76, 168, 205);
     user-select: none;
     align-self: center;
+    margin-left: 40%;
+    white-space: nowrap;
+    cursor: pointer;
 }
 
-.el-col {
-    border-radius: 4px;
+.login_text {
+    font-size: 1vw;
+    font-family: "Fira Sans";
+    font-weight: bold;
+    color: rgb(76, 168, 205);
+    user-select: none;
+    align-self: center;
+    margin-left: 40%;
+    white-space: nowrap;
 }
 
-.grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-}
-
-.ep-bg-purple {
-    background: purple;
-}
-
-.ep-bg-purple-light {
-    background: lighten(purple, 10%);
-}
 </style>

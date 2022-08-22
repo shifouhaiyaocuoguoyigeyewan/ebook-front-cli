@@ -6,10 +6,6 @@ const routes = [
         component: ()=>import('../pages/Index.vue'),                 
     },
     {
-        path: '/booklist',
-        component: ()=>import('../pages/Booklist.vue'),                 
-    },
-    {
         path: '/reader/:id',
         name: "reader",
         component: ()=>import('../pages/Reader.vue'),   
