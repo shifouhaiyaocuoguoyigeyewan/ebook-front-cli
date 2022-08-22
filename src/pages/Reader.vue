@@ -1,6 +1,6 @@
 <template>
 
-  <div class="background hidden-sm-and-up">
+  <div class="background hidden-sm-and-up" :style="{ background: 'url(' + host + '/static/images/background.jpg)  no-repeat'}">
     <div class="animate__animated animate__zoomInRight" style="z-index: 100;min-height: 100vh; width: 100%;">
       <!-- 阅读器整个视图 -->
       <div class="magazineMobileView">
@@ -16,7 +16,7 @@
                 </footer>
               </div>
               <div v-if="item.page == 1" class="firstShadow">
-                <div class="pageFirstShadow"></div>
+                <div class="pageFirstShadow" :style="{background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'}"></div>
               </div>
               <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
                 <div class="ysj_dsd"></div>
@@ -25,7 +25,7 @@
             <!-- 目录页 -->
             <div v-if="index == 1"
               style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-              <div class="topCatalog"></div>
+              <div class="topCatalog" :style="{background: 'url(' + host + '/static/images/catalog.jpg) 100% 100%'}"></div>
               <div class="catalogTextMobile">目录</div>
               <div class="catalogEnMobile">Contents</div>
               <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <div class="background hidden-sm-and-down">
+  <div class="background hidden-sm-and-down" :style="{ background: 'url(' + host + '/static/images/background.jpg)  no-repeat'}">
     <!-- 阅读器整个视图 -->
     <div class="flipbook-viewport animate__animated animate__zoomInRight">
       <!-- 左边页面厚度效果视图 -->
@@ -158,7 +158,7 @@
               </div>
             </footer>
             <div v-if="item.page == 1" class="firstShadow">
-              <div class="pageFirstShadow"></div>
+              <div class="pageFirstShadow" :style="{background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'}"></div>
             </div>
             <div v-if="item.page == allPages.length && allPages.length % 2 == 0" class="normal_right_border">
               <div class="ysj_dsd"></div>
@@ -171,7 +171,7 @@
           <!-- 第二页目录页 -->
           <div v-if="index == 1"
             style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-            <div class="topCatalog"></div>
+            <div class="topCatalog" :style="{background: 'url(' + host + '/static/images/catalog.jpg) 100% 100%'}"></div>
             <div class="catalogText">目录</div>
             <div class="catalogEn">Contents</div>
             <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
@@ -535,7 +535,7 @@ export default {
         $("#magazine").turn("zoom", this.zoom);
         this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
         this.isZoom = false;
-
+        this.Move();
       } else if (this.isZoom == false && this.zoom == 1.2) {
         this.zoom = 1.5;
         $("#magazine").turn("zoom", this.zoom);
@@ -684,38 +684,56 @@ export default {
 
     //页面元素拖动
     Move() {
+      let flag,mouseX,mouseY;
      //鼠标按下后的效果
         document.onmousedown = function(e){
             flag = true;
             e = e || window.event;
             mouseX = e.pageX;
             mouseY = e.pageY;
-            console.log(mouseX);
+            // console.log(mouseX);
+            // console.log(mouseY);
         };
 
         //鼠标松开后的效果
         document.onmouseup = function(e){
             flag = false;
-            body.style.webkitTransform = "scale(1)";
-            mouseX = e.pageX;
-            mouseX = e.pageY;
-            console.log(1111111);
-
+            mouseX = 0;
+            mouseX = 0;
         };
 
         //鼠标移动的效果
         document.onmousemove = function(e){
-            console.log("a");
             e = e || window.event;
             var a_mouseX = e.pageX;
             var a_mouseY = e.pageY;
-            var scaleNumx = (a_mouseX - mouseX)/bodyWidth + 1;  //X放大倍数
-            var scaleNumy = (a_mouseY - mouseY)/bodyHeight + 1; //Y放大倍数
-            console.log(scaleNumx+"--"+scaleNumy)
 
             //如果鼠标按下了
             if(flag){
-                body.style.webkitTransform = "scale(" + scaleNumx + "," + scaleNumy + ")";
+                //鼠标移动的距离
+                var moveX = a_mouseX - mouseX;
+                var moveY = a_mouseY - mouseY;
+                // console.log("moveX",moveX);
+                // console.log("moveY",moveY);
+                //获取当前页面的位置
+                // var left = parseInt(document.getElementById("magazine").style.left);
+                var left =parseInt( document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().left);
+                var top = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top);
+                console.log(document.getElementsByClassName("flipbook-viewport")[0].style.top);
+                //计算出新的页面的位置
+                var newLeft = left + moveX;
+                var newTop = top + moveY;
+                // console.log("newTop",typeof(newTop));
+                //设置新的页面的位置
+                //  $(".flipbook-viewport").css("top","250px");
+                //  console.log(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top)
+                // $(".flipbook-viewport")[0].getBoundingClientRect().top=newTop + "px";
+                // document.getElementById("magazine").style.left = newLeft + "px";
+                document.getElementsByClassName("flipbook-viewport")[0].style.top = newTop + "px";
+                console.log("top",document.getElementsByClassName("flipbook-viewport")[0].style.top);
+                //记录鼠标的位置
+                // mouseX = a_mouseX;
+                // mouseY = a_mouseY;
             }else{
                 return false;
             }
@@ -765,7 +783,7 @@ body {
 .topCatalog {
   margin: 0;
   padding: 0;
-  background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/catalog.jpg") 100% 100%;
+  /* background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/catalog.jpg") 100% 100%; */
   height: 20%;
   width: 100%;
 }
@@ -954,12 +972,6 @@ body {
   position: relative;
 }
 
-
-.catalogTrue_button {
-  right: 0;
-  background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/catalog_popup.png") no-repeat center center;
-}
-
 .catalogTrue_tools {
   width: 64px;
   height: 160px;
@@ -1073,7 +1085,7 @@ body {
 }
 
 .background {
-  background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/background.jpg") no-repeat;
+  /* background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/background.jpg") no-repeat; */
   background-size: cover;
   width: 100%;
   min-height: 100vh;
@@ -1081,6 +1093,8 @@ body {
 
 .flipbook-viewport {
   min-height: 100vh;
+  top: 0px;
+  left: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1133,7 +1147,7 @@ body {
 }
 
 .pageFirstShadow {
-  background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/zsj_dsd.png") no-repeat left;
+  /* background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/zsj_dsd.png") no-repeat left; */
   background-size: 100% 100%;
   height: 100%;
   width: 100%;
