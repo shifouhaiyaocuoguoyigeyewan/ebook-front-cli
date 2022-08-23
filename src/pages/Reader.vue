@@ -1,6 +1,7 @@
 <template>
 
-  <div class="background hidden-sm-and-up" :style="{ background: 'url(' + host + '/static/images/background.jpg)  no-repeat'}">
+  <div class="background hidden-sm-and-up"
+    :style="{ background: 'url(' + host + '/static/images/background.jpg)', 'background-size': '100% 100%' }">
     <div class="animate__animated animate__zoomInRight" style="z-index: 100;min-height: 100vh; width: 100%;">
       <!-- 阅读器整个视图 -->
       <div class="magazineMobileView">
@@ -16,7 +17,8 @@
                 </footer>
               </div>
               <div v-if="item.page == 1" class="firstShadow">
-                <div class="pageFirstShadow" :style="{background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'}"></div>
+                <div class="pageFirstShadow"
+                  :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
               </div>
               <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
                 <div class="ysj_dsd"></div>
@@ -25,7 +27,8 @@
             <!-- 目录页 -->
             <div v-if="index == 1"
               style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-              <div class="topCatalog" :style="{background: 'url(' + host + '/static/images/catalog.jpg) 100% 100%'}"></div>
+              <div class="topCatalog" :style="{ background: 'url(' + host + '/static/images/catalog.jpg) 100% 100%' }">
+              </div>
               <div class="catalogTextMobile">目录</div>
               <div class="catalogEnMobile">Contents</div>
               <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
@@ -137,7 +140,8 @@
     </div>
   </div>
 
-  <div class="background hidden-sm-and-down" :style="{ background: 'url(' + host + '/static/images/background.jpg)  no-repeat'}">
+  <div class="background hidden-sm-and-down"
+    :style="{ background: 'url(' + host + '/static/images/background.jpg)', 'background-size': '100% 100%' }">
     <!-- 阅读器整个视图 -->
     <div class="flipbook-viewport animate__animated animate__zoomInRight">
       <!-- 左边页面厚度效果视图 -->
@@ -158,7 +162,8 @@
               </div>
             </footer>
             <div v-if="item.page == 1" class="firstShadow">
-              <div class="pageFirstShadow" :style="{background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'}"></div>
+              <div class="pageFirstShadow"
+                :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
             </div>
             <div v-if="item.page == allPages.length && allPages.length % 2 == 0" class="normal_right_border">
               <div class="ysj_dsd"></div>
@@ -171,7 +176,8 @@
           <!-- 第二页目录页 -->
           <div v-if="index == 1"
             style="background-color: #fff;background-size:100% 100% ; width: 100%;height: 100%;overflow: hidden;">
-            <div class="topCatalog" :style="{background: 'url(' + host + '/static/images/catalog.jpg) 100% 100%'}"></div>
+            <div class="topCatalog" :style="{ background: 'url(' + host + '/static/images/catalog.jpg) 100% 100%' }">
+            </div>
             <div class="catalogText">目录</div>
             <div class="catalogEn">Contents</div>
             <div class="catalogSeclect" v-for="(item, index) in allCatalog" :key="`test_${index}`">
@@ -525,34 +531,82 @@ export default {
     dblclick_page() {
       var currentPage;
       // 判断是否已经放大
-      if (this.isZoom == false && this.zoom == 1) {
-        this.zoom = 1.2;
-        currentPage = $("#magazine").turn("page");
-        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-          $(".thickness_left").css("margin-right", "-337px");
-          $(".normal_right_border").css("margin-left", "664px");
-        }
-        $("#magazine").turn("zoom", this.zoom);
-        this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
-        this.isZoom = false;
-        this.Move();
-      } else if (this.isZoom == false && this.zoom == 1.2) {
-        this.zoom = 1.5;
-        $("#magazine").turn("zoom", this.zoom);
-        this.thickness_height = this.thickness_left_height = this.book_height * 1.5;
-        this.isZoom = true;
+      // if (this.isZoom == false && this.zoom == 1) {
+      //   this.zoom = 1.1;
+      //   currentPage = $("#magazine").turn("page");
+      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+      //     $(".thickness_left").css("margin-right", "-337px");
+      //     $(".normal_right_border").css("margin-left", "664px");
+      //   }
+      //   $("#magazine").turn("zoom", this.zoom);
+      //   this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
+      //   this.isZoom = false;
+      // }
+      // else if (this.isZoom == false && this.zoom == 1.1) {
+      //   this.zoom = 1.2;
+      //   currentPage = $("#magazine").turn("page");
+      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+      //     $(".thickness_left").css("margin-right", "-337px");
+      //     $(".normal_right_border").css("margin-left", "664px");
+      //   }
+      //   $("#magazine").turn("zoom", this.zoom);
+      //   this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
+      //   this.isZoom = false;
+      //   // this.Move();
+      // } else if (this.isZoom == false && this.zoom == 1.2) {
+      //   this.zoom = 1.5;
+      //   currentPage = $("#magazine").turn("page");
+      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+      //     $(".thickness_left").css("margin-right", "-422px");
+      //     $(".normal_right_border").css("margin-left", "824px");
+      //   }
+      //   $("#magazine").turn("zoom", this.zoom);
+      //   this.thickness_height = this.thickness_left_height = this.book_height * 1.5;
+      //   this.isZoom = true;
 
+      // }
+      // else {
+      //   this.zoom = 1;
+      //   currentPage = $("#magazine").turn("page");
+      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+      //     $(".normal_right_border").css("margin-left", "555px");
+      //     $(".thickness_left").css("margin-right", "-281px");
+      //   }
+      //   $("#magazine").turn("zoom", this.zoom);
+      //   this.thickness_height = this.thickness_left_height = this.book_height;
+      //   this.isZoom = false;
+
+      // }
+      this.changeFilpbookView(this.zoom);
+    },
+
+    changeFilpbookView(zoomNumber) {
+      this.zoom = zoomNumber;
+      var currentPage = $("#magazine").turn("page");
+      isLastPage(currentPage);
+      switch (this.zoom) {
+        case 1.1:
+          
+          break;
+        case 1.2:
+
+          break;
+        case 1.3:
+
+          break;
+        case 1.4:
+
+          break;
+        case 1.5:
+
+          break;
+        default:
+          break;
       }
-      else {
-        this.zoom = 1;
-        currentPage = $("#magazine").turn("page");
-        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-          $(".normal_right_border").css("margin-left", "555px");
-          $(".thickness_left").css("margin-right", "-281px");
-        }
-        $("#magazine").turn("zoom", this.zoom);
-        this.thickness_height = this.thickness_left_height = this.book_height;
-        this.isZoom = false;
+    },
+
+    isLastPage(singlePage){
+      if(singlePage == this.allPages.length && this.allPages.length % 2 == 0){
 
       }
     },
@@ -592,6 +646,14 @@ export default {
       $("#magazine").turn("page", this.allPages.length);
       $(".thickness").css("visibility", "hidden");
       $(".thickness_left").css("visibility", "visible");
+      if (this.zoom == 1.2) {
+        $(".thickness_left").css("margin-right", "-337px");
+        $(".normal_right_border").css("margin-left", "664px");
+      } else if (this.zoom == 1.5) {
+        $(".thickness_left").css("margin-right", "-422px");
+        $(".normal_right_border").css("margin-left", "824px");
+      }
+
     },
 
     turnLastPageMobile() {
@@ -608,6 +670,29 @@ export default {
 
     turnNextPage() {
       $("#magazine").turn("next");
+      var currentPage;
+      console.log("this.isZoom", this.isZoom)
+      console.log("this.zoom", this.zoom)
+      if (this.isZoom == false && this.zoom == 1.2) {
+        currentPage = $("#magazine").turn("page");
+        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+          $(".thickness_left").css("margin-right", "-337px");
+          $(".normal_right_border").css("margin-left", "664px");
+        }
+      } else if (this.isZoom == false && this.zoom == 1.5) {
+        currentPage = $("#magazine").turn("page");
+        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+          $(".thickness_left").css("margin-right", "-422px");
+          $(".normal_right_border").css("margin-left", "824px");
+        }
+      }
+      else {
+        currentPage = $("#magazine").turn("page");
+        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
+          $(".normal_right_border").css("margin-left", "555px");
+          $(".thickness_left").css("margin-right", "-281px");
+        }
+      }
     },
 
     turnNextPageMobile() {
@@ -684,61 +769,60 @@ export default {
 
     //页面元素拖动
     Move() {
-      let flag,mouseX,mouseY;
-     //鼠标按下后的效果
-        document.onmousedown = function(e){
-            flag = true;
-            e = e || window.event;
-            mouseX = e.pageX;
-            mouseY = e.pageY;
-            // console.log(mouseX);
-            // console.log(mouseY);
-        };
+      let flag, mouseX, mouseY;
+      //鼠标按下后的效果
+      document.onmousedown = function (e) {
+        flag = true;
+        e = e || window.event;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        // console.log(mouseX);
+        // console.log(mouseY);
+      };
 
-        //鼠标松开后的效果
-        document.onmouseup = function(e){
-            flag = false;
-            mouseX = 0;
-            mouseX = 0;
-        };
+      //鼠标松开后的效果
+      document.onmouseup = function (e) {
+        flag = false;
+        // mouseX = e.clientX;
+        // mouseX = e.clientY;
+      };
 
-        //鼠标移动的效果
-        document.onmousemove = function(e){
-            e = e || window.event;
-            var a_mouseX = e.pageX;
-            var a_mouseY = e.pageY;
+      //鼠标移动的效果
+      document.onmousemove = function (e) {
+        e = e || window.event;
+        var a_mouseX = e.clientX;
+        var a_mouseY = e.clientY;
 
-            //如果鼠标按下了
-            if(flag){
-                //鼠标移动的距离
-                var moveX = a_mouseX - mouseX;
-                var moveY = a_mouseY - mouseY;
-                // console.log("moveX",moveX);
-                // console.log("moveY",moveY);
-                //获取当前页面的位置
-                // var left = parseInt(document.getElementById("magazine").style.left);
-                var left =parseInt( document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().left);
-                var top = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top);
-                console.log(document.getElementsByClassName("flipbook-viewport")[0].style.top);
-                //计算出新的页面的位置
-                var newLeft = left + moveX;
-                var newTop = top + moveY;
-                // console.log("newTop",typeof(newTop));
-                //设置新的页面的位置
-                //  $(".flipbook-viewport").css("top","250px");
-                //  console.log(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top)
-                // $(".flipbook-viewport")[0].getBoundingClientRect().top=newTop + "px";
-                // document.getElementById("magazine").style.left = newLeft + "px";
-                document.getElementsByClassName("flipbook-viewport")[0].style.top = newTop + "px";
-                console.log("top",document.getElementsByClassName("flipbook-viewport")[0].style.top);
-                //记录鼠标的位置
-                // mouseX = a_mouseX;
-                // mouseY = a_mouseY;
-            }else{
-                return false;
-            }
-
+        //如果鼠标按下了
+        if (flag) {
+          //鼠标移动的距离
+          var moveX = a_mouseX - mouseX;
+          var moveY = a_mouseY - mouseY;
+          // console.log("moveX",moveX);
+          //获取当前页面的位置
+          var left = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().left);
+          var top = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top);
+          // console.log("left",left);
+          // console.log("top",top);
+          //计算出新的页面的位置
+          var newLeft = newLeft + moveX;
+          var newTop = top + moveY;
+          // newLeft = newLeft +"px";
+          // newTop = newLeft + "px";
+          // console.log("newLeft",typeof(newLeft));
+          //设置新的页面的位置
+          $(".flipbook-viewport").css("left", moveX);
+          $(".flipbook-viewport").css("top", moveY);
+          //  console.log(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top)
+          // $(".flipbook-viewport")[0].getBoundingClientRect().top=newTop + "px";
+          //记录鼠标的位置
+          // mouseX = a_mouseX;
+          // mouseY = a_mouseY;
+        } else {
+          return false;
         }
+
+      }
     }
 
   },
@@ -1093,8 +1177,9 @@ body {
 
 .flipbook-viewport {
   min-height: 100vh;
+  position: absolute;
   top: 0px;
-  left: 0px;
+  left: 470px;
   display: flex;
   flex-direction: row;
   align-items: center;
