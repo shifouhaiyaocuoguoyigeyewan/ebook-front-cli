@@ -529,7 +529,6 @@ export default {
     },
 
     dblclick_page() {
-      var currentPage;
       // 判断是否已经放大
       // if (this.isZoom == false && this.zoom == 1) {
       //   this.zoom = 1.1;
@@ -577,37 +576,78 @@ export default {
       //   this.isZoom = false;
 
       // }
-      this.changeFilpbookView(this.zoom);
+      this.changeFilpbookView();
     },
 
-    changeFilpbookView(zoomNumber) {
-      this.zoom = zoomNumber;
+    changeFilpbookView() {
       var currentPage = $("#magazine").turn("page");
-      isLastPage(currentPage);
+      console.log("this.zoom",this.zoom,"this.isZoom",this.isZoom)
       switch (this.zoom) {
+        case 1:
+          if (this.isLastPage(currentPage)) {
+            console.log("case1");
+            
+          }
+          this.zoom = 1.1;
+          this.doublechangeBookView();
+          break;
         case 1.1:
-          
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-337px");
+          $(".normal_right_border").css("margin-left", "664px");
+          }
+          this.zoom = 1.2;
+          this.doublechangeBookView();
           break;
         case 1.2:
-
+          if (this.isLastPage(currentPage)) {
+            
+          }
+          this.zoom = 1.3;
+          this.doublechangeBookView();
           break;
         case 1.3:
-
+          if (this.isLastPage(currentPage)) {
+            
+          }
+          this.zoom = 1.4;
+            this.doublechangeBookView();
           break;
         case 1.4:
-
+          if (this.isLastPage(currentPage)) {
+           
+          }
+           this.zoom = 1.5;
+            this.doublechangeBookView();
           break;
         case 1.5:
-
+          if (this.isLastPage(currentPage)) {
+            
+          }
+          this.zoom = 1;
+          this.doublechangeBookView();
           break;
         default:
           break;
       }
     },
 
-    isLastPage(singlePage){
-      if(singlePage == this.allPages.length && this.allPages.length % 2 == 0){
+    isLastPage(singlePage) {
+      console.log("singlePage",singlePage)
+      if (singlePage == this.allPages.length && this.allPages.length % 2 == 0) {
+        console.log("true");
+        return true;
+      } else {
+        return false;
+      }
+    },
 
+    doublechangeBookView(){
+      console.log("method_doublechangeBookView",this.zoom);
+      $("#magazine").turn("zoom", this.zoom);
+      this.thickness_height = this.thickness_left_height = this.book_height * this.zoom;
+      if(this.zoom==1 || this.zoom ==1.5){
+        this.isZoom=!this.isZoom;
       }
     },
 
@@ -1177,9 +1217,9 @@ body {
 
 .flipbook-viewport {
   min-height: 100vh;
-  position: absolute;
+  /* position: absolute;
   top: 0px;
-  left: 470px;
+  left: 470px; */
   display: flex;
   flex-direction: row;
   align-items: center;
