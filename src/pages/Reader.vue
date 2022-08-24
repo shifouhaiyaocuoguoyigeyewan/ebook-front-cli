@@ -324,7 +324,7 @@
 import $ from "jquery";
 import turn from "../utils/turn";
 import 'element-plus/theme-chalk/display.css';
-import { ElMessage } from 'element-plus';
+// import { ElMessage } from 'element-plus';
 import host from "../utils/host";
 import axios from 'axios';
 
@@ -417,9 +417,6 @@ export default {
               that.thickness_width = thisPage / 2;
               page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
               self.bottomNum = page;
-              if (page == self.allPages.length) {
-                self.isZoom ? $(".normal_right_border").css("margin-left", "664px") : $(".normal_right_border").css("margin-left", "555px");
-              }
             },
 
             missing: function (e, pages) {
@@ -529,125 +526,128 @@ export default {
     },
 
     dblclick_page() {
-      // 判断是否已经放大
-      // if (this.isZoom == false && this.zoom == 1) {
-      //   this.zoom = 1.1;
-      //   currentPage = $("#magazine").turn("page");
-      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-      //     $(".thickness_left").css("margin-right", "-337px");
-      //     $(".normal_right_border").css("margin-left", "664px");
-      //   }
-      //   $("#magazine").turn("zoom", this.zoom);
-      //   this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
-      //   this.isZoom = false;
-      // }
-      // else if (this.isZoom == false && this.zoom == 1.1) {
-      //   this.zoom = 1.2;
-      //   currentPage = $("#magazine").turn("page");
-      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-      //     $(".thickness_left").css("margin-right", "-337px");
-      //     $(".normal_right_border").css("margin-left", "664px");
-      //   }
-      //   $("#magazine").turn("zoom", this.zoom);
-      //   this.thickness_height = this.thickness_left_height = this.book_height * 1.2;
-      //   this.isZoom = false;
-      //   // this.Move();
-      // } else if (this.isZoom == false && this.zoom == 1.2) {
-      //   this.zoom = 1.5;
-      //   currentPage = $("#magazine").turn("page");
-      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-      //     $(".thickness_left").css("margin-right", "-422px");
-      //     $(".normal_right_border").css("margin-left", "824px");
-      //   }
-      //   $("#magazine").turn("zoom", this.zoom);
-      //   this.thickness_height = this.thickness_left_height = this.book_height * 1.5;
-      //   this.isZoom = true;
-
-      // }
-      // else {
-      //   this.zoom = 1;
-      //   currentPage = $("#magazine").turn("page");
-      //   if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-      //     $(".normal_right_border").css("margin-left", "555px");
-      //     $(".thickness_left").css("margin-right", "-281px");
-      //   }
-      //   $("#magazine").turn("zoom", this.zoom);
-      //   this.thickness_height = this.thickness_left_height = this.book_height;
-      //   this.isZoom = false;
-
-      // }
       this.changeFilpbookView();
+      this.doublechangeBookView();
     },
 
+    //放大后改变厚度位置
     changeFilpbookView() {
       var currentPage = $("#magazine").turn("page");
-      console.log("this.zoom",this.zoom,"this.isZoom",this.isZoom)
       switch (this.zoom) {
         case 1:
-          if (this.isLastPage(currentPage)) {
-            console.log("case1");
-            
-          }
           this.zoom = 1.1;
-          this.doublechangeBookView();
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-311px");
+            $(".normal_right_border").css("margin-left", "605px");
+          }
           break;
         case 1.1:
+          this.zoom = 1.2;
           if (this.isLastPage(currentPage)) {
             $(".thickness_left").css("margin-right", "-337px");
-          $(".normal_right_border").css("margin-left", "664px");
+            $(".normal_right_border").css("margin-left", "664px");
           }
-          this.zoom = 1.2;
-          this.doublechangeBookView();
           break;
         case 1.2:
-          if (this.isLastPage(currentPage)) {
-            
-          }
           this.zoom = 1.3;
-          this.doublechangeBookView();
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-367px");
+            $(".normal_right_border").css("margin-left", "714px");
+          }
           break;
         case 1.3:
-          if (this.isLastPage(currentPage)) {
-            
-          }
           this.zoom = 1.4;
-            this.doublechangeBookView();
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-397px");
+            $(".normal_right_border").css("margin-left", "774px");
+          }
           break;
         case 1.4:
+          this.zoom = 1.5;
           if (this.isLastPage(currentPage)) {
-           
+            $(".thickness_left").css("margin-right", "-427px");
+            $(".normal_right_border").css("margin-left", "834px");
           }
-           this.zoom = 1.5;
-            this.doublechangeBookView();
           break;
         case 1.5:
-          if (this.isLastPage(currentPage)) {
-            
-          }
           this.zoom = 1;
-          this.doublechangeBookView();
+          if (this.isLastPage(currentPage)) {
+            $(".normal_right_border").css("margin-left", "555px");
+            $(".thickness_left").css("margin-right", "-281px");
+          }
           break;
         default:
           break;
       }
     },
 
+    //判断是否最后一页
     isLastPage(singlePage) {
-      console.log("singlePage",singlePage)
       if (singlePage == this.allPages.length && this.allPages.length % 2 == 0) {
-        console.log("true");
         return true;
       } else {
         return false;
       }
     },
 
-    doublechangeBookView(){
-      console.log("method_doublechangeBookView",this.zoom);
+    //放大后改变书本
+    doublechangeBookView() {
       $("#magazine").turn("zoom", this.zoom);
       this.thickness_height = this.thickness_left_height = this.book_height * this.zoom;
-      if(this.zoom==1 || this.zoom ==1.5){
-        this.isZoom=!this.isZoom;
+      if (this.zoom == 1 || this.zoom == 1.5) {
+        this.isZoom = !this.isZoom;
+      }
+    },
+
+    //跳转最后一页判断放大倍数来改变厚度位置
+    isLastPageAndChangeThickness(){
+      var currentPage = $("#magazine").turn("page");
+      console.log("this.zoom",this.zoom);
+      switch (this.zoom) {
+        case 1:
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-281px");
+            $(".normal_right_border").css("margin-left", "555px");
+          }
+          break;
+        case 1.1:
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-311px");
+            $(".normal_right_border").css("margin-left", "605px");
+          }
+          break;
+        case 1.2:
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-337px");
+            $(".normal_right_border").css("margin-left", "664px");
+
+            
+          }
+          break;
+        case 1.3:
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-367px");
+            $(".normal_right_border").css("margin-left", "714px");
+
+            
+          }
+          break;
+        case 1.4:
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-397px");
+            $(".normal_right_border").css("margin-left", "774px");
+            
+            
+          }
+          break;
+        case 1.5:
+          if (this.isLastPage(currentPage)) {
+            $(".thickness_left").css("margin-right", "-427px");
+            $(".normal_right_border").css("margin-left", "834px");
+          }
+          break;
+        default:
+          break;
       }
     },
 
@@ -682,17 +682,10 @@ export default {
     },
 
     turnLastPage() {
-      // console.log("this.allPages.length", this.allPages.length);
       $("#magazine").turn("page", this.allPages.length);
       $(".thickness").css("visibility", "hidden");
       $(".thickness_left").css("visibility", "visible");
-      if (this.zoom == 1.2) {
-        $(".thickness_left").css("margin-right", "-337px");
-        $(".normal_right_border").css("margin-left", "664px");
-      } else if (this.zoom == 1.5) {
-        $(".thickness_left").css("margin-right", "-422px");
-        $(".normal_right_border").css("margin-left", "824px");
-      }
+      this.isLastPageAndChangeThickness();
 
     },
 
@@ -710,29 +703,7 @@ export default {
 
     turnNextPage() {
       $("#magazine").turn("next");
-      var currentPage;
-      console.log("this.isZoom", this.isZoom)
-      console.log("this.zoom", this.zoom)
-      if (this.isZoom == false && this.zoom == 1.2) {
-        currentPage = $("#magazine").turn("page");
-        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-          $(".thickness_left").css("margin-right", "-337px");
-          $(".normal_right_border").css("margin-left", "664px");
-        }
-      } else if (this.isZoom == false && this.zoom == 1.5) {
-        currentPage = $("#magazine").turn("page");
-        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-          $(".thickness_left").css("margin-right", "-422px");
-          $(".normal_right_border").css("margin-left", "824px");
-        }
-      }
-      else {
-        currentPage = $("#magazine").turn("page");
-        if (currentPage == this.allPages.length && this.allPages.length % 2 == 0) {
-          $(".normal_right_border").css("margin-left", "555px");
-          $(".thickness_left").css("margin-right", "-281px");
-        }
-      }
+      this.isLastPageAndChangeThickness();
     },
 
     turnNextPageMobile() {
