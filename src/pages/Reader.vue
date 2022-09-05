@@ -540,6 +540,7 @@ export default {
             $(".thickness_left").css("margin-right", "-311px");
             $(".normal_right_border").css("margin-left", "605px");
           }
+          this.Move();
           break;
         case 1.1:
           this.zoom = 1.2;
@@ -600,9 +601,9 @@ export default {
     },
 
     //跳转最后一页判断放大倍数来改变厚度位置
-    isLastPageAndChangeThickness(){
+    isLastPageAndChangeThickness() {
       var currentPage = $("#magazine").turn("page");
-      console.log("this.zoom",this.zoom);
+      console.log("this.zoom", this.zoom);
       switch (this.zoom) {
         case 1:
           if (this.isLastPage(currentPage)) {
@@ -621,7 +622,7 @@ export default {
             $(".thickness_left").css("margin-right", "-337px");
             $(".normal_right_border").css("margin-left", "664px");
 
-            
+
           }
           break;
         case 1.3:
@@ -629,15 +630,15 @@ export default {
             $(".thickness_left").css("margin-right", "-367px");
             $(".normal_right_border").css("margin-left", "714px");
 
-            
+
           }
           break;
         case 1.4:
           if (this.isLastPage(currentPage)) {
             $(".thickness_left").css("margin-right", "-397px");
             $(".normal_right_border").css("margin-left", "774px");
-            
-            
+
+
           }
           break;
         case 1.5:
@@ -780,60 +781,82 @@ export default {
 
     //页面元素拖动
     Move() {
-      let flag, mouseX, mouseY;
-      //鼠标按下后的效果
-      document.onmousedown = function (e) {
-        flag = true;
-        e = e || window.event;
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        // console.log(mouseX);
-        // console.log(mouseY);
+      // let flag, mouseX, mouseY;
+      // //鼠标按下后的效果
+      // document.onmousedown = function (e) {
+      //   flag = true;
+      //   e = e || window.event;
+      //   mouseX = e.clientX;
+      //   mouseY = e.clientY;
+      //   // console.log(mouseX);
+      //   // console.log(mouseY);
+      // };
+
+      // //鼠标松开后的效果
+      // document.onmouseup = function (e) {
+      //   flag = false;
+      //   // mouseX = e.clientX;
+      //   // mouseX = e.clientY;
+      // };
+
+      // //鼠标移动的效果
+      // document.onmousemove = function (e) {
+      //   e = e || window.event;
+      //   var a_mouseX = e.clientX;
+      //   var a_mouseY = e.clientY;
+
+      //   //如果鼠标按下了
+      //   if (flag) {
+      //     //鼠标移动的距离
+      //     var moveX = a_mouseX - mouseX;
+      //     var moveY = a_mouseY - mouseY;
+      //     // console.log("moveX",moveX);
+      //     //获取当前页面的位置
+      //     var left = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().left);
+      //     var top = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top);
+      //     // console.log("left",left);
+      //     // console.log("top",top);
+      //     //计算出新的页面的位置
+      //     var newLeft = newLeft + moveX;
+      //     var newTop = top + moveY;
+      //     // newLeft = newLeft +"px";
+      //     // newTop = newLeft + "px";
+      //     // console.log("newLeft",typeof(newLeft));
+      //     //设置新的页面的位置
+      //     $(".flipbook-viewport").css("left", moveX);
+      //     $(".flipbook-viewport").css("top", moveY);
+      //     //  console.log(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top)
+      //     // $(".flipbook-viewport")[0].getBoundingClientRect().top=newTop + "px";
+      //     //记录鼠标的位置
+      //     // mouseX = a_mouseX;
+      //     // mouseY = a_mouseY;
+      //   } else {
+      //     return false;
+      //   }
+
+      // }
+
+      let dragBox = document.getElementsByClassName("flipbook-viewport")[0]; //获取当前元素
+      dragBox.onmousedown = e => {
+        //算出鼠标相对元素的位置
+        let disX = e.clientX - dragBox.offsetLeft;
+        let disY = e.clientY - dragBox.offsetTop;
+        document.onmousemove = e => {
+          //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+          let left = e.clientX - disX;
+          let top = e.clientY - disY;
+          //移动当前元素
+          dragBox.style.left = left + "px";
+          dragBox.style.top = top + "px";
+        };
+        document.onmouseup = e => {
+          //鼠标弹起来的时候不再移动
+          document.onmousemove = null;
+          //预防鼠标弹起来后还会循环（即预防鼠标放上去的时候还会移动）  
+          document.onmouseup = null;
+        };
       };
 
-      //鼠标松开后的效果
-      document.onmouseup = function (e) {
-        flag = false;
-        // mouseX = e.clientX;
-        // mouseX = e.clientY;
-      };
-
-      //鼠标移动的效果
-      document.onmousemove = function (e) {
-        e = e || window.event;
-        var a_mouseX = e.clientX;
-        var a_mouseY = e.clientY;
-
-        //如果鼠标按下了
-        if (flag) {
-          //鼠标移动的距离
-          var moveX = a_mouseX - mouseX;
-          var moveY = a_mouseY - mouseY;
-          // console.log("moveX",moveX);
-          //获取当前页面的位置
-          var left = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().left);
-          var top = parseInt(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top);
-          // console.log("left",left);
-          // console.log("top",top);
-          //计算出新的页面的位置
-          var newLeft = newLeft + moveX;
-          var newTop = top + moveY;
-          // newLeft = newLeft +"px";
-          // newTop = newLeft + "px";
-          // console.log("newLeft",typeof(newLeft));
-          //设置新的页面的位置
-          $(".flipbook-viewport").css("left", moveX);
-          $(".flipbook-viewport").css("top", moveY);
-          //  console.log(document.getElementsByClassName("flipbook-viewport")[0].getBoundingClientRect().top)
-          // $(".flipbook-viewport")[0].getBoundingClientRect().top=newTop + "px";
-          //记录鼠标的位置
-          // mouseX = a_mouseX;
-          // mouseY = a_mouseY;
-        } else {
-          return false;
-        }
-
-      }
     }
 
   },
@@ -1188,9 +1211,9 @@ body {
 
 .flipbook-viewport {
   min-height: 100vh;
-  /* position: absolute;
+  position: relative;
   top: 0px;
-  left: 470px; */
+  left: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
