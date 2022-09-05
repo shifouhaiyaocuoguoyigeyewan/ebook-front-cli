@@ -18,10 +18,10 @@
               </div>
               <div v-if="item.page == 1" class="firstShadow">
                 <div class="pageFirstShadow"
-                  :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
+                  :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'  ,'background-size': '100% 100%'}"></div>
               </div>
               <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
-                <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
+                <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%' }"></div>
               </div>
             </div>
             <!-- 目录页 -->
@@ -163,10 +163,10 @@
             </footer>
             <div v-if="item.page == 1" class="firstShadow">
               <div class="pageFirstShadow"
-                :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
+                :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%'}"></div>
             </div>
             <div v-if="item.page == allPages.length && allPages.length % 2 == 0" class="normal_right_border">
-              <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
+              <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%' }"></div>
             </div>
             <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
             <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
@@ -603,7 +603,7 @@ export default {
     //跳转最后一页判断放大倍数来改变厚度位置
     isLastPageAndChangeThickness() {
       var currentPage = $("#magazine").turn("page");
-      console.log("this.zoom", this.zoom);
+      // console.log("this.zoom", this.zoom);
       switch (this.zoom) {
         case 1:
           if (this.isLastPage(currentPage)) {
