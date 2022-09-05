@@ -21,7 +21,7 @@
                   :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
               </div>
               <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
-                <div class="ysj_dsd"></div>
+                <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
               </div>
             </div>
             <!-- 目录页 -->
@@ -166,7 +166,7 @@
                 :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
             </div>
             <div v-if="item.page == allPages.length && allPages.length % 2 == 0" class="normal_right_border">
-              <div class="ysj_dsd"></div>
+              <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' }"></div>
             </div>
             <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
             <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
@@ -1237,7 +1237,7 @@ body {
 }
 
 .ysj_dsd {
-  background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/zsj_dsd.png") no-repeat right;
+  /* background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/zsj_dsd.png") no-repeat right; */
   background-size: 100% 100%;
   height: 100%;
   width: 100%;
