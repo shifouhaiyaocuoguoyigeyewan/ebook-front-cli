@@ -18,10 +18,13 @@
               </div>
               <div v-if="item.page == 1" class="firstShadow">
                 <div class="pageFirstShadow"
-                  :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'  ,'background-size': '100% 100%'}"></div>
+                  :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left'  ,'background-size': '100% 100%'}">
+                </div>
               </div>
               <div v-if="item.page == allPages.length" class="normal_right_border_mobile">
-                <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%' }"></div>
+                <div class="ysj_dsd"
+                  :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%' }">
+                </div>
               </div>
             </div>
             <!-- 目录页 -->
@@ -163,10 +166,13 @@
             </footer>
             <div v-if="item.page == 1" class="firstShadow">
               <div class="pageFirstShadow"
-                :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%'}"></div>
+                :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%'}">
+              </div>
             </div>
             <div v-if="item.page == allPages.length && allPages.length % 2 == 0" class="normal_right_border">
-              <div class="ysj_dsd" :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%' }"></div>
+              <div class="ysj_dsd"
+                :style="{ background: 'url(' + host + '/static/images/zsj_dsd.png) no-repeat left' ,'background-size': '100% 100%' }">
+              </div>
             </div>
             <div v-if="item.page % 2 == 0 && item.page != allPages.length" class="evenshadow"></div>
             <div v-if="item.page % 2 != 0 && item.page != 1" class="oddshadow"></div>
@@ -270,13 +276,13 @@
 
           <div class="btnbox" @click="dblclick_page">
             <div class="btn">
-              <el-tooltip v-if="!isZoom" content="放大" placement="top" effect="light">
+              <el-tooltip v-if="zoom != 1.5" content="放大" placement="top" effect="light">
                 <el-icon :size="30" style="height:100%;color:aliceblue;">
                   <ZoomIn />
                 </el-icon>
               </el-tooltip>
 
-              <el-tooltip v-if="isZoom" content="缩小" placement="top" effect="light">
+              <el-tooltip v-if="zoom == 1.5" content="缩小" placement="top" effect="light">
                 <el-icon :size="30" style="height:100%;color:aliceblue;">
                   <ZoomOut />
                 </el-icon>
@@ -417,10 +423,12 @@ export default {
               that.thickness_width = thisPage / 2;
               page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
               self.bottomNum = page;
+              if (page == self.allPages.length) {
+                $(".thickness_left").css("visibility", "visible");
+              }
             },
 
             missing: function (e, pages) {
-              // console.log(pages);
               if (page == 1) {
                 for (let i = 1; i < self.allPages.length; i++) {
                   self.allPages[i]++;
@@ -430,14 +438,54 @@ export default {
 
             // 开始翻页时触发
             turning: function (e, page, view) {
-              if (page == self.allPages.length && self.isZoom) {
-                $(".thickness_left").css("margin-right", "-337px");
-              } else if (page == self.allPages.length && self.allPages.length % 2 == 0) {
-                $(".thickness_left").css("margin-right", "-281px");
-              } else {
+              //最后一页
+              if (page == self.allPages.length && self.allPages.length % 2 == 0) {
+                //放大
+                if (self.isZoom) {
+                  switch (self.zoom) {
+                    case 1.1:
+                        $(".thickness_left").css("margin-right", "-311px");
+                        $(".normal_right_border").css("margin-left", "605px");
+                      break;
+                    case 1.2:
+                      if (self.isLastPage(page)) {
+                        $(".thickness_left").css("margin-right", "-337px");
+                        $(".normal_right_border").css("margin-left", "664px");
+                      }
+                      break;
+                    case 1.3:
+                      if (self.isLastPage(page)) {
+                        $(".thickness_left").css("margin-right", "-367px");
+                        $(".normal_right_border").css("margin-left", "714px");
+                      }
+                      break;
+                    case 1.4:
+                      if (self.isLastPage(page)) {
+                        $(".thickness_left").css("margin-right", "-397px");
+                        $(".normal_right_border").css("margin-left", "774px");
+                      }
+                      break;
+                    case 1.5:
+                      if (self.isLastPage(page)) {
+                        $(".thickness_left").css("margin-right", "-427px");
+                        $(".normal_right_border").css("margin-left", "834px");
+                      }
+                      break;
+                    default:
+                      break;
+                  }
+                }
+                //缩小
+                else {
+                  console.log("进入缩小")
+                  $(".thickness_left").css("margin-right", "-281px");
+                  $(".normal_right_border").css("margin-left", "555px");
+                }
+              }
+              // 非最后一页 
+              else {
                 $(".thickness_left").css("margin-right", "0px");
               }
-
               if (page != 1) {
                 $(".thickness_left").css("visibility", "visible");
               }
@@ -595,7 +643,7 @@ export default {
     doublechangeBookView() {
       $("#magazine").turn("zoom", this.zoom);
       this.thickness_height = this.thickness_left_height = this.book_height * this.zoom;
-      if (this.zoom == 1 || this.zoom == 1.5) {
+      if (this.zoom == 1.1 || this.zoom == 1) {
         this.isZoom = !this.isZoom;
       }
     },
@@ -603,7 +651,6 @@ export default {
     //跳转最后一页判断放大倍数来改变厚度位置
     isLastPageAndChangeThickness() {
       var currentPage = $("#magazine").turn("page");
-      // console.log("this.zoom", this.zoom);
       switch (this.zoom) {
         case 1:
           if (this.isLastPage(currentPage)) {
@@ -621,24 +668,18 @@ export default {
           if (this.isLastPage(currentPage)) {
             $(".thickness_left").css("margin-right", "-337px");
             $(".normal_right_border").css("margin-left", "664px");
-
-
           }
           break;
         case 1.3:
           if (this.isLastPage(currentPage)) {
             $(".thickness_left").css("margin-right", "-367px");
             $(".normal_right_border").css("margin-left", "714px");
-
-
           }
           break;
         case 1.4:
           if (this.isLastPage(currentPage)) {
             $(".thickness_left").css("margin-right", "-397px");
             $(".normal_right_border").css("margin-left", "774px");
-
-
           }
           break;
         case 1.5:
@@ -712,6 +753,7 @@ export default {
     },
 
     turnPage(page) {
+      console.log("page", page);
       if (page == 1) {
         $(".thickness_left").css("visibility", "hidden");
       } else if (page == this.allPages.length) {
@@ -726,7 +768,7 @@ export default {
       } else {
         $("#magazine").turn("page", page);
       }
-
+      this.isLastPageAndChangeThickness();
     },
 
     turnPageMobile(page) {
