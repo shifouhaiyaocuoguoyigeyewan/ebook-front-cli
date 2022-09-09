@@ -148,13 +148,14 @@
     <!-- 阅读器整个视图 -->
     <div class="flipbook-viewport animate__animated animate__zoomInRight">
       <!-- 左边页面厚度效果视图 -->
+      <div class="left_bar" @click="turnPreviousPage"></div>
+
       <div class="thickness_left" :style="{ width: thickness_left_width + 'px', height: thickness_left_height + 'px' }">
       </div>
       <!-- 阅读器的页面渲染 -->
       <div id="magazine">
         <!-- 中间两个页数 -->
         <div v-for="(item, index) in allPages" :key="`test_${index}`">
-
           <div v-if="index != 1"
             :style="{ background: 'url(' + host + item.content + ')', 'background-size': '100% 100%', width: '100%', height: '100%' }">
             <footer v-if="item.page - 1 !== 0 && item.page !== allPages.length" class="currentpage ">
@@ -208,6 +209,7 @@
       </div>
       <!-- 右边页面厚度效果视图 -->
       <div class="thickness" :style="{ width: thickness_width + 'px', height: thickness_height + 'px' }"></div>
+      <div class="right_bar" @click="turnNextPage"></div>
     </div>
 
     <!-- 阅读器的底部功能视图 -->
@@ -423,8 +425,14 @@ export default {
               that.thickness_width = thisPage / 2;
               page == 1 ? that.thickness_left_width = 0 : that.thickness_left_width = page / 2;
               self.bottomNum = page;
-              if (page == self.allPages.length) {
+              if (page == 1) {
+                $(".left_bar").css("visibility", "hidden");
+              } else if (page == self.allPages.length) {
                 $(".thickness_left").css("visibility", "visible");
+                $(".right_bar").css("visibility", "hidden");
+              } else {
+                $(".left_bar").css("visibility", "visible");
+                $(".right_bar").css("visibility", "visible");
               }
             },
 
@@ -444,30 +452,30 @@ export default {
                 if (self.isZoom) {
                   switch (self.zoom) {
                     case 1.1:
-                        $(".thickness_left").css("margin-right", "-311px");
-                        $(".normal_right_border").css("margin-left", "605px");
+                      $(".thickness_left").css("margin-right", "-308.5px");
+                      $(".normal_right_border").css("margin-left", "610px");
                       break;
                     case 1.2:
                       if (self.isLastPage(page)) {
-                        $(".thickness_left").css("margin-right", "-337px");
+                        $(".thickness_left").css("margin-right", "-336.5px");
                         $(".normal_right_border").css("margin-left", "664px");
                       }
                       break;
                     case 1.3:
                       if (self.isLastPage(page)) {
-                        $(".thickness_left").css("margin-right", "-367px");
-                        $(".normal_right_border").css("margin-left", "714px");
+                        $(".thickness_left").css("margin-right", "-364.5px");
+                        $(".normal_right_border").css("margin-left", "720px");
                       }
                       break;
                     case 1.4:
                       if (self.isLastPage(page)) {
-                        $(".thickness_left").css("margin-right", "-397px");
+                        $(".thickness_left").css("margin-right", "-392.5px");
                         $(".normal_right_border").css("margin-left", "774px");
                       }
                       break;
                     case 1.5:
                       if (self.isLastPage(page)) {
-                        $(".thickness_left").css("margin-right", "-427px");
+                        $(".thickness_left").css("margin-right", "-420.5px");
                         $(".normal_right_border").css("margin-left", "834px");
                       }
                       break;
@@ -477,8 +485,7 @@ export default {
                 }
                 //缩小
                 else {
-                  console.log("进入缩小")
-                  $(".thickness_left").css("margin-right", "-281px");
+                  $(".thickness_left").css("margin-right", "-280.5px");
                   $(".normal_right_border").css("margin-left", "555px");
                 }
               }
@@ -583,46 +590,46 @@ export default {
       var currentPage = $("#magazine").turn("page");
       switch (this.zoom) {
         case 1:
-          this.zoom = 1.1;
+        this.zoom = 1.1;
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-311px");
-            $(".normal_right_border").css("margin-left", "605px");
+            $(".thickness_left").css("margin-right", "-308.5px");
+            $(".normal_right_border").css("margin-left", "610px");
           }
           this.Move();
           break;
         case 1.1:
-          this.zoom = 1.2;
+        this.zoom = 1.2;
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-337px");
+            $(".thickness_left").css("margin-right", "-336.5px");
             $(".normal_right_border").css("margin-left", "664px");
           }
           break;
         case 1.2:
-          this.zoom = 1.3;
+        this.zoom = 1.3;
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-367px");
-            $(".normal_right_border").css("margin-left", "714px");
+            $(".thickness_left").css("margin-right", "-364.5px");
+            $(".normal_right_border").css("margin-left", "720px");
           }
           break;
         case 1.3:
-          this.zoom = 1.4;
+        this.zoom = 1.4;
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-397px");
+            $(".thickness_left").css("margin-right", "-392.5px");
             $(".normal_right_border").css("margin-left", "774px");
           }
           break;
         case 1.4:
-          this.zoom = 1.5;
+        this.zoom = 1.5;
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-427px");
+            $(".thickness_left").css("margin-right", "-420.5px");
             $(".normal_right_border").css("margin-left", "834px");
           }
           break;
         case 1.5:
-          this.zoom = 1;
+        this.zoom = 1;
           if (this.isLastPage(currentPage)) {
             $(".normal_right_border").css("margin-left", "555px");
-            $(".thickness_left").css("margin-right", "-281px");
+            $(".thickness_left").css("margin-right", "-280.5px");
           }
           break;
         default:
@@ -641,6 +648,28 @@ export default {
 
     //放大后改变书本
     doublechangeBookView() {
+      switch (this.zoom) {
+        case 1:
+          $("#magazine").css("margin-left", "280.5px");
+          break;
+        case 1.1:
+          $("#magazine").css("margin-left", "308.5px");
+          break;
+        case 1.2:
+          $("#magazine").css("margin-left", "336.5px");
+          break;
+        case 1.3:
+          $("#magazine").css("margin-left", "364.5px");
+          break;
+        case 1.4:
+          $("#magazine").css("margin-left", "392.5px");
+          break;
+        case 1.5:
+          $("#magazine").css("margin-left", "420.5px");
+          break;
+        default:
+          break;
+      }
       $("#magazine").turn("zoom", this.zoom);
       this.thickness_height = this.thickness_left_height = this.book_height * this.zoom;
       if (this.zoom == 1.1 || this.zoom == 1) {
@@ -654,37 +683,37 @@ export default {
       switch (this.zoom) {
         case 1:
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-281px");
+            $(".thickness_left").css("margin-right", "-280.5px");
             $(".normal_right_border").css("margin-left", "555px");
           }
           break;
         case 1.1:
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-311px");
-            $(".normal_right_border").css("margin-left", "605px");
+            $(".thickness_left").css("margin-right", "-308.5px");
+            $(".normal_right_border").css("margin-left", "610px");
           }
           break;
         case 1.2:
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-337px");
+            $(".thickness_left").css("margin-right", "-336.5px");
             $(".normal_right_border").css("margin-left", "664px");
           }
           break;
         case 1.3:
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-367px");
-            $(".normal_right_border").css("margin-left", "714px");
+            $(".thickness_left").css("margin-right", "-364.5px");
+            $(".normal_right_border").css("margin-left", "720px");
           }
           break;
         case 1.4:
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-397px");
+            $(".thickness_left").css("margin-right", "-392.5px");
             $(".normal_right_border").css("margin-left", "774px");
           }
           break;
         case 1.5:
           if (this.isLastPage(currentPage)) {
-            $(".thickness_left").css("margin-right", "-427px");
+            $(".thickness_left").css("margin-right", "-420.5px");
             $(".normal_right_border").css("margin-left", "834px");
           }
           break;
@@ -717,6 +746,7 @@ export default {
     turnFirstPage() {
       $("#magazine").turn("page", 1);
       $(".thickness_left").css("visibility", "hidden");
+      $(".right_bar").css("visibility", "visible");
     },
 
     turnFirstPageMobile() {
@@ -727,8 +757,8 @@ export default {
       $("#magazine").turn("page", this.allPages.length);
       $(".thickness").css("visibility", "hidden");
       $(".thickness_left").css("visibility", "visible");
+      $(".left_bar").css("visibility", "visible");
       this.isLastPageAndChangeThickness();
-
     },
 
     turnLastPageMobile() {
@@ -856,6 +886,27 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+.left_bar {
+  background: url("@/assets/previous_normal.png");
+  width: 64px;
+  height: 160px;
+  top: 50%;
+  margin-top: -80px;
+  cursor: pointer;
+  z-index: 888000
+}
+
+.right_bar {
+  background: url("@/assets/next_normal.png");
+  width: 64px;
+  height: 160px;
+  /* position: absolute; */
+  top: 50%;
+  margin-top: -80px;
+  cursor: pointer;
+  z-index: 888000;
 }
 
 .magazineMobileView {
@@ -1266,7 +1317,6 @@ body {
   width: 2%;
   height: 100%;
   background-image: -webkit-gradient(linear, right top, left top, from(rgba(20, 20, 20, 0.5)), to(rgba(240, 240, 200, 0)));
-  margin-left: 555px;
 }
 
 .normal_right_border_mobile {
@@ -1279,8 +1329,6 @@ body {
 }
 
 .ysj_dsd {
-  /* background: url("http://huadajiyin_book.wdsjxiaochen.xin/book/images/zsj_dsd.png") no-repeat right; */
-  background-size: 100% 100%;
   height: 100%;
   width: 100%;
   right: -1px;
