@@ -650,22 +650,22 @@ export default {
     doublechangeBookView() {
       switch (this.zoom) {
         case 1:
-          $("#magazine").css("margin-left", "280.5px");
+          // $("#magazine").css("margin-left", "280.5px");
           break;
         case 1.1:
-          $("#magazine").css("margin-left", "308.5px");
+          // $("#magazine").css("margin-left", "308.5px");
           break;
         case 1.2:
-          $("#magazine").css("margin-left", "336.5px");
+          // $("#magazine").css("margin-left", "336.5px");
           break;
         case 1.3:
-          $("#magazine").css("margin-left", "364.5px");
+          // $("#magazine").css("margin-left", "364.5px");
           break;
         case 1.4:
-          $("#magazine").css("margin-left", "392.5px");
+          // $("#magazine").css("margin-left", "392.5px");
           break;
         case 1.5:
-          $("#magazine").css("margin-left", "420.5px");
+          // $("#magazine").css("margin-left", "420.5px");
           break;
         default:
           break;
