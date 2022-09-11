@@ -592,6 +592,7 @@ export default {
         case 1:
         this.zoom = 1.1;
           if (this.isLastPage(currentPage)) {
+            $("#magazine").css("margin-left", "308.5px");
             $(".thickness_left").css("margin-right", "-308.5px");
             $(".normal_right_border").css("margin-left", "610px");
           }
@@ -600,6 +601,7 @@ export default {
         case 1.1:
         this.zoom = 1.2;
           if (this.isLastPage(currentPage)) {
+            $("#magazine").css("margin-left", "336.5px");
             $(".thickness_left").css("margin-right", "-336.5px");
             $(".normal_right_border").css("margin-left", "664px");
           }
@@ -607,6 +609,7 @@ export default {
         case 1.2:
         this.zoom = 1.3;
           if (this.isLastPage(currentPage)) {
+            $("#magazine").css("margin-left", "364.5px");
             $(".thickness_left").css("margin-right", "-364.5px");
             $(".normal_right_border").css("margin-left", "720px");
           }
@@ -614,6 +617,7 @@ export default {
         case 1.3:
         this.zoom = 1.4;
           if (this.isLastPage(currentPage)) {
+            $("#magazine").css("margin-left", "392.5px");
             $(".thickness_left").css("margin-right", "-392.5px");
             $(".normal_right_border").css("margin-left", "774px");
           }
@@ -621,6 +625,7 @@ export default {
         case 1.4:
         this.zoom = 1.5;
           if (this.isLastPage(currentPage)) {
+            $("#magazine").css("margin-left", "420.5px");
             $(".thickness_left").css("margin-right", "-420.5px");
             $(".normal_right_border").css("margin-left", "834px");
           }
@@ -630,6 +635,7 @@ export default {
           if (this.isLastPage(currentPage)) {
             $(".normal_right_border").css("margin-left", "555px");
             $(".thickness_left").css("margin-right", "-280.5px");
+            $("#magazine").css("margin-left", "280.5px");
           }
           break;
         default:
@@ -648,29 +654,32 @@ export default {
 
     //放大后改变书本
     doublechangeBookView() {
-      switch (this.zoom) {
-        case 1:
-          // $("#magazine").css("margin-left", "280.5px");
-          break;
-        case 1.1:
-          // $("#magazine").css("margin-left", "308.5px");
-          break;
-        case 1.2:
-          // $("#magazine").css("margin-left", "336.5px");
-          break;
-        case 1.3:
-          // $("#magazine").css("margin-left", "364.5px");
-          break;
-        case 1.4:
-          // $("#magazine").css("margin-left", "392.5px");
-          break;
-        case 1.5:
-          // $("#magazine").css("margin-left", "420.5px");
-          break;
-        default:
-          break;
-      }
       $("#magazine").turn("zoom", this.zoom);
+    //   var currentPage = $("#magazine").turn("page");
+    //   if (this.isLastPage(currentPage)) {
+    //   switch (this.zoom) {
+    //     case 1:
+    //       $("#magazine").css("margin-left", "280.5px");
+    //       break;
+    //     case 1.1:
+    //       $("#magazine").css("margin-left", "308.5px");
+    //       break;
+    //     case 1.2:
+    //       $("#magazine").css("margin-left", "336.5px");
+    //       break;
+    //     case 1.3:
+    //       $("#magazine").css("margin-left", "364.5px");
+    //       break;
+    //     case 1.4:
+    //       $("#magazine").css("margin-left", "392.5px");
+    //       break;
+    //     case 1.5:
+    //       $("#magazine").css("margin-left", "420.5px");
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
       this.thickness_height = this.thickness_left_height = this.book_height * this.zoom;
       if (this.zoom == 1.1 || this.zoom == 1) {
         this.isZoom = !this.isZoom;
